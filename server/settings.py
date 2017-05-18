@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Third part apps
     'bootstrap3',
+    'braces',
     # Own apps
     'website',
 ]
@@ -127,6 +128,7 @@ STATIC_URL = '/static/'
 
 # Accounts and registration
 ACCOUNT_ACTIVATION_DAYS = 14
+LOGIN_REDIRECT_URL = '/dashboard'
 
 # Email backend
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
