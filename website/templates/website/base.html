@@ -10,7 +10,6 @@
         
         {% bootstrap_css %}
         {% bootstrap_javascript %}
-        {% bootstrap_messages %}
         
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Roboto:300"> 
         <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
@@ -71,6 +70,11 @@
                     {% endblock %}
                 </div>
             </div>
+            {% if messages %}
+                <div class="container">
+                    {% bootstrap_messages %}
+                </div>
+            {% endif %}
             <!-- Main content -->
             {% block content %}
             {% endblock %}

@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 
 def index(request):
     context = {}
@@ -10,4 +11,5 @@ def map(request):
     # we need is a simple map, and a full gdal setup would just make deployment
     # more difficult
     context = {}
+    messages.add_message(request, messages.ERROR, 'The map has not been implemented yet.')
     return render(request,'website/map.html', context)
