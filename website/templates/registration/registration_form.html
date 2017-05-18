@@ -1,0 +1,25 @@
+{% extends 'website/base.html' %}
+
+{% load bootstrap3 %}
+
+{% block header %}
+
+    <h1>Register</h1>
+    <p>Create an account to connect to the AstroPlant world.</p>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'website:accounts:registration_register' %}" method="post" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form layout='inline' %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    {% bootstrap_icon "ok" %} Submit
+                </button>
+            {% endbuttons %}
+        </form>
+    </div>
+    
+{% endblock %}
