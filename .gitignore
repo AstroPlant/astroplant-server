@@ -16,3 +16,4 @@ tests/report/
 
 # Visual studio
 *.pyproj
+*.vs/
