@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% extends 'aquaponicMasterProject/Base.html' %}
+{% load static %}
+
+
+  {% block navibar %}
+<li class="active" style='border-bottom: 3px solid #778899;'><a href="./">
+
+  <span class="glyphicon glyphicon-home" aria-hidden="true" > Home</span></a>
+</li>
+<li ><a href="map">
+
+  <span class="glyphicon glyphicon-search" aria-hidden="true" > Map</span></a>
+</li>
+<li ><a href="learn">
+
+  <span class="glyphicon glyphicon-grain" aria-hidden="true" > Learn</span></a>
+</li>
+
+<li class="dropdown">
+
+    <a href="systems" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>&nbsp Systems </a>
+          <ul class="dropdown-menu">
+            <li><a href="aquaponics/alkmaar"> Alkmaar</a></li>
+          </ul>
+        </li>
+
+
+
+          {% endblock %}
+{% block body %}
+ <center>
+    <h3>Aquaponics Software-Lab Platform</h3>
+     <h4>Experience how ICT can be used for aquaponic systems through information sharing and integrated real-time sensoring</h4>
+       <br></center>
+<div class="container">
+<div class="row">
+        <!-- Boxes de Acoes -->
+    	<div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">
+				<div class="icon">
+
+					<div class="info">
+						<h3 class="title"><span class="glyphicon glyphicon-search" aria-hidden="true" > Map</span></h3>
+						<p>
+View all connected aquaponics systems in the Netherlands.
+                        </p>
+						<div class="more">
+							<a href="map" title="Map" type="button" class="btn btn-primary btn-lg outline">
+								Show overview <i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div>
+		</div>
+
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">
+				<div class="icon">
+					<div class="info">
+						<h3 class="title"><span class="glyphicon glyphicon-grain" aria-hidden="true" > Learn</span></h3>
+    					<p>
+Go into detail and learn about vegetable production guidelines.
+                        </p>
+						<div class="more">
+							<a href="learn" title="Learn" type="button" class="btn btn-primary btn-lg outline">
+								Read More <i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div>
+		</div>
+
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+			<div class="box">
+				<div class="icon">
+					<div class="info">
+						<h3 class="title"><span class="glyphicon glyphicon-dashboard" aria-hidden="true" > Systems</span></h3>
+    					<p>
+Look into specific aquaponics systems and real-time information.						</p>
+						<div class="more">
+							<a href="aquaponics" title="Systems" type="button" class="btn btn-primary btn-lg outline">
+								Analyze System <i class="fa fa-angle-double-right"></i>
+							</a>
+						</div>
+					</div>
+				</div>
+				<div class="space"></div>
+			</div>
+		</div>
+		<!-- /Boxes de Acoes -->
+	</div>
+    </div>
+
+
+
+{% endblock %}
+
