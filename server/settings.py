@@ -127,3 +127,7 @@ STATIC_URL = '/static/'
 
 # Accounts and registration
 ACCOUNT_ACTIVATION_DAYS = 14
+
+# Email backend
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/mails'
