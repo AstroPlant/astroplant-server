@@ -36,8 +36,8 @@
                         <li class="{% navigation_active request 'website:index' %}">
                             <a href="{% url 'website:index' %}"><span class="glyphicon glyphicon-home" aria-hidden="true" ></span> Home</a>
                         </li>
-                        <li>
-                            <a href="#"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> Map</a>
+                        <li class="{% navigation_active request 'website:map' %}">
+                            <a href="{% url 'website:map' %}"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> Map</a>
                         </li>
                         <li ><a href="#">
                             <span class="glyphicon glyphicon-grain" aria-hidden="true" ></span> Learn</a>

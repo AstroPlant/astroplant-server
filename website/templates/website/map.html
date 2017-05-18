@@ -1,0 +1,38 @@
+{% extends 'website/base.html' %}
+
+{% block head_ext %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+       integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+       crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+        integrity="sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+        crossorigin=""></script>
+        
+    <style>
+        #leaflet-map { height: 650px; }
+    </style>
+{% endblock %}
+
+{% block header %}
+
+    <h1>Map</h1>
+    <p>See where AstroPlant kits are located around the world.</p>
+
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div id="leaflet-map"></div>
+    </div>
+
+    <script>
+        var map = L.map('leaflet-map').setView([51.505, -0.09], 13);
+        
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 18
+        }).addTo(map);
+        
+        var marker = L.marker([51.5, -0.09]).addTo(map);
+    </script>
+{% endblock %}
