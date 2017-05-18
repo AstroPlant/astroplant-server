@@ -1,3 +1,6 @@
+# Project
+tmp/
+
 # Python / Django
 *.egg-info
 *.pot
