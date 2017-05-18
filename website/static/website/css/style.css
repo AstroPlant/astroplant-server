@@ -1,0 +1,41 @@
+html {
+  font-size: 1rem;
+}
+
+body, html {
+  font-family: 'lato', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'open sans', sans-serif;
+}
+
+/* Table Reset */
+table {
+  display: table;
+}
+
+thead {
+  display: table-header-group;
+}
+
+tbody {
+  display: table-row-group;
+}
+
+tr {
+  display: table-row;
+}
+
+th, td {
+  display: table-cell;
+}
+
+footer > div {
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.8rem;
+  color: RGB(100, 100, 100);
+}

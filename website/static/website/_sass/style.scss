@@ -1,0 +1,55 @@
+$small: 768px; $medium: 992px; $large: 1200px; $maxWidth: 1280px;
+
+$textColorDark: RGB(0,0,0);
+$textColorLight: RGB(100,100,100);
+
+@function headings($from:1, $to:6) {
+    @if $from == $to {
+        @return 'h#{$from}';
+    } @else {
+        @return 'h#{$from},' + headings($from+1, $to);
+    }
+}
+
+html {
+    font-size: 1rem; @extend body;
+}
+
+body {
+    font-family: 'lato', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#{headings(1,6)} {
+    font-family: 'open sans', sans-serif;
+}
+
+/* Table Reset */
+
+table {
+    display: table;
+}
+
+thead {
+    display: table-header-group;
+}
+
+tbody {
+    display: table-row-group;
+}
+
+tr {
+    display: table-row;
+}
+
+th, td {
+    display: table-cell;
+}
+
+footer > div {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 0.8rem;
+    color: $textColorLight;
+}
