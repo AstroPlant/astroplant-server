@@ -57,3 +57,8 @@ footer a {
 footer a:hover {
   color: RGB(70, 70, 70);
 }
+
+/* Other entities */
+.glyphicon {
+  margin-right: 0.3em;
+}
