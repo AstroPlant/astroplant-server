@@ -45,9 +45,15 @@
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        {% if user.is_authenticated %}
-                            <div style="color:#006F00;">{% bootstrap_icon 'user' %} {{username}}</div>
-                            <a href="/logout" style="color:#800000">{% bootstrap_icon 'off' %} Log-out</a>
+                        {% if user.is_authenticated %}                            
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    {% bootstrap_icon 'user' %} {% if user.get_full_name %} {{ user.get_full_name }} {% else %} {{ user.username }} {% endif %}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'website:logout' %}"><span class="text-danger">{% bootstrap_icon 'off' %} Log out</span></a></li>
+                                </ul>
+                            </li>
                         {% else %}
                             <li>
                                 <a href="{% url 'website:login' %}">{% bootstrap_icon 'log-in' %}  Log-in</a>
