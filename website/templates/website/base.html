@@ -43,9 +43,14 @@
                         <li>
                             <a href="#">{% bootstrap_icon 'grain' %} Learn</a>
                         </li>
+                        {% if user.is_authenticated %}   
+                            <li>
+                                <a href="{% url 'website:dashboard' %}">{% bootstrap_icon 'dashboard' %} Dashboard</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        {% if user.is_authenticated %}                            
+                        {% if user.is_authenticated %}
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     {% bootstrap_icon 'user' %} {% if user.get_full_name %} {{ user.get_full_name }} {% else %} {{ user.username }} {% endif %}

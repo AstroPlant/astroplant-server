@@ -18,6 +18,9 @@ def map(request):
     messages.add_message(request, messages.ERROR, 'The map has not been implemented yet.')
     return render(request,'website/map.html', context)
         
+def dashboard(request):
+    pass
+
 class login(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
 
