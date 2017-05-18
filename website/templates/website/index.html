@@ -1,6 +1,7 @@
-<!DOCTYPE html>
 {% extends 'website/base.html' %}
+
 {% load static %}
+{% load bootstrap3 %}
 
 {% block header %}
 <h1>AstroPlant Prototype</h1>
@@ -19,26 +20,26 @@
     </p>
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-lg-4">
-            <h3 class="title"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> See</h3>
+            <h3 class="title">{% bootstrap_icon 'search' %} See</h3>
             <p>See the AstroPlant kits in the world.</p>
             <div class="more">
-                <a href="map" title="Map" type="button" class="btn btn-primary btn-lg outline">Show map</a>
+                <a href="map" title="Map" type="button" class="btn btn-primary btn-lg outline">{% bootstrap_icon 'triangle-right' %} Show map</a>
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-6 col-lg-4">
-            <h3 class="title"><span class="glyphicon glyphicon-grain" aria-hidden="true" ></span> Learn</h3>
+            <h3 class="title">{% bootstrap_icon 'grain' %} Learn</h3>
             <p>Learn about growing plants.</p>
             <div class="more">
-                <a href="learn" title="Learn" type="button" class="btn btn-primary btn-lg outline">Read more</a>
+                <a href="learn" title="Learn" type="button" class="btn btn-primary btn-lg outline">{% bootstrap_icon 'triangle-right' %} Read more</a>
             </div>
         </div>
 
         <div class="col-xs-12 col-sm-6 col-lg-4">
-            <h3 class="title"><span class="glyphicon glyphicon-dashboard" aria-hidden="true" ></span> Analyze</h3>
+            <h3 class="title">{% bootstrap_icon 'dashboard' %} Analyze</h3>
             <p>Analyze real-time aquaponics data.</p>
             <div class="more">
-                <a href="aquaponics" title="Systems" type="button" class="btn btn-primary btn-lg outline">Analyze System</a>
+                <a href="aquaponics" title="Systems" type="button" class="btn btn-primary btn-lg outline">{% bootstrap_icon 'triangle-right' %} Analyze System</a>
             </div>
         </div>
     </div>
