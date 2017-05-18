@@ -1,41 +1,59 @@
-html {
+html, body {
   font-size: 1rem;
 }
 
-body, html {
-  font-family: 'lato', sans-serif;
+body {
   margin: 0;
   padding: 0;
+  font-family: 'lato', sans-serif;
+}
+body p {
+  font-size: 1rem;
+  line-height: 1.8;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'open sans', sans-serif;
+  font-family: 'roboto', sans-serif;
 }
 
-/* Table Reset */
-table {
-  display: table;
+/* Header and navigation bar */
+header.navbar-static-top {
+  margin-bottom: 0;
+  border: 0;
+}
+header.navbar-static-top li.active {
+  background-color: whitesmoke;
+}
+header.navbar-static-top div.navbar-header {
+  border-right: 1px solid #d7d7d7;
 }
 
-thead {
-  display: table-header-group;
+/* Main content */
+.content-header {
+  padding: 30px;
+  color: RGB(230, 230, 250);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(to bottom, #2d3963 0, #5568a4 100%);
+  font-size: 1.5rem;
+  margin-bottom: 2.5em;
 }
 
-tbody {
-  display: table-row-group;
+main {
+  margin-bottom: 5em;
 }
 
-tr {
-  display: table-row;
+/* Footer */
+footer {
+  padding: 4em 0 4em;
+  /*color: rgb(130, 129, 122);
+  background-color: rgb(45,41,48);*/
+  color: RGB(140, 140, 140);
+  background-color: whitesmoke;
 }
-
-th, td {
-  display: table-cell;
+footer a {
+  color: RGB(140, 140, 140);
+  text-decoration: underline;
 }
-
-footer > div {
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 0.8rem;
-  color: RGB(100, 100, 100);
+footer a:hover {
+  color: RGB(70, 70, 70);
 }

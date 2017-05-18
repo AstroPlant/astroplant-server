@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% extends 'website/base.html' %}
+{% load static %}
+
+{% block header %}
+<h1>AstroPlant Prototype</h1>
+<p>Be a space farmer</p>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Grow plants in space</h1>
+    <p>Welcome, space farmer!</p>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus leo ligula, euismod ut pellentesque in, condimentum vitae orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Duis sodales, nulla eu sagittis molestie, neque odio rhoncus odio, aliquet egestas ligula felis ut mi.
+    </p>
+    <p>
+        Cras bibendum molestie urna, vel sodales orci condimentum id. Donec a blandit mauris. Nam feugiat dui risus, non porttitor dolor finibus quis. Suspendisse dui ipsum, tempor id ex et, rutrum malesuada nulla. Donec in porttitor nulla. Sed euismod lorem felis, et rutrum nunc ullamcorper ut.
+    </p>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+            <h3 class="title"><span class="glyphicon glyphicon-search" aria-hidden="true" ></span> See</h3>
+            <p>See the AstroPlant kits in the world.</p>
+            <div class="more">
+                <a href="map" title="Map" type="button" class="btn btn-primary btn-lg outline">Show map</a>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+            <h3 class="title"><span class="glyphicon glyphicon-grain" aria-hidden="true" ></span> Learn</h3>
+            <p>Learn about growing plants.</p>
+            <div class="more">
+                <a href="learn" title="Learn" type="button" class="btn btn-primary btn-lg outline">Read more</a>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-lg-4">
+            <h3 class="title"><span class="glyphicon glyphicon-dashboard" aria-hidden="true" ></span> Analyze</h3>
+            <p>Analyze real-time aquaponics data.</p>
+            <div class="more">
+                <a href="aquaponics" title="Systems" type="button" class="btn btn-primary btn-lg outline">Analyze System</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -1,7 +1,9 @@
 $small: 768px; $medium: 992px; $large: 1200px; $maxWidth: 1280px;
 
 $textColorDark: RGB(0,0,0);
-$textColorLight: RGB(100,100,100);
+$textColorGray: RGB(70,70,70);
+$textColorLightGray: RGB(140,140,140);
+$textColorLight: RGB(230,230,250);
 
 @function headings($from:1, $to:6) {
     @if $from == $to {
@@ -11,45 +13,69 @@ $textColorLight: RGB(100,100,100);
     }
 }
 
-html {
-    font-size: 1rem; @extend body;
+html, body {
+    font-size: 1rem;
 }
 
 body {
-    font-family: 'lato', sans-serif;
     margin: 0;
     padding: 0;
+    font-family: 'lato', sans-serif;
+    
+    p {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
 }
 
 #{headings(1,6)} {
-    font-family: 'open sans', sans-serif;
+    font-family: 'roboto', sans-serif;
 }
 
-/* Table Reset */
-
-table {
-    display: table;
+/* Header and navigation bar */
+header.navbar-static-top {
+    margin-bottom: 0;
+    border: 0;
+    
+    li.active {
+        background-color: rgb(245, 245, 245);
+    }
+    
+    div.navbar-header {
+        border-right: 1px solid rgb(215, 215, 215);
+    }
 }
 
-thead {
-    display: table-header-group;
-}
+/* Main content */ 
 
-tbody {
-    display: table-row-group;
-}
-
-tr {
-    display: table-row;
-}
-
-th, td {
-    display: table-cell;
-}
-
-footer > div {
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 0.8rem;
+.content-header {
+    padding: 30px;
     color: $textColorLight;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    background-image: linear-gradient(to bottom, #2d3963 0, #5568a4 100%);
+    font-size: 1.5rem;
+    margin-bottom: 2.5em;
+}
+
+main {
+    margin-bottom: 5em;
+}
+
+/* Footer */
+
+footer {
+    padding: 4em 0 4em;
+    /*color: rgb(130, 129, 122);
+    background-color: rgb(45,41,48);*/
+    color: $textColorLightGray;
+    background-color: rgb(245, 245, 245);
+    
+    a {
+        color: $textColorLightGray;
+        text-decoration: underline;
+        
+        &:hover {
+            color: $textColorGray;
+        }
+    }
 }
