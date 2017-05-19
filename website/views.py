@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, decorators
 from django.contrib.auth import views as auth_views
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
-from registration import views as registration_views
+from registration.backends.hmac import views as registration_views
 
 def index(request):
     context = {}
@@ -18,9 +18,10 @@ def map(request):
     context = {}
     messages.add_message(request, messages.ERROR, 'The map has not been implemented yet.')
     return render(request,'website/map.html', context)
-        
+       
+@decorators.login_required
 def dashboard(request):
-    pass
+    return render(request,'website/dashboard.html', {})
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
