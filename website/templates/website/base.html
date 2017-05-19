@@ -56,12 +56,12 @@
                                     {% bootstrap_icon 'user' %} {% if user.get_full_name %} {{ user.get_full_name }} {% else %} {{ user.username }} {% endif %}
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{% url 'website:logout' %}"><span class="text-danger">{% bootstrap_icon 'off' %} Log out</span></a></li>
+                                    <li><a href="{% url 'auth_logout' %}"><span class="text-danger">{% bootstrap_icon 'off' %} Log out</span></a></li>
                                 </ul>
                             </li>
                         {% else %}
                             <li>
-                                <a href="{% url 'website:login' %}">{% bootstrap_icon 'log-in' %}  Log-in</a>
+                                <a href="{% url 'auth_login' %}">{% bootstrap_icon 'log-in' %}  Log-in</a>
                             </li>
                         {% endif %}
                     </ul>

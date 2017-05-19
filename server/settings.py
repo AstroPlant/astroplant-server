@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Own apps (place them first, so our templates overwrite built-in and third party templates)
+    'website',
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,8 +41,6 @@ INSTALLED_APPS = [
     # Third part apps
     'bootstrap3',
     'braces',
-    # Own apps
-    'website',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +58,6 @@ ROOT_URLCONF = 'server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
