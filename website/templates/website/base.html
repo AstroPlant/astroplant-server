@@ -61,7 +61,10 @@
                             </li>
                         {% else %}
                             <li>
-                                <a href="{% url 'auth_login' %}">{% bootstrap_icon 'log-in' %}  Log-in</a>
+                                <a href="{% url 'registration_register' %}">{% bootstrap_icon 'plus' %} Create account</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'auth_login' %}">{% bootstrap_icon 'log-in' %} Log in</a>
                             </li>
                         {% endif %}
                     </ul>
