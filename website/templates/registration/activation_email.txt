@@ -2,4 +2,4 @@ Hi {{ user }},
 
 Please activate your AstroPlant account by clicking on the following link:
 
-http://localhost:8000/{% url 'registration_activate' activation_key %}
+http://localhost:8000{% url 'registration_activate' activation_key %}
