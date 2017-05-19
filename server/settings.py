@@ -124,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/astroplant/static/'
 
 # Accounts and registration
 ACCOUNT_ACTIVATION_DAYS = 14
