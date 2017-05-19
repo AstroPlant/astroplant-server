@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import views as auth_views
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
+from registration import views as registration_views
 
 def index(request):
     context = {}
@@ -21,9 +22,9 @@ def map(request):
 def dashboard(request):
     pass
 
-class login(AnonymousRequiredMixin, auth_views.LoginView):
+class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
 
-class logout(LoginRequiredMixin, auth_views.LogoutView):
+class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
     login_url = reverse_lazy(u'website:login')
     redirect_field_name = 'redirect_to'

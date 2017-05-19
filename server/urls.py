@@ -17,9 +17,14 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from website.views import LoginView, LogoutView
 
 urlpatterns = [
     url(r'^', include('website.urls', namespace='website')),
     url(r'^admin/', admin.site.urls),
+    # Overwrite some views defined by the registration plugin; 
+    # e.g. logged in users should not be able to log in again
+    url(r'^accounts/login/', LoginView.as_view()),
+    url(r'^accounts/logout/', LogoutView.as_view()),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
