@@ -27,7 +27,7 @@ class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
 
 class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
-    login_url = reverse_lazy(u'website:login')
+    login_url = reverse_lazy(u'auth_login')
     redirect_field_name = 'redirect_to'
     
 class ActivationView(registration_views.ActivationView):
