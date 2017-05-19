@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
-from django.contrib.auth import authenticate, login, logout, decorators
+from django.contrib.auth import login, decorators
 from django.contrib.auth import views as auth_views
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
 from registration.backends.hmac import views as registration_views
@@ -29,3 +29,12 @@ class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
 class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
     login_url = reverse_lazy(u'website:login')
     redirect_field_name = 'redirect_to'
+    
+class ActivationView(registration_views.ActivationView):
+    def get_success_url(self, user):
+        # Log the user in
+        login(self.request, user)
+
+        # Set a message
+        messages.add_message(self.request, messages.SUCCESS, 'Your account has been activated!')
+        return ('website:dashboard', (), {})
