@@ -1,5 +1,6 @@
 # Project
 tmp/
+server/secretsettings.py
 
 # Python / Django
 *.egg-info
