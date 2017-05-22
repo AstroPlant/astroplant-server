@@ -46,6 +46,19 @@ header.navbar-static-top {
     }
 }
 
+.navbar-header {
+    .navbar-toggle {
+        &:hover {
+            background-color: #f9f9f9;
+            border: 1px solid #f7f7f7;
+        }
+    
+        .icon-bar {
+            background-color: $textColorGray;
+        }
+    }
+}
+
 /* Main content */ 
 
 .content-header {

@@ -28,6 +28,14 @@ header.navbar-static-top div.navbar-header {
   border-right: 1px solid #d7d7d7;
 }
 
+.navbar-header .navbar-toggle:hover {
+  background-color: #f9f9f9;
+  border: 1px solid #f7f7f7;
+}
+.navbar-header .navbar-toggle .icon-bar {
+  background-color: RGB(70, 70, 70);
+}
+
 /* Main content */
 .content-header {
   padding: 30px;
