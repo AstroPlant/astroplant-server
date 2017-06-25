@@ -82,7 +82,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'astroplant',
-        'USER': 'root',
+        'USER': 'astroplant',
         'PASSWORD': '',
         'PORT': '',
     }
