@@ -24,7 +24,7 @@ SECRET_KEY = server.secretsettings.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["astroplant.kepow.org", "astroplant.io"]
+ALLOWED_HOSTS = ["localhost", "astroplant.kepow.org", "astroplant.io"]
 
 
 # Application definition
