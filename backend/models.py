@@ -16,6 +16,9 @@ class Kit(models.Model):
     latitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
     longitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
 
+    def __str__(self):
+        return self.serial
+
 class Experiment(models.Model):
     """
     Model for experiments.
