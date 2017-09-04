@@ -22,5 +22,9 @@ class SensorAdmin(admin.ModelAdmin):
     list_display = ('type', 'kit')
     ordering = ('type', 'kit')
 
-admin.site.register(models.Experiment)
+@admin.register(models.Experiment)
+class ExperimentAdmin(admin.ModelAdmin):
+    list_display = ('kit', 'date_time_start', 'date_time_end')
+    ordering = ('kit', 'date_time_start', 'date_time_end')
+
 admin.site.register(models.Measurement)
