@@ -8,7 +8,7 @@ class KitAdmin(admin.ModelAdmin):
     ordering = ('serial', 'name', 'id')
 
 @admin.register(models.KitMembership)
-class KitMembership(admin.ModelAdmin):
+class KitMembershipAdmin(admin.ModelAdmin):
     list_display = ('kit', 'user', 'date_time_linked')
     ordering = ('kit', 'user')
 
