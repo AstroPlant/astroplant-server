@@ -34,6 +34,9 @@ class KitMembership(models.Model):
     user = models.ForeignKey(django.contrib.auth.models.User, on_delete = models.CASCADE)
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
     date_time_linked = models.DateTimeField()
+
+    def __str__(self):
+        return "%s - %s" % (self.kit, self.user)
     
 class SensorType(models.Model):
     """
