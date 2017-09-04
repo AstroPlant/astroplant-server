@@ -12,16 +12,9 @@ class Kit(models.Model):
     serial = models.CharField(max_length = 250)
     type = models.CharField(max_length = 10)
     name = models.CharField(max_length = 250)
-    users = models.ManyToManyField(django.contrib.auth.models.User)
-
-class KitProfile(models.Model):
-    """
-    Model for AstroPlant kit profiles.
-    """
-    kit = models.OneToOneField(Kit, on_delete = models.CASCADE, primary_key = True)
-    description = models.TextField()
-    latitude = models.DecimalField(max_digits=12, decimal_places=4)
-    longitude = models.DecimalField(max_digits=12, decimal_places=4)
+    description = models.TextField(default = "")
+    latitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
+    longitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
 
 class Experiment(models.Model):
     """
