@@ -13,8 +13,8 @@ class Kit(models.Model):
     type = models.CharField(max_length = 10)
     name = models.CharField(max_length = 250)
     description = models.TextField(default = "", blank = True)
-    latitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
-    longitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
+    latitude = models.DecimalField(max_digits = 12, decimal_places = 4, blank = True, null = True)
+    longitude = models.DecimalField(max_digits = 12, decimal_places = 4, blank = True, null = True)
 
     def __str__(self):
         return self.serial
