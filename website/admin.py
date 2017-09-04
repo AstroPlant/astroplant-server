@@ -13,6 +13,11 @@ class KitMembership(admin.ModelAdmin):
     ordering = ('kit', 'user')
 
 admin.site.register(models.SensorType)
+
+@admin.register(models.Sensor)
+class SensorAdmin(admin.ModelAdmin):
+    list_display = ('type', 'kit')
+    ordering = ('type', 'kit')
+
 admin.site.register(models.Experiment)
-admin.site.register(models.Sensor)
 admin.site.register(models.Measurement)
