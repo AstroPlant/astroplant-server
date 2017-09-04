@@ -50,6 +50,9 @@ class SensorType(models.Model):
     type = models.CharField(max_length = 100)
     unit = models.CharField(max_length = 100, blank = True)
 
+    def __str__(self):
+        return self.name
+
 class Sensor(models.Model):
     """
     Model of individual sensors. Each such sensor belongs
