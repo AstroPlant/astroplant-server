@@ -12,7 +12,10 @@ class KitMembershipAdmin(admin.ModelAdmin):
     list_display = ('kit', 'user', 'date_time_linked')
     ordering = ('kit', 'user')
 
-admin.site.register(models.SensorType)
+@admin.register(models.SensorType)
+class SensorTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'brand', 'type', 'unit')
+    ordering = ('brand', 'type')
 
 @admin.register(models.Sensor)
 class SensorAdmin(admin.ModelAdmin):
