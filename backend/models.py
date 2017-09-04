@@ -67,7 +67,7 @@ class Measurement(models.Model):
     Model to hold sensor measurements.
     """
 
-    sensor = models.ForeignKey(Sensor, on_delete = models.CASCADE)
+    sensor_type = models.ForeignKey(SensorType, on_delete = models.CASCADE)
 
     # Null allowed, as it is possible no experiment is running
     experiment = models.ForeignKey(Experiment, on_delete = models.CASCADE, null = True)
