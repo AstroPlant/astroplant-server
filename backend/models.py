@@ -25,7 +25,7 @@ class Experiment(models.Model):
     """
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
     date_time_start = models.DateTimeField()
-    date_time_end = models.DateTimeField()
+    date_time_end = models.DateTimeField(blank = True, null = True)
 
 class KitMembership(models.Model):
     """
