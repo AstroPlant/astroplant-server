@@ -12,7 +12,7 @@ class Kit(models.Model):
     serial = models.CharField(max_length = 250)
     type = models.CharField(max_length = 10)
     name = models.CharField(max_length = 250)
-    description = models.TextField(default = "")
+    description = models.TextField(default = "", blank = True)
     latitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
     longitude = models.DecimalField(max_digits = 12, decimal_places = 4, null = True)
 
@@ -48,7 +48,7 @@ class SensorType(models.Model):
     name = models.CharField(max_length = 100)
     brand = models.CharField(max_length = 100)
     type = models.CharField(max_length = 100)
-    unit = models.CharField(max_length = 100)
+    unit = models.CharField(max_length = 100, blank = True)
 
 class Sensor(models.Model):
     """
