@@ -33,11 +33,16 @@
             maxZoom: 18
         }).addTo(map);
         
-        var group = new L.featureGroup([
-            {% for kit in kits %}
-                L.marker([{{ kit.latitude }}, {{ kit.longitude }}]).addTo(map), 
-            {% endfor %}
-        ]);
+        var markers = [];
+        
+        {% for kit in kits %}
+            var marker = L.marker([{{ kit.latitude }}, {{ kit.longitude }}]);
+            marker.bindPopup("<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p>");
+            marker.addTo(map);
+            markers.push(marker);
+        {% endfor %}
+        
+        var group = new L.featureGroup(markers);
         
         map.fitBounds(group.getBounds(), {maxZoom: 8});
     </script>
