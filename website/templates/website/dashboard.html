@@ -10,7 +10,36 @@
 
 {% block content %}
     <div class="container">
-        <p>Dashboard placeholder.</p>
+        <div class="panel">
+            <a href="{% url 'website:index' %}" title="Add kit" type="button" class="btn btn-default btn-block">{% bootstrap_icon 'plus' %} Add kit</a>
+        </div>
+        
+        <div class="row">
+            {% for kit in kits %}
+                <div class="col-xs-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ kit.name }}</div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-xs-8">
+                                    <p>{{ kit.description }}</p>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div>
+                                        <a href="{% url 'website:kit' kit.id %}" title="Access kit" type="button" class="btn btn-primary">{% bootstrap_icon 'triangle-right' %} Open</a>
+                                    </div>
+                                    <!--
+                                        <div>
+                                            <a href="{% url 'website:index' %}" title="Configure kit">{% bootstrap_icon 'cog' %} Configure</a>
+                                        </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}
