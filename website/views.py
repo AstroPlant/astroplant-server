@@ -26,8 +26,10 @@ def dashboard(request):
 
     return render(request,'website/dashboard.html', context)
 
-def kit(request, kit):
-    return render(request,'website/kit.html', {})
+def kit(request, kit_id):
+    context = {'kit': backend.models.Kit.objects.get(pk=kit_id)}
+
+    return render(request,'website/kit.html', context)
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
