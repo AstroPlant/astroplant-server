@@ -42,6 +42,9 @@ def kit(request, kit_id):
 
     return render(request,'website/kit.html', context)
 
+def kit_add(request):
+    return render(request,'website/kit_add.html', {})
+
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
 

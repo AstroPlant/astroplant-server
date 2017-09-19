@@ -16,7 +16,7 @@
 {% block content %}
     {% if not kit or not membership %}
         <div class="container">
-            Sorry! That kit was not found, or you do not have access to it.
+            Sorry! That kit was not found, or you do not have access to it. If you own a kit, you can <a href="{% url 'website:kit_add' %}">add</a> it.
         </div>
     {% else %}
         <div class="container">
