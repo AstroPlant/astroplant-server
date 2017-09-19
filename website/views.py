@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
+from django.core import exceptions
 from django.contrib.auth import login, decorators
 from django.contrib.auth import views as auth_views
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
@@ -27,7 +28,17 @@ def dashboard(request):
     return render(request,'website/dashboard.html', context)
 
 def kit(request, kit_id):
-    context = {'kit': backend.models.Kit.objects.get(pk=kit_id)}
+    try:
+        kit = backend.models.Kit.objects.get(pk=kit_id)
+    except exceptions.ObjectDoesNotExist:
+        kit = None
+
+    try:
+        membership = backend.models.KitMembership.objects.get(user=request.user, kit=kit)
+    except exceptions.ObjectDoesNotExist:
+        membership = None
+
+    context = {'kit': kit, 'membership': membership}
 
     return render(request,'website/kit.html', context)
 

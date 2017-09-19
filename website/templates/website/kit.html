@@ -4,14 +4,23 @@
 {% load bootstrap3 %}
 
 {% block header %}
-    <h1>{{ kit.name }}</h1>
-    <p>{{ kit.description }}</p>
+    {% if not kit or not membership %}
+        <h1>Oops!</h1>
+    {% else %}
+        <h1>{{ kit.name }}</h1>
+        <p>{{ kit.description }}</p>
+    {% endif %}
 {% endblock %}
+
 
 {% block content %}
-    <div class="container">
-        Test
-    </div>
-
+    {% if not kit or not membership %}
+        <div class="container">
+            Sorry! That kit was not found, or you do not have access to it.
+        </div>
+    {% else %}
+        <div class="container">
+            Test
+        </div>
+    {% endif %}
 {% endblock %}
-
