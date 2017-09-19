@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     # Third part apps
     'bootstrap3',
     'braces',
+    'rest_framework',
+    'channels',
+    'channels_api',
 ]
 
 MIDDLEWARE = [
