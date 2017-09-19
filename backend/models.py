@@ -16,6 +16,12 @@ class Kit(models.Model):
     latitude = models.DecimalField(max_digits = 12, decimal_places = 4, blank = True, null = True)
     longitude = models.DecimalField(max_digits = 12, decimal_places = 4, blank = True, null = True)
 
+    users = models.ManyToManyField(
+        django.contrib.auth.models.User,
+        through='KitMembership',
+        through_fields=('kit', 'user'),
+    )
+
     def __str__(self):
         return self.serial
 
