@@ -22,7 +22,12 @@ def map(request):
        
 @decorators.login_required
 def dashboard(request):
-    return render(request,'website/dashboard.html', {})
+    context = {'kits': backend.models.Kit.objects.filter(users=request.user)}
+
+    return render(request,'website/dashboard.html', context)
+
+def kit(request, kit):
+    return render(request,'website/kit.html', {})
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
