@@ -88,9 +88,18 @@ DATABASES = {
         'USER': 'astroplant',
         'PASSWORD': '',
         'PORT': '',
-    }
+    },
 }
 
+# (Websocket) channel routing
+# https://channels.readthedocs.io/en/latest/getting-started.html#first-consumers
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgiref.inmemory.ChannelLayer",
+        "ROUTING": "backend.routing.channel_routing",
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
