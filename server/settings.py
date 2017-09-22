@@ -140,6 +140,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/astroplant/static/'
 
+# Authentication
+AUTHENTICATION_BACKENDS = (
+    'backend.auth.KitBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 # Accounts and registration
 ACCOUNT_ACTIVATION_DAYS = 14
 LOGIN_REDIRECT_URL = '/dashboard'
