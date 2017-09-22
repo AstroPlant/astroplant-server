@@ -102,3 +102,8 @@ class Measurement(models.Model):
 
     date_time = models.DateTimeField()
     value = models.FloatField()
+
+class MeasurementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Measurement
+        fields = ('id', 'value')
