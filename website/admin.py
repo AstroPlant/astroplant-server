@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, AdminPasswordChangeForm
+from django.utils.translation import ugettext, ugettext_lazy as _
 
 from backend import models
 
@@ -40,7 +41,14 @@ class KitChangeForm(forms.ModelForm):
     the kit, but replaces the password field with admin's
     password hash display field.
     """
-    password = ReadOnlyPasswordHashField()
+    password = ReadOnlyPasswordHashField(
+        label=_("Password"),
+        help_text=_(
+            "Raw passwords are not stored, so there is no way to see this "
+            "user's password, but you can change the password using "
+            "<a href=\"../password/\">this form</a>."
+        ),
+    )
 
     class Meta:
         model = models.Kit
@@ -52,10 +60,12 @@ class KitChangeForm(forms.ModelForm):
         # field does not have access to the initial value
         return self.initial["password"]
 
+@admin.register(models.Kit)
 class KitAdmin(BaseUserAdmin):
     # The forms to add and change user instances
     form = KitChangeForm
     add_form = KitCreationForm
+    change_password_form = AdminPasswordChangeForm
 
     # The fields to be used in displaying the Kit model.
     # These override the definitions on the base KitAdmin
@@ -78,8 +88,6 @@ class KitAdmin(BaseUserAdmin):
     search_fields = ('serial', 'type', 'name',)
     ordering = ('serial', 'type', 'name',)
     filter_horizontal = ()
-
-admin.site.register(models.Kit, KitAdmin)
 
 @admin.register(models.KitMembership)
 class KitMembershipAdmin(admin.ModelAdmin):
