@@ -4,8 +4,36 @@ Module defining backend AstroPlant models.
 
 from django.db import models
 import django.contrib.auth.models
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from rest_framework import serializers
+
+class KitManager(BaseUserManager):
+    def create_user(self, serial, type, name, description=None, latitude=None, longitude=None, password=None):
+        """
+        Creates and saves a Kit with the given serial, type, name,
+        description, latitude, longitude and password.
+        """
+        if not serial:
+            raise ValueError("Kits must have a serial")
+
+        if not type:
+            raise ValueError("Kits must have a type")
+
+        if not name:
+            raise ValueError("Kits must have a name")
+
+        kit = self.model(
+            serial=serial,
+            type=type,
+            name=name,
+            description=description,
+            latitude=latitude,
+            longitude=longitude
+        )
+
+        kit.set_password(password)
+        kit.save(UserWarning=self._db)
+        return kit
 
 class Kit(AbstractBaseUser):
     """
@@ -27,6 +55,7 @@ class Kit(AbstractBaseUser):
         through_fields=('kit', 'user'),
     )
 
+    objects = KitManager()
     USERNAME_FIELD = 'serial'
     REQUIRED_FIELDS = ['type', 'name']
 
