@@ -21,6 +21,7 @@ from website.views import LoginView, LogoutView, ActivationView
 
 urlpatterns = [
     url(r'^', include('website.urls', namespace='website')),
+    url(r'^', include('backend.urls', namespace='backend')),
     url(r'^admin/', admin.site.urls),
     # Overwrite some views defined by the registration plugin; 
     # e.g. logged in users should not be able to log in again
