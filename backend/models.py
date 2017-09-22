@@ -4,12 +4,17 @@ Module defining backend AstroPlant models.
 
 from django.db import models
 import django.contrib.auth.models
+from django.contrib.auth.base_user import AbstractBaseUser
+from rest_framework import serializers
 
-class Kit(models.Model):
+class Kit(AbstractBaseUser):
     """
     Model for AstroPlant kits.
+
+    See also:
+    https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#extending-the-existing-user-model
     """
-    serial = models.CharField(max_length = 250)
+    serial = models.CharField(max_length = 250, unique = True)
     type = models.CharField(max_length = 10)
     name = models.CharField(max_length = 250)
     description = models.TextField(default = "", blank = True)
@@ -21,6 +26,21 @@ class Kit(models.Model):
         through='KitMembership',
         through_fields=('kit', 'user'),
     )
+
+    USERNAME_FIELD = 'serial'
+    REQUIRED_FIELDS = ['type', 'name']
+
+    def get_full_name(self):
+        """
+        Returns the serial of the kit.
+        """
+        return serial.strip()
+
+    def get_short_name(self):
+        """
+        Returns the short name for the user.
+        """
+        return self.get_full_name()
 
     def __str__(self):
         return self.serial
