@@ -90,8 +90,6 @@ class KitSerializer(serializers.HyperlinkedModelSerializer):
         model = Kit
         fields = ('url', 'serial', 'type', 'name', 'description', 'latitude', 'longitude', 'experiment_set')
 
-    experiment_set = serializers.HyperlinkedRelatedField(view_name='experiment-detail', read_only=True, many=True)
-
 class Experiment(models.Model):
     """
     Model for experiments.
