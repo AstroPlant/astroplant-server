@@ -91,6 +91,14 @@ DATABASES = {
     },
 }
 
+# REST Framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoObjectPermissions'
+    ]
+}
+
 # (Websocket) channel routing
 # https://channels.readthedocs.io/en/latest/getting-started.html#first-consumers
 
