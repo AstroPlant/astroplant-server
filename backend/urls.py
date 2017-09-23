@@ -10,7 +10,7 @@ class KitViewSet(viewsets.GenericViewSet,
                  mixins.RetrieveModelMixin):
     """
     list:
-    List all kits the user has access to. A human user has access to all kits,
+    List all kits the user has access to. A human user has access to all kits it owns,
     whereas a kit user has access only to itself.
 
     retrieve:
@@ -28,7 +28,6 @@ class KitViewSet(viewsets.GenericViewSet,
             return models.Kit.objects.filter(users=user)
 
     serializer_class = models.KitSerializer
-
 
 class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
