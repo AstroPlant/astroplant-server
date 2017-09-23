@@ -36,10 +36,12 @@
         var markers = [];
         
         {% for kit in kits %}
-            var marker = L.marker([{{ kit.latitude }}, {{ kit.longitude }}]);
-            marker.bindPopup("<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p>");
-            marker.addTo(map);
-            markers.push(marker);
+            {% if kit.latitude and kit.longitude %}
+                var marker = L.marker([{{ kit.latitude }}, {{ kit.longitude }}]);
+                marker.bindPopup("<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p>");
+                marker.addTo(map);
+                markers.push(marker);
+            {% endif %}
         {% endfor %}
         
         var group = new L.featureGroup(markers);
