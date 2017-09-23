@@ -10,19 +10,25 @@ class KitViewSet(viewsets.GenericViewSet,
                  mixins.RetrieveModelMixin):
     """
     list:
-    List all existing kits.
+    List all kits the user has access to. A human user has access to all kits,
+    whereas a kit user has access only to itself.
 
     retrieve:
-    Return the given kit.
+    Return the given kit, if the user has access to it.
     """
-    queryset = models.Kit.objects.all()
-    serializer_class = models.KitSerializer
-    permission_classes = [permissions.IsObjectRequested,]
+    def get_queryset(self):
+        """
+        Get a queryset of all kits the user has access to.
+        """
 
-    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
-    def highlight(self, request, *args, **kwargs):
-        kit = self.get_object()
-        return Response(kit.highlighted)
+        user = self.request.user
+        if isinstance(user, models.Kit):
+            return models.Kit.objects.filter(pk=user.pk)
+        else:
+            return models.Kit.objects.filter(users=user)
+
+    serializer_class = models.KitSerializer
+
 
 class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
