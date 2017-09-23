@@ -25,7 +25,7 @@ class KitViewSet(viewsets.GenericViewSet,
         if isinstance(user, models.Kit):
             return models.Kit.objects.filter(pk=user.pk)
         else:
-            return models.Kit.objects.filter(users=user)
+            return models.Kit.objects.filter(users=user.pk)
 
     serializer_class = models.KitSerializer
 
