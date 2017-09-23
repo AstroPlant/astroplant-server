@@ -88,7 +88,7 @@ class Kit(AbstractBaseUser):
 class KitSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Kit
-        fields = ('serial', 'type', 'name', 'description', 'latitude', 'longitude')
+        fields = ('url', 'serial', 'type', 'name', 'description', 'latitude', 'longitude')
 
 class Experiment(models.Model):
     """
@@ -101,7 +101,7 @@ class Experiment(models.Model):
 class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Experiment
-        fields = ('kit', 'date_time_start', 'date_time_end')
+        fields = ('url', 'kit', 'date_time_start', 'date_time_end')
 
 class KitMembership(models.Model):
     """
@@ -132,7 +132,7 @@ class SensorType(models.Model):
 class SensorTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = SensorType
-        fields = ('name', 'brand', 'type', 'unit')
+        fields = ('url', 'name', 'brand', 'type', 'unit')
 
 class Sensor(models.Model):
     """
@@ -161,4 +161,4 @@ class Measurement(models.Model):
 class MeasurementSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Measurement
-        fields = ('id', 'sensor_type', 'value')
+        fields = ('url', 'id', 'sensor_type', 'value')
