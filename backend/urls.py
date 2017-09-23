@@ -32,9 +32,27 @@ class KitViewSet(viewsets.GenericViewSet,
 class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
                         mixins.RetrieveModelMixin):
-    queryset = models.Experiment.objects.all()
+    """
+    list:
+    List all experiments the user has access to. A human user has access to experiments
+    of all kits it owns. A kit user has access to its experiments.
+
+    retrieve:
+    Return the given experiment, if the user has access to it.
+    """
+    def get_queryset(self):
+        """
+        Get a queryset of all experiments the user has access to.
+        """
+        return models.Experiment.objects.all()
+        user = self.request.user
+        if isinstance(user, models.Kit):
+            return models.Experiment.objects.filter(kits=user.pk)
+        else:
+            kits = models.Kit.objects.filter(users=user.pk)
+            return models.Experiment.objects.filter(kits=kits)
+
     serializer_class = models.ExperimentSerializer
-    permission_classes = [permissions.IsExperimentOwner,]
 
 class SensorTypeViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
@@ -52,7 +70,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
 
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
-router.register(r'experiments', ExperimentViewSet)
+router.register(r'experiments', ExperimentViewSet, base_name='experiment')
 router.register(r'sensor-types', SensorTypeViewSet)
 router.register(r'measurements', MeasurementViewSet)
 
