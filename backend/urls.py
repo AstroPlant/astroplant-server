@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from rest_framework import viewsets, mixins, routers, renderers
+from rest_framework import viewsets, mixins, routers, renderers, documentation
 from rest_framework.decorators import detail_route
 
 from backend import models
@@ -8,6 +8,13 @@ from backend import permissions
 class KitViewSet(viewsets.GenericViewSet,
                  mixins.ListModelMixin,
                  mixins.RetrieveModelMixin):
+    """
+    list:
+    List all existing kits.
+
+    retrieve:
+    Return the given kit.
+    """
     queryset = models.Kit.objects.all()
     serializer_class = models.KitSerializer
     permission_classes = [permissions.IsObjectRequested,]
@@ -48,5 +55,6 @@ urlpatterns = [
     #url(r'^api-auth/', include('rest_framework.urls',
     #                           namespace='rest_framework')),
     url(r'^api/', include(router.urls)),
+    url(r'^api-docs/', documentation.include_docs_urls(title='AstroPlant API')),
     url(r'^channels-api/', include('channels_api.urls'))
 ]
