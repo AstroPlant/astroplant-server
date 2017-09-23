@@ -5,6 +5,7 @@ Module defining backend AstroPlant models.
 from django.db import models
 import django.contrib.auth.models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin
 from rest_framework import serializers
 
 class KitManager(BaseUserManager):
@@ -71,8 +72,23 @@ class Kit(AbstractBaseUser):
         """
         return self.get_full_name()
 
+    def has_perm(self, perm, obj=None):
+        return False
+
+    def has_perms(self, perm_list, obj=None):
+        return all(self.has_perm(perm, obj) for perm in perm_list)
+
+    def has_module_perms(self, app_label):
+        return False
+
     def __str__(self):
         return self.serial
+
+
+class KitSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Kit
+        fields = ('serial', 'type', 'name', 'description', 'latitude', 'longitude')
 
 class Experiment(models.Model):
     """
@@ -81,6 +97,11 @@ class Experiment(models.Model):
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
     date_time_start = models.DateTimeField()
     date_time_end = models.DateTimeField(blank = True, null = True)
+
+class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Experiment
+        fields = ('kit', 'date_time_start', 'date_time_end')
 
 class KitMembership(models.Model):
     """
@@ -132,7 +153,7 @@ class Measurement(models.Model):
     date_time = models.DateTimeField()
     value = models.FloatField()
 
-class MeasurementSerializer(serializers.ModelSerializer):
+class MeasurementSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Measurement
-        fields = ('id', 'value')
+        fields = ('id', 'sensor_type', 'value')
