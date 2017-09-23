@@ -24,6 +24,12 @@ class ExperimentViewSet(viewsets.GenericViewSet,
     serializer_class = models.ExperimentSerializer
     permission_classes = [permissions.IsExperimentOwner,]
 
+class SensorTypeViewSet(viewsets.GenericViewSet,
+                        mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin):
+    queryset = models.SensorType.objects.all()
+    serializer_class = models.SensorTypeSerializer
+
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
                          mixins.RetrieveModelMixin,
@@ -35,6 +41,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
 router.register(r'experiments', ExperimentViewSet)
+router.register(r'sensor-types', SensorTypeViewSet)
 router.register(r'measurements', MeasurementViewSet)
 
 urlpatterns = [
