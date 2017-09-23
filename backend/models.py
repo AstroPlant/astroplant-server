@@ -129,6 +129,11 @@ class SensorType(models.Model):
     def __str__(self):
         return self.name
 
+class SensorTypeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = SensorType
+        fields = ('name', 'brand', 'type', 'unit')
+
 class Sensor(models.Model):
     """
     Model of individual sensors. Each such sensor belongs
