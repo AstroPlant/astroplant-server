@@ -88,7 +88,9 @@ class Kit(AbstractBaseUser):
 class KitSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Kit
-        fields = ('url', 'serial', 'type', 'name', 'description', 'latitude', 'longitude')
+        fields = ('url', 'serial', 'type', 'name', 'description', 'latitude', 'longitude', 'experiment_set')
+
+    experiment_set = serializers.HyperlinkedRelatedField(view_name='experiment-detail', read_only=True, many=True)
 
 class Experiment(models.Model):
     """
