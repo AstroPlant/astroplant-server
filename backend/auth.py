@@ -1,27 +1,29 @@
-from backend.models import Kit
+from django.contrib.auth.backends import ModelBackend
+from backend.models import Kit, PersonUser
 
-class KitBackend(object):
-    def authenticate(self, request, username=None, password=None, **kwargs):
-        """
-        Check a kit serial and password.
-        """
+class PersonOrKitBackend(ModelBackend):
+    """
+    Backend using ModelBackend, but attempts to "downcast"
+    the user into a PersonUser or KitUser.
+    """
 
-        if username is None:
-            return None
+    def authenticate(self, *args, **kwargs):
+        return self.downcast_user_type(super().authenticate(*args, **kwargs))
+        
+    def get_user(self, *args, **kwargs):
+        return self.downcast_user_type(super().get_user(*args, **kwargs))
+
+    def downcast_user_type(self, user):
+        try:
+            kit = Kit.objects.get(pk=user.pk)
+            return kit
+        except:
+            pass
 
         try:
-            kit = Kit._default_manager.get_by_natural_key(username)
-        except Kit.DoesNotExist:
-            # Run the default password hasher once to reduce the timing
-            # difference between an existing and a non-existing user (#20760).
-            Kit().set_password(password)
-        else:
-            if kit.check_password(password):
-                return kit
+            person_user = PersonUser.objects.get(pk=user.pk)
+            return person_user
+        except:
+            pass
 
-    def get_user(self, user_id):
-        try:
-            kit = Kit._default_manager.get(pk=user_id)
-        except Kit.DoesNotExist:
-            return None
-        return kit
+        return user

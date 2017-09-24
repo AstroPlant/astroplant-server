@@ -4,46 +4,23 @@ Module defining backend AstroPlant models.
 
 from django.db import models
 import django.contrib.auth.models
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
 from rest_framework import serializers
 
-class KitManager(BaseUserManager):
-    def create_user(self, serial, type, name, description=None, latitude=None, longitude=None, password=None):
-        """
-        Creates and saves a Kit with the given serial, type, name,
-        description, latitude, longitude and password.
-        """
-        if not serial:
-            raise ValueError("Kits must have a serial")
+class User(AbstractUser):
+    pass
 
-        if not type:
-            raise ValueError("Kits must have a type")
+class PersonUser(User):
+    pass
 
-        if not name:
-            raise ValueError("Kits must have a name")
-
-        kit = self.model(
-            serial=serial,
-            type=type,
-            name=name,
-            description=description,
-            latitude=latitude,
-            longitude=longitude
-        )
-
-        kit.set_password(password)
-        kit.save(UserWarning=self._db)
-        return kit
-
-class Kit(AbstractBaseUser):
+class Kit(User):
     """
     Model for AstroPlant kits.
 
     See also:
     https://docs.djangoproject.com/en/1.9/topics/auth/customizing/#extending-the-existing-user-model
     """
-    serial = models.CharField(max_length = 250, unique = True)
     type = models.CharField(max_length = 10)
     name = models.CharField(max_length = 250)
     description = models.TextField(default = "", blank = True)
@@ -51,44 +28,19 @@ class Kit(AbstractBaseUser):
     longitude = models.DecimalField(max_digits = 12, decimal_places = 4, blank = True, null = True)
 
     users = models.ManyToManyField(
-        django.contrib.auth.models.User,
+        PersonUser,
         through='KitMembership',
         through_fields=('kit', 'user'),
     )
 
-    objects = KitManager()
-    USERNAME_FIELD = 'serial'
-    REQUIRED_FIELDS = ['type', 'name']
-
-    def get_full_name(self):
-        """
-        Returns the serial of the kit.
-        """
-        return serial.strip()
-
-    def get_short_name(self):
-        """
-        Returns the short name for the user.
-        """
-        return self.get_full_name()
-
-    def has_perm(self, perm, obj=None):
-        return False
-
-    def has_perms(self, perm_list, obj=None):
-        return all(self.has_perm(perm, obj) for perm in perm_list)
-
-    def has_module_perms(self, app_label):
-        return False
-
-    def __str__(self):
-        return self.serial
-
+    class Meta:
+        verbose_name = 'Kit'
+        verbose_name_plural = 'Kits'
 
 class KitSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Kit
-        fields = ('url', 'serial', 'type', 'name', 'description', 'latitude', 'longitude', 'experiment_set')
+        fields = ('url', 'type', 'name', 'description', 'latitude', 'longitude', 'experiment_set')
 
 class Experiment(models.Model):
     """
@@ -107,7 +59,7 @@ class KitMembership(models.Model):
     """
     Link table for kits and users, with additional data fields.
     """
-    user = models.ForeignKey(django.contrib.auth.models.User, on_delete = models.CASCADE)
+    user = models.ForeignKey(PersonUser, on_delete = models.CASCADE)
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
     date_time_linked = models.DateTimeField()
 

@@ -17,6 +17,9 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from registration.backends.hmac.views import RegistrationView
+
+from website.forms import PersonUserRegistrationForm
 from website.views import LoginView, LogoutView, ActivationView
 
 urlpatterns = [
@@ -32,5 +35,6 @@ urlpatterns = [
     url(r'^accounts/activate/(?P<activation_key>[-:\w]+)/$',
         ActivationView.as_view(),
         name='registration_activate'),
+    url(r'^accounts/register/$', RegistrationView.as_view(form_class=PersonUserRegistrationForm), name='registration_register'),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

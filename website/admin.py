@@ -17,7 +17,7 @@ class KitCreationForm(forms.ModelForm):
 
     class Meta:
         model = models.Kit
-        fields = ('serial', 'type', 'name')
+        fields = ('username', 'type', 'name')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -52,7 +52,7 @@ class KitChangeForm(forms.ModelForm):
 
     class Meta:
         model = models.Kit
-        fields = ('serial', 'password', 'type', 'name', 'description', 'latitude', 'longitude')
+        fields = ('username', 'password', 'type', 'name', 'description', 'latitude', 'longitude')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -70,10 +70,10 @@ class KitAdmin(BaseUserAdmin):
     # The fields to be used in displaying the Kit model.
     # These override the definitions on the base KitAdmin
     # that reference specific fields on auth.User.
-    list_display = ('serial', 'type', 'name')
+    list_display = ('username', 'type', 'name')
     list_filter = ('type',)
     fieldsets = (
-        (None, {'fields': ('serial', 'password')}),
+        (None, {'fields': ('username', 'password')}),
         ('Info', {'fields': ('type', 'name', 'description',)}),
         ('Location', {'fields': ('latitude', 'longitude',)}),
     )
@@ -82,12 +82,16 @@ class KitAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'date_of_birth', 'password1', 'password2')}
+            'fields': ('username', 'password1', 'password2')}
         ),
     )
-    search_fields = ('serial', 'type', 'name',)
-    ordering = ('serial', 'type', 'name',)
+    search_fields = ('username', 'type', 'name',)
+    ordering = ('username', 'type', 'name',)
     filter_horizontal = ()
+
+@admin.register(models.PersonUser)
+class PersonUserAdmin(admin.ModelAdmin):
+    list_diplsay = ('username', 'email', 'password')
 
 @admin.register(models.KitMembership)
 class KitMembershipAdmin(admin.ModelAdmin):

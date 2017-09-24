@@ -151,9 +151,10 @@ STATIC_ROOT = '/var/www/astroplant/static/'
 
 # Authentication
 AUTHENTICATION_BACKENDS = (
-    'backend.auth.KitBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    'backend.auth.PersonOrKitBackend',
 )
+
+AUTH_USER_MODEL = 'backend.User'
 
 # Accounts and registration
 ACCOUNT_ACTIVATION_DAYS = 14

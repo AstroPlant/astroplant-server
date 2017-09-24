@@ -30,6 +30,7 @@ class KitViewSet(viewsets.GenericViewSet,
         """
 
         user = self.request.user
+        
         if isinstance(user, models.Kit):
             return models.Kit.objects.filter(pk=user.pk)
         else:
