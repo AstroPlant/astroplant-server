@@ -1,9 +1,17 @@
 from django.conf.urls import include, url
 from rest_framework import viewsets, mixins, routers, renderers, documentation
+from rest_framework.authtoken import views as authtokenviews
 from rest_framework.decorators import detail_route
 
 from backend import models
 from backend import permissions
+
+class ObtainAuthToken(authtokenviews.ObtainAuthToken):
+    """
+    Test!
+    """
+    renderer_classes = (renderers.JSONRenderer, renderers.BrowsableAPIRenderer,)
+    pass
 
 class KitViewSet(viewsets.GenericViewSet,
                  mixins.ListModelMixin,
@@ -77,7 +85,8 @@ router.register(r'measurements', MeasurementViewSet)
 urlpatterns = [
     #url(r'^api-auth/', include('rest_framework.urls',
     #                           namespace='rest_framework')),
-    url(r'^api/', include(router.urls)),
+    url(r'^api/auth/', ObtainAuthToken.as_view(), name='obtain_token'),
     url(r'^api-docs/', documentation.include_docs_urls(title='AstroPlant API')),
-    url(r'^channels-api/', include('channels_api.urls'))
+    url(r'^channels-api/', include('channels_api.urls')),
+    url(r'^api/', include(router.urls))
 ]
