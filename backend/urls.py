@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from rest_framework import viewsets, mixins, routers, renderers, documentation
-from rest_framework_jwt.views import obtain_jwt_token
+import rest_framework_jwt.views
 from rest_framework.decorators import detail_route
 
 from backend import models
@@ -77,9 +77,9 @@ router.register(r'sensor-types', SensorTypeViewSet)
 router.register(r'measurements', MeasurementViewSet)
 
 urlpatterns = [
-    #url(r'^api-auth/', include('rest_framework.urls',
-    #                           namespace='rest_framework')),
-    url(r'^api/auth/', obtain_jwt_token, name='obtain_token'),
+    url(r'^api/auth-token-obtain/', rest_framework_jwt.views.obtain_jwt_token, name='obtain_token'),
+    url(r'^api/auth-token-verify/', rest_framework_jwt.views.verify_jwt_token, name='verify_token'),
+    url(r'^api/auth-token-refresh/', rest_framework_jwt.views.refresh_jwt_token, name='refresh_token'),
     url(r'^api-docs/', documentation.include_docs_urls(title='AstroPlant API')),
     url(r'^channels-api/', include('channels_api.urls')),
     url(r'^api/', include(router.urls))
