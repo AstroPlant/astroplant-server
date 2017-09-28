@@ -2,14 +2,15 @@
 
 from channels_api.bindings import ResourceBinding
 
-import backend.models
+from backend import models
+from backend import serializers
 # from .serializers import QuestionSerializer
 
 
 
 class MeasurementBinding(ResourceBinding):
 
-    model = backend.models.Measurement
+    model = models.Measurement
     stream = "measurements"
-    serializer_class = backend.models.MeasurementSerializer
+    serializer_class = serializers.MeasurementSerializer
     queryset = model.objects.all()

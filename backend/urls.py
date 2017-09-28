@@ -5,6 +5,7 @@ from rest_framework.decorators import detail_route
 import rest_framework.schemas
 
 from backend import models
+from backend import serializers
 from backend import permissions
 
 class KitViewSet(viewsets.GenericViewSet,
@@ -30,7 +31,7 @@ class KitViewSet(viewsets.GenericViewSet,
         else:
             return models.Kit.objects.filter(users=user.pk)
 
-    serializer_class = models.KitSerializer
+    serializer_class = serializers.KitSerializer
 
 class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
@@ -55,20 +56,20 @@ class ExperimentViewSet(viewsets.GenericViewSet,
             kits = models.Kit.objects.filter(users=user.pk)
             return models.Experiment.objects.filter(kits=kits)
 
-    serializer_class = models.ExperimentSerializer
+    serializer_class = serializers.ExperimentSerializer
 
 class SensorTypeViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
                         mixins.RetrieveModelMixin):
     queryset = models.SensorType.objects.all()
-    serializer_class = models.SensorTypeSerializer
+    serializer_class = serializers.SensorTypeSerializer
 
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
                          mixins.RetrieveModelMixin,
                          mixins.CreateModelMixin):
     queryset = models.Measurement.objects.all()
-    serializer_class = models.MeasurementSerializer
+    serializer_class = serializers.MeasurementSerializer
     permission_classes = [permissions.IsMeasurementOwner,]
 
 router = routers.DefaultRouter()

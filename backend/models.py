@@ -6,7 +6,6 @@ from django.db import models
 import django.contrib.auth.models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
-from rest_framework import serializers
 
 class User(AbstractUser):
     pass
@@ -37,11 +36,6 @@ class Kit(User):
         verbose_name = 'Kit'
         verbose_name_plural = 'Kits'
 
-class KitSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Kit
-        fields = ('url', 'type', 'name', 'description', 'latitude', 'longitude', 'experiment_set')
-
 class Experiment(models.Model):
     """
     Model for experiments.
@@ -49,11 +43,6 @@ class Experiment(models.Model):
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
     date_time_start = models.DateTimeField()
     date_time_end = models.DateTimeField(blank = True, null = True)
-
-class ExperimentSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Experiment
-        fields = ('url', 'kit', 'date_time_start', 'date_time_end')
 
 class KitMembership(models.Model):
     """
@@ -81,11 +70,6 @@ class SensorType(models.Model):
     def __str__(self):
         return self.name
 
-class SensorTypeSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = SensorType
-        fields = ('url', 'name', 'brand', 'type', 'unit')
-
 class Sensor(models.Model):
     """
     Model of individual sensors. Each such sensor belongs
@@ -109,8 +93,3 @@ class Measurement(models.Model):
 
     date_time = models.DateTimeField()
     value = models.FloatField()
-
-class MeasurementSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Measurement
-        fields = ('url', 'id', 'sensor_type', 'value')
