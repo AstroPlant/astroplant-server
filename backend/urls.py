@@ -1,6 +1,5 @@
 from django.conf.urls import include, url
 from rest_framework import viewsets, mixins, routers, renderers, documentation
-#from rest_framework.authtoken import views as authtokenviews
 from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.decorators import detail_route
 
