@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from rest_framework import viewsets, mixins, routers, renderers, documentation
 import rest_framework_jwt.views
 from rest_framework.decorators import detail_route
+import rest_framework.schemas
 
 from backend import models
 from backend import permissions
@@ -80,6 +81,7 @@ urlpatterns = [
     url(r'^api/auth-token-obtain/', rest_framework_jwt.views.obtain_jwt_token, name='obtain_token'),
     url(r'^api/auth-token-verify/', rest_framework_jwt.views.verify_jwt_token, name='verify_token'),
     url(r'^api/auth-token-refresh/', rest_framework_jwt.views.refresh_jwt_token, name='refresh_token'),
+    url(r'^api-schema/$', rest_framework.schemas.get_schema_view(title='AstroPlant API')),
     url(r'^api-docs/', documentation.include_docs_urls(title='AstroPlant API')),
     url(r'^channels-api/', include('channels_api.urls')),
     url(r'^api/', include(router.urls))
