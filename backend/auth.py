@@ -15,14 +15,12 @@ class PersonOrKitBackend(ModelBackend):
 
     def downcast_user_type(self, user):
         try:
-            kit = Kit.objects.get(pk=user.pk)
-            return kit
+            return Kit.objects.get(pk=user.pk)
         except:
             pass
 
         try:
-            person_user = PersonUser.objects.get(pk=user.pk)
-            return person_user
+            return PersonUser.objects.get(pk=user.pk)
         except:
             pass
 
