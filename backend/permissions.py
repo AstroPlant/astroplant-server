@@ -29,3 +29,11 @@ class IsMeasurementOwner(permissions.BasePermission):
     """
     def has_object_permission(self, request, view, obj):
         return isinstance(obj, models.Measurement) and obj.kit == request.user
+
+class IsNotCreationOrIsAuthenticatedKit(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if view.action != 'create':
+            return True
+        else:
+            return request.user.is_authenticated() and isinstance(request.user, models.Kit)
