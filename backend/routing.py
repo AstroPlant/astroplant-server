@@ -1,11 +1,14 @@
 from channels.routing import route_class
 from channels.generic.websockets import WebsocketDemultiplexer
-#from backend.bindings import MeasurementBinding
+import backend.consumers
 
 class APIDemultiplexer(WebsocketDemultiplexer):
 
+    # Give access to the Django user (through self.message.user in consumers)
+    http_user_and_session = True
+
     consumers = {
-      #'measurements': MeasurementBinding.consumer
+        'measurements': backend.consumers.MeasurementConsumer
     }
 
 channel_routing = [
