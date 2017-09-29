@@ -19,4 +19,4 @@ class SensorTypeSerializer(serializers.HyperlinkedModelSerializer):
 class MeasurementSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Measurement
-        fields = ('url', 'id', 'sensor_type', 'value')
+        fields = ('url', 'id', 'sensor_type', 'date_time', 'value')
