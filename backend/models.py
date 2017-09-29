@@ -91,5 +91,5 @@ class Measurement(models.Model):
     # Null allowed, as it is possible no experiment is running
     experiment = models.ForeignKey(Experiment, on_delete = models.CASCADE, null = True)
 
-    date_time = models.DateTimeField(auto_now_add=True)
+    date_time = models.DateTimeField()
     value = models.FloatField()
