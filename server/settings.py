@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'bootstrap3',
     'braces',
     'rest_framework',
-    'rest_framework.authtoken',
     'channels',
     'channels_api',
 ]
