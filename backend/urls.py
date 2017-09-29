@@ -50,7 +50,7 @@ class ExperimentViewSet(viewsets.GenericViewSet,
         """
         user = self.request.user
         if isinstance(user, models.Kit):
-            return models.Experiment.objects.filter(kits=user.pk)
+            return models.Experiment.objects.filter(kit=user.pk)
         else:
             kits = models.Kit.objects.filter(users=user.pk)
             return models.Experiment.objects.filter(kit=kits)
@@ -83,7 +83,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
         """
         user = self.request.user
         if isinstance(user, models.Kit):
-            return models.Measurement.objects.filter(kits=user.pk)
+            return models.Measurement.objects.filter(kit=user.pk)
         else:
             kits = models.Kit.objects.filter(users=user.pk)
             return models.Measurement.objects.filter(kit=kits)
