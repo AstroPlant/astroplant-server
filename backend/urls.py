@@ -48,13 +48,12 @@ class ExperimentViewSet(viewsets.GenericViewSet,
         """
         Get a queryset of all experiments the user has access to.
         """
-        return models.Experiment.objects.all()
         user = self.request.user
         if isinstance(user, models.Kit):
             return models.Experiment.objects.filter(kits=user.pk)
         else:
             kits = models.Kit.objects.filter(users=user.pk)
-            return models.Experiment.objects.filter(kits=kits)
+            return models.Experiment.objects.filter(kit=kits)
 
     serializer_class = serializers.ExperimentSerializer
 
