@@ -31,7 +31,7 @@ class KitViewSet(viewsets.GenericViewSet,
         else:
             return models.Kit.objects.filter(users=user.pk)
 
-    serializer_class = serializers.KitSerializer
+    serializer_class = serializers.HyperlinkedKitSerializer
 
 class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
@@ -55,13 +55,13 @@ class ExperimentViewSet(viewsets.GenericViewSet,
             kits = models.Kit.objects.filter(users=user.pk)
             return models.Experiment.objects.filter(kit__in=kits)
 
-    serializer_class = serializers.ExperimentSerializer
+    serializer_class = serializers.HyperlinkedExperimentSerializer
 
 class SensorTypeViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
                         mixins.RetrieveModelMixin):
     queryset = models.SensorType.objects.all()
-    serializer_class = serializers.SensorTypeSerializer
+    serializer_class = serializers.HyperlinkedSensorTypeSerializer
 
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
@@ -89,7 +89,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
             kits = models.Kit.objects.filter(users=user.pk)
             return models.Measurement.objects.filter(kit__in=kits)
 
-    serializer_class = serializers.MeasurementSerializer
+    serializer_class = serializers.HyperlinkedMeasurementSerializer
     permission_classes = [permissions.IsNotCreationOrIsAuthenticatedKit,]
 
     def perform_create(self, serializer):
