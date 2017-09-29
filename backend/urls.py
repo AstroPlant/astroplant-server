@@ -13,7 +13,7 @@ class KitViewSet(viewsets.GenericViewSet,
                  mixins.RetrieveModelMixin):
     """
     list:
-    List all kits the user has access to. A human user has access to all kits it owns,
+    List all kits the user has access to. A person user has access to all kits it owns,
     whereas a kit user has access only to itself.
 
     retrieve:
@@ -38,7 +38,7 @@ class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.RetrieveModelMixin):
     """
     list:
-    List all experiments the user has access to. A human user has access to experiments
+    List all experiments the user has access to. A person user has access to experiments
     of all kits it owns. A kit user has access to its experiments.
 
     retrieve:
@@ -65,8 +65,18 @@ class SensorTypeViewSet(viewsets.GenericViewSet,
 
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
-                         mixins.RetrieveModelMixin,
-                         mixins.CreateModelMixin):
+                         mixins.RetrieveModelMixin):
+    """
+    list:
+    List all measurements the user has access to. A person user has access to measurements
+    of all kits it owns. A kit user has access to its measurements.
+
+    retrieve:
+    Return the given measurement, if the user has access to it.
+
+    create:
+    Create a measurement. Only kit users can add measurements.
+    """
     def get_queryset(self):
         """
         Get a queryset of all measurements the user has access to.
@@ -79,6 +89,20 @@ class MeasurementViewSet(viewsets.GenericViewSet,
             return models.Measurement.objects.filter(kit=kits)
 
     serializer_class = serializers.MeasurementSerializer
+    permission_classes = [permissions.IsNotCreationOrIsAuthenticatedKit,]
+
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+            
+        headers = self.get_success_headers(serializer.data)
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_success_headers(self, data):
+        try:
+            return {'Location': data[api_settings.URL_FIELD_NAME]}
+        except (TypeError, KeyError):
+            return {}
 
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
