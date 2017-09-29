@@ -55,6 +55,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'backend.middleware.TokenMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -163,6 +164,7 @@ STATIC_ROOT = '/var/www/astroplant/static/'
 
 # Authentication
 AUTHENTICATION_BACKENDS = (
+    'backend.auth.JWTBackend',
     'backend.auth.PersonOrKitBackend',
 )
 
