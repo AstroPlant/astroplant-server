@@ -65,7 +65,8 @@ class SensorTypeViewSet(viewsets.GenericViewSet,
 
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
-                         mixins.RetrieveModelMixin):
+                         mixins.RetrieveModelMixin,
+                         mixins.CreateModelMixin):
     """
     list:
     List all measurements the user has access to. A person user has access to measurements
@@ -91,18 +92,8 @@ class MeasurementViewSet(viewsets.GenericViewSet,
     serializer_class = serializers.MeasurementSerializer
     permission_classes = [permissions.IsNotCreationOrIsAuthenticatedKit,]
 
-    def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-            
-        headers = self.get_success_headers(serializer.data)
-        return response.Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
-    def get_success_headers(self, data):
-        try:
-            return {'Location': data[api_settings.URL_FIELD_NAME]}
-        except (TypeError, KeyError):
-            return {}
+    def perform_create(self, serializer):
+        serializer.save(kit=self.request.user)
 
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
