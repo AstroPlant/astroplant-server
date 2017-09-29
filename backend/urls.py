@@ -68,15 +68,24 @@ class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
                          mixins.RetrieveModelMixin,
                          mixins.CreateModelMixin):
-    queryset = models.Measurement.objects.all()
+    def get_queryset(self):
+        """
+        Get a queryset of all measurements the user has access to.
+        """
+        user = self.request.user
+        if isinstance(user, models.Kit):
+            return models.Measurement.objects.filter(kits=user.pk)
+        else:
+            kits = models.Kit.objects.filter(users=user.pk)
+            return models.Measurement.objects.filter(kit=kits)
+
     serializer_class = serializers.MeasurementSerializer
-    permission_classes = [permissions.IsMeasurementOwner,]
 
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
 router.register(r'experiments', ExperimentViewSet, base_name='experiment')
 router.register(r'sensor-types', SensorTypeViewSet)
-router.register(r'measurements', MeasurementViewSet)
+router.register(r'measurements', MeasurementViewSet, base_name='measurement')
 
 urlpatterns = [
     url(r'^api/auth-token-obtain/', rest_framework_jwt.views.obtain_jwt_token),
