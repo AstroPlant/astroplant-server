@@ -20,6 +20,7 @@ class MeasurementConsumer(channels.generic.websockets.JsonWebsocketConsumer):
                 else:
                     multiplexer.send({"error": "Kit to subscribe to not given."})
             elif action == "publish":
+                print(self.message.user)
                 if isinstance(self.message.user, backend.models.Kit):
                     try:
                         measurement_serializer = backend.serializers.MeasurementSerializer(data=content['measurement'])
