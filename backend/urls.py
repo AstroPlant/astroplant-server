@@ -53,7 +53,7 @@ class ExperimentViewSet(viewsets.GenericViewSet,
             return models.Experiment.objects.filter(kit=user.pk)
         else:
             kits = models.Kit.objects.filter(users=user.pk)
-            return models.Experiment.objects.filter(kit=kits)
+            return models.Experiment.objects.filter(kit__in=kits)
 
     serializer_class = serializers.ExperimentSerializer
 
@@ -87,7 +87,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
             return models.Measurement.objects.filter(kit=user.pk)
         else:
             kits = models.Kit.objects.filter(users=user.pk)
-            return models.Measurement.objects.filter(kit=kits)
+            return models.Measurement.objects.filter(kit__in=kits)
 
     serializer_class = serializers.MeasurementSerializer
     permission_classes = [permissions.IsNotCreationOrIsAuthenticatedKit,]
