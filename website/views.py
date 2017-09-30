@@ -55,7 +55,7 @@ class LogoutView(LoginRequiredMixin, auth_views.LogoutView):
 class ActivationView(registration_views.ActivationView):
     def get_success_url(self, user):
         # Log the user in
-        login(self.request, user)
+        login(self.request, user, backend='backend.auth.PersonOrKitBackend')
 
         # Set a message
         messages.add_message(self.request, messages.SUCCESS, 'Your account has been activated!')
