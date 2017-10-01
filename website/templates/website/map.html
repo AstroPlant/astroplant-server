@@ -46,6 +46,10 @@
         
         var group = new L.featureGroup(markers);
         
-        map.fitBounds(group.getBounds(), {maxZoom: 8});
+        if (markers.length == 0) {
+            map.fitWorld();
+        } else {
+            map.fitBounds(group.getBounds(), {maxZoom: 8});
+        }
     </script>
 {% endblock %}

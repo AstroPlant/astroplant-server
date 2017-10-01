@@ -20,7 +20,7 @@ def map(request):
     # Note that we don't use GeoDjango; it requires a heavy gdal setup. All
     # we need is a simple map, and a full gdal setup would just make deployment
     # more difficult
-    context = {'kits': backend.models.Kit.objects.all()}
+    context = {'kits': backend.models.Kit.objects.filter(privacy_show_on_map=True)}
 
     return render(request,'website/map.html', context)
        
