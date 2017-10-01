@@ -5,7 +5,8 @@ import backend.consumers
 class APIDemultiplexer(WebsocketDemultiplexer):
 
     consumers = {
-        'measurements': backend.consumers.MeasurementConsumer
+        'measurements-subscribe': backend.consumers.MeasurementSubscribeConsumer,
+        'measurements-publish': backend.consumers.MeasurementPublishConsumer,
     }
 
 channel_routing = [

@@ -32,7 +32,7 @@ def jwt_auth(message):
     except (KeyError, jwt.exceptions.InvalidTokenError):
         return None
 
-class MeasurementConsumer(channels.generic.websockets.JsonWebsocketConsumer):
+class JWTSessionAuthConsumer(channels.generic.websockets.JsonWebsocketConsumer):
 
     #: Use channel sessions, and transfer the HTTP user to
     #: the channel session
@@ -45,38 +45,31 @@ class MeasurementConsumer(channels.generic.websockets.JsonWebsocketConsumer):
         
         super().connect(message, **kwargs)
 
+class MeasurementSubscribeConsumer(JWTSessionAuthConsumer):
     def receive(self, content, multiplexer, **kwargs):
-        if "action" not in content:
-            multiplexer.send({"error": "No action given."})
-            return
-        
-        action = content['action']
-        if action not in ("subscribe", "publish"):
-            multiplexer.send({"error": "Unknown action: '%s'." % action})
+        # Subscribe user to kit measurement updates
+        if "kit" not in content:
+            multiplexer.send({"error": "Kit to subscribe to not given."})
             return
 
-        if action == "subscribe":
-            # Subscribe user to kit measurement updates
-            if "kit" not in content:
-                multiplexer.send({"error": "Kit to subscribe to not given."})
-                return
+        try:
+            kit = backend.models.Kit.objects.get(username=content['kit'], users=self.message.user)
+            channels.Group("kit-measurements-%s" % kit.username).add(multiplexer.reply_channel)
+            multiplexer.send({"action": "subscribe", "kit": kit.username})
+        except:
+            multiplexer.send({"error": "Kit not found or you do not have access to it."})
 
-            try:
-                kit = backend.models.Kit.objects.get(username=content['kit'], users=self.message.user)
-                channels.Group("kit-measurements-%s" % kit.username).add(multiplexer.reply_channel)
-                multiplexer.send({"action": "subscribe", "kit": kit.username})
-            except:
-                multiplexer.send({"error": "Kit not found or you do not have access to it."})
-        elif action == "publish":
-            # Publish a measurement
-            if "kit" not in self.message.channel_session:
-                multiplexer.send({"error": "You must be a kit to publish measurements.'."})
-                return
+class MeasurementPublishConsumer(JWTSessionAuthConsumer):
+    def receive(self, content, multiplexer, **kwargs):
+        # Publish a measurement
+        if "kit" not in self.message.channel_session:
+            multiplexer.send({"error": "You must be a kit to publish measurements.'."})
+            return
 
-            try:
-                measurement_serializer = backend.serializers.MeasurementSerializer(data=content['measurement'])
-                measurement_serializer.is_valid(raise_exception = True)
-                multiplexer.send({"success": "published"})
-                self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], measurement_serializer.data)
-            except:
-                multiplexer.send({"error": "You must provide a valid measurement.'."})
+        try:
+            measurement_serializer = backend.serializers.MeasurementSerializer(data=content['measurement'])
+            measurement_serializer.is_valid(raise_exception = True)
+            multiplexer.send({"success": "published"})
+            self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], measurement_serializer.data)
+        except:
+            multiplexer.send({"error": "You must provide a valid measurement.'."})
