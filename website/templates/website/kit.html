@@ -8,7 +8,7 @@
 {% load bootstrap3 %}
 
 {% block header %}
-    {% if not kit or not membership %}
+    {% if not kit or not membership and not kit.privacy_public_dashboard %}
         <h1>Oops!</h1>
     {% else %}
         <h1>{{ kit.name }}</h1>
@@ -18,7 +18,7 @@
 
 
 {% block content %}
-    {% if not kit or not membership %}
+    {% if not kit or not membership and not kit.privacy_public_dashboard %}
         <div class="container">
             Sorry! That kit was not found, or you do not have access to it. If you own a kit, you can <a href="{% url 'website:kit_add' %}">add</a> it.
         </div>
