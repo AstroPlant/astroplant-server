@@ -1,5 +1,8 @@
 {% extends 'website/base.html' %}
 
+{% load static %}
+{% load bootstrap3 %}
+
 {% block head_ext %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
        integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
@@ -38,7 +41,11 @@
         {% for kit in kits %}
             {% if kit.latitude and kit.longitude %}
                 var marker = L.marker([{{ kit.latitude }}, {{ kit.longitude }}]);
-                marker.bindPopup("<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p>");
+                {% if kit.privacy_public_dashboard %}
+                    marker.bindPopup('<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p><p><a href="{% url 'website:kit' kit.id %}" title="Access kit" type="button" class="btn btn-primary" style="color: #fff;">{% bootstrap_icon 'triangle-right' %} Open</a></p>');
+                {% else %}
+                    marker.bindPopup('<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p>');
+                {% endif %}
                 marker.addTo(map);
                 markers.push(marker);
             {% endif %}
