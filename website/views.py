@@ -4,10 +4,13 @@ from django.core.urlresolvers import reverse_lazy
 from django.core import exceptions
 from django.contrib.auth import login, decorators
 from django.contrib.auth import views as auth_views
+import django.http
+import django.urls.base
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
 from registration.backends.hmac import views as registration_views
 
 import backend.models
+import website.forms
 
 def index(request):
     context = {}
@@ -43,7 +46,36 @@ def kit(request, kit_id):
     return render(request,'website/kit.html', context)
 
 def kit_add(request):
-    return render(request,'website/kit_add.html', {})
+    #: The length of the kit identifier to be generated
+    RANDOM_KIT_IDENTIFIER_LENGTH = 8
+
+    if request.method == 'POST':
+        form = website.forms.AddKitForm(request.POST)
+
+        if form.is_valid():
+            # Get the kit object
+            kit = form.save(commit=False)
+
+            # Generate a unique kit identifier (username/serial)
+            import random
+            while True:
+                # Generate a unique identifier without vowels to minimize the chance 
+                # of generating bad words :)
+                # also 0, (o), 1, l, 2, z, 5, s are removed, as they look similar
+                # Identifiers look like: "k.6g77mnyp"
+                identifier = 'k.%s' % ''.join(random.choice('346789bcdfghjkmnpqrtvwxy') for i in range(RANDOM_KIT_IDENTIFIER_LENGTH))
+                
+                # Test if the random identifier already exists
+                if len(backend.models.Kit.objects.filter(username=identifier)) == 0:
+                    # If not, break the loop (generally happens immediately)
+                    break
+
+            kit.username = identifier
+            kit.save()
+            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit', kwargs={'kit_id': kit.pk}))
+    else:
+        form = website.forms.AddKitForm()
+        return render(request,'website/kit_add.html', {'form': form})
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')

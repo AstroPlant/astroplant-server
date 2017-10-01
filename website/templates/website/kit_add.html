@@ -4,12 +4,22 @@
 {% load bootstrap3 %}
 
 {% block header %}
-    <h1>Placeholder</h1>
+    <h1>Add your kit</h1>
     <p></p>
 {% endblock %}
 
 
 {% block content %}
     <div class="container">
+        <p>Please enter the name of your new kit below.</p>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form layout='inline' %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    {% bootstrap_icon "plus" %} Add
+                </button>
+            {% endbuttons %}
+        </form>
     </div>
 {% endblock %}
