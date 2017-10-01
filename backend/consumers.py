@@ -33,9 +33,14 @@ def jwt_auth(message):
         return None
 
 class JWTSessionAuthConsumer(channels.generic.websockets.JsonWebsocketConsumer):
+    """
+    A JSON WebSocket consumer that attempts to authenticate
+    a kit using JWT through a HTTP query parameter. If successful,
+    places the kit name in the channel session parameter 'kit'.
+    """
 
-    #: Use channel sessions, and transfer the HTTP user to
-    #: the channel session
+    #: Use channel sessions, and transfer the HTTP user (from
+    #: a Django session) to the channel session
     http_user_and_session = True
 
     def connect(self, message, **kwargs):
