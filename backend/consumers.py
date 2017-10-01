@@ -51,6 +51,10 @@ class JWTSessionAuthConsumer(channels.generic.websockets.JsonWebsocketConsumer):
         super().connect(message, **kwargs)
 
 class MeasurementSubscribeConsumer(JWTSessionAuthConsumer):
+    """
+    A measurement subscribe consumer. Any user (or kit) can
+    subscribe to measurements of kits they own.
+    """
     def receive(self, content, multiplexer, **kwargs):
         # Subscribe user to kit measurement updates
         if "kit" not in content:
@@ -65,6 +69,11 @@ class MeasurementSubscribeConsumer(JWTSessionAuthConsumer):
             multiplexer.send({"error": "Kit not found or you do not have access to it."})
 
 class MeasurementPublishConsumer(JWTSessionAuthConsumer):
+    """
+    A measurement publish consumer. Any kit can publish measurements.
+    The measurements are sent to all clients who are subscribed to
+    measurements of that kit.
+    """
     def receive(self, content, multiplexer, **kwargs):
         # Publish a measurement
         if "kit" not in self.message.channel_session:
