@@ -45,6 +45,7 @@ def kit(request, kit_id):
 
     return render(request,'website/kit.html', context)
 
+@decorators.login_required
 def kit_add(request):
     #: The length of the kit identifier to be generated
     RANDOM_KIT_IDENTIFIER_LENGTH = 8
