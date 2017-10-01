@@ -37,7 +37,7 @@ def kit(request, kit_id):
         kit = None
 
     try:
-        membership = backend.models.KitMembership.objects.get(user=request.user, kit=kit)
+        membership = backend.models.KitMembership.objects.get(user=request.user.pk, kit=kit)
     except exceptions.ObjectDoesNotExist:
         membership = None
 
