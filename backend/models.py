@@ -25,6 +25,8 @@ class Kit(User):
     description = models.TextField(default = "", blank = True)
     latitude = models.DecimalField(max_digits = 12, decimal_places = 4, blank = True, null = True)
     longitude = models.DecimalField(max_digits = 12, decimal_places = 4, blank = True, null = True)
+    privacy_public_dashboard = models.BooleanField(default = False)
+    privacy_show_on_map = models.BooleanField(default = False)
 
     users = models.ManyToManyField(
         PersonUser,
