@@ -62,7 +62,11 @@ class MeasurementSubscribeConsumer(JWTSessionAuthConsumer):
             return
 
         try:
-            kit = backend.models.Kit.objects.get(username=content['kit'], users=self.message.user)
+            kit = backend.models.Kit.objects.get(username=content['kit'])
+            if not self.message.user.has_perm('backend.subscribe_to_kit_measurements_websocket', kit):
+                multiplexer.send({"error": "Kit not found or you do not have access to it."})
+                return
+
             channels.Group("kit-measurements-%s" % kit.username).add(multiplexer.reply_channel)
             multiplexer.send({"action": "subscribe", "kit": kit.username})
         except:

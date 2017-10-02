@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Third part apps
     'bootstrap3',
     'braces',
+    'rules.apps.AutodiscoverRulesConfig',
     'rest_framework',
     'channels',
     'channels_api',
@@ -163,6 +164,7 @@ STATIC_ROOT = '/var/www/astroplant/static/'
 
 # Authentication
 AUTHENTICATION_BACKENDS = (
+    'rules.permissions.ObjectPermissionBackend',
     'backend.auth.PersonOrKitBackend',
 )
 

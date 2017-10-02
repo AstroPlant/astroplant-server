@@ -36,14 +36,9 @@ def kit(request, kit_id):
     except exceptions.ObjectDoesNotExist:
         kit = None
 
-    try:
-        membership = backend.models.KitMembership.objects.get(user=request.user.pk, kit=kit)
-    except exceptions.ObjectDoesNotExist:
-        membership = None
+    context = {'kit': kit, 'can_view_kit_dashboard': request.user.has_perm('backend.view_kit_dashboard', kit)}
 
-    context = {'kit': kit, 'membership': membership}
-
-    return render(request,'website/kit.html', context)
+    return render(request, 'website/kit.html', context)
 
 @decorators.login_required
 def kit_add(request):

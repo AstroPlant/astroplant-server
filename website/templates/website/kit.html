@@ -6,10 +6,11 @@
 
 {% load static %}
 {% load bootstrap3 %}
+{% load rules %}
 
 {% block header %}
-    {% if not kit or not membership and not kit.privacy_public_dashboard %}
-        <h1>Oops!</h1>
+    {% if not can_view_kit_dashboard %}
+        <h1>Oops! {{ can_view_kit_dashboard }} {{ user }} {{ kit }}</h1>
     {% else %}
         <h1>{{ kit.name }}</h1>
         <p>{{ kit.description }}</p>
@@ -18,7 +19,7 @@
 
 
 {% block content %}
-    {% if not kit or not membership and not kit.privacy_public_dashboard %}
+    {% if not can_view_kit_dashboard %}
         <div class="container">
             Sorry! That kit was not found, or you do not have access to it. If you own a kit, you can <a href="{% url 'website:kit_add' %}">add</a> it.
         </div>
