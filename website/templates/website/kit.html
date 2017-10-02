@@ -10,7 +10,7 @@
 
 {% block header %}
     {% if not can_view_kit_dashboard %}
-        <h1>Oops! {{ can_view_kit_dashboard }} {{ user }} {{ kit }}</h1>
+        <h1>Oops!</h1>
     {% else %}
         <h1>{{ kit.name }}</h1>
         <p>{{ kit.description }}</p>
