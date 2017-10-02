@@ -1,0 +1,14 @@
+$small: 768px; $medium: 992px; $large: 1200px; $maxWidth: 1280px;
+
+$textColorDark: RGB(0,0,0);
+$textColorGray: RGB(102,102,102);
+$textColorLightGray: RGB(140,140,140);
+$textColorLight: RGB(230,230,250);
+
+@function headings($from:1, $to:6) {
+    @if $from == $to {
+        @return 'h#{$from}';
+    } @else {
+        @return 'h#{$from},' + headings($from+1, $to);
+    }
+}

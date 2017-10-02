@@ -1,12 +1,15 @@
 {% extends 'website/base.html' %}
 
-{% block head_ext %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
-{% endblock %}
-
 {% load static %}
 {% load bootstrap3 %}
 {% load rules %}
+
+{% block head_ext %}
+    {% if can_view_kit_dashboard %}
+        <link rel="stylesheet" href="{% static 'website/css/dashboard.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
+    {% endif %}
+{% endblock %}
 
 {% block header %}
     {% if not can_view_kit_dashboard %}
@@ -21,11 +24,43 @@
 {% block content %}
     {% if not can_view_kit_dashboard %}
         <div class="container">
-            Sorry! That kit was not found, or you do not have access to it. If you own a kit, you can <a href="{% url 'website:kit_add' %}">add</a> it.
+            <p>Sorry! That kit was not found, or you do not have access to it. If you own a kit, you can <a href="{% url 'website:kit_add' %}">add</a> it.</p>
         </div>
     {% else %}
-        <div class="container">
-            Test
+        <div class="container dashboard">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="chart-wrapper">
+                        <div class="chart-title">
+                            Test!
+                        </div>
+                        <div class="chart-stage">
+                            <div id="grid-1-1">
+                                <!-- chart goes here! -->
+                            </div>
+                        </div>
+                        <div class="chart-notes">
+                            Notes about this chart (optional)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-sm-4">
+                    <div class="chart-wrapper">
+                        <div class="chart-title">
+                            Test!
+                        </div>
+                        <div class="chart-stage">
+                            <div id="grid-1-1">
+                                <!-- chart goes here! -->
+                            </div>
+                        </div>
+                        <div class="chart-notes">
+                            Notes about this chart (optional)
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     {% endif %}
 {% endblock %}
