@@ -45,7 +45,7 @@
                             <a href="#">{% bootstrap_icon 'grain' %} Learn</a>
                         </li>
                         {% if user.is_authenticated %}   
-                            <li>
+                            <li class="{% navigation_active request 'website:dashboard' %}">
                                 <a href="{% url 'website:dashboard' %}">{% bootstrap_icon 'dashboard' %} Dashboard</a>
                             </li>
                         {% endif %}
