@@ -6,8 +6,13 @@
 
 {% block head_ext %}
     {% if can_view_kit_dashboard %}
+        <link rel="stylesheet" href="{% static 'website/css/bootstrap-stacked-tabs.min.css' %}">
         <link rel="stylesheet" href="{% static 'website/css/dashboard.css' %}">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
+        
+        <link rel="stylesheet" href="{% static 'website/css/c3.min.css' %}">
+        <script src="{% static 'website/js/d3.min.js' %}"></script>
+        <script src="{% static 'website/js/c3.min.js' %}"></script>
     {% endif %}
 {% endblock %}
 
@@ -35,12 +40,19 @@
                             Test!
                         </div>
                         <div class="chart-stage">
-                            <div id="grid-1-1">
-                                <!-- chart goes here! -->
+                            <div class="row">
+                                <div class="col-xs-3 tabs tabs-left">
+                                    <ul class="nav nav-tabs nav-stacked">
+                                        <li class="active"><a href="#chart_temperature" data-toggle="tab">Temperature</a></li>
+                                        <li><a href="#chart_ec" data-toggle="tab">EC</a></li>
+                                        <li><a href="#chart_light" data-toggle="tab">Light</a></li>
+                                        <li><a href="#chart_ph" data-toggle="tab">pH</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-xs-9">
+                                    <div id="chart-1-1"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="chart-notes">
-                            Notes about this chart (optional)
                         </div>
                     </div>
                 </div>
@@ -48,12 +60,10 @@
                 <div class="col-sm-4">
                     <div class="chart-wrapper">
                         <div class="chart-title">
-                            Test!
+                            Current experiment progress
                         </div>
                         <div class="chart-stage">
-                            <div id="grid-1-1">
-                                <!-- chart goes here! -->
-                            </div>
+                            <div id="chart-1-2"></div>
                         </div>
                         <div class="chart-notes">
                             Notes about this chart (optional)
@@ -61,6 +71,165 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="chart-wrapper">
+                        <div class="chart-title">
+                            Another chart
+                        </div>
+                        <div class="chart-stage">
+                            <div id="chart-2-1"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="chart-wrapper">
+                        <div class="chart-title">
+                            Experiment duration
+                        </div>
+                        <div class="chart-stage">
+                            <div id="chart-2-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="chart-wrapper">
+                        <div class="chart-title">
+                            And some other data
+                        </div>
+                        <div class="chart-stage">
+                            <div id="chart-2-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        <script>
+            var chart1 = c3.generate({
+                bindto: "#chart-1-1",
+                data: {
+                    x: 'x',
+                    columns: [
+                        ['x', '2017-10-01', '2017-10-02', '2017-10-03', '2017-10-04', '2017-10-05', '2017-10-06', '2017-10-07', '2017-10-08', '2017-10-09', '2017-10-10', '2017-10-11', '2017-10-12', '2017-10-13', '2017-10-14', '2017-10-15', '2017-10-16', '2017-10-17', '2017-10-18', '2017-10-19', '2017-10-20', '2017-10-21', '2017-10-22', '2017-10-23', '2017-10-24', '2017-10-25'],
+                        ['Temperature', 16.5, 16, 17, 17.5, 16.5, 15, 14.2, 14.3, 16, 18.8, 23.5, 25.9, 26.8, 27.8, 29.8, 30.2, 28.3, 27.7, 24.6, 22.2, 20.5, 19.8, 18.2, 17, 15.8]
+                    ],
+                    type: 'area-spline'
+                },
+                type: 'timeseries',
+                axis: {
+                    x: {
+                        'type': 'timeseries',
+                        tick: {
+                            format: '%Y-%m-%d',
+                            count: 4
+                        },
+                        padding: 0
+                    },
+                    y: {
+                        min: 0,
+                        max: 30,
+                        label: "°C",
+                        padding: {
+                            top: 5,
+                            bottom: 0
+                        }
+                    }
+                },
+                size: {
+                    height: 210
+                }
+            });
+            
+            var chart2 = c3.generate({
+                bindto: "#chart-1-2",
+                data: {
+                    columns: [
+                        ['data', 91.4]
+                    ],
+                    type: 'gauge',
+                    onclick: function (d, i) { console.log("onclick", d, i); },
+                    onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                    onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                },
+                gauge: {
+                },
+                color: {
+                    pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                    threshold: {
+                        values: [30, 60, 90, 100]
+                    }
+                },
+                size: {
+                    height: 200
+                }
+            });
+            
+            var chart3 = c3.generate({
+                bindto: "#chart-2-1",
+                data: {
+                    columns: [
+                        ['data', 18.9]
+                    ],
+                    type: 'gauge',
+                    onclick: function (d, i) { console.log("onclick", d, i); },
+                    onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                    onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                },
+                gauge: {
+                },
+                color: {
+                    pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                    threshold: {
+                        values: [30, 60, 90, 100]
+                    }
+                },
+                size: {
+                    height: 240
+                }
+            });
+            
+            var chart4 = c3.generate({
+                bindto: "#chart-2-2",
+                data: {
+                    columns: [
+                        ['1', 21],
+                        ['2', 29],
+                        ['3', 26],
+                        ['4', 35],
+                    ],
+                    type : 'donut',
+                    onclick: function (d, i) { console.log("onclick", d, i); },
+                    onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                    onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                },
+                color: {
+                    pattern: ['#1e515b', '#2e7a89', '#3b9caf', '#75c1d0']
+                },
+                size: {
+                    height: 240
+                }
+            });
+            
+            var chart5 = c3.generate({
+                bindto: "#chart-2-3",
+                data: {
+                    columns: [
+                        ['Data', 30, 200, 100, 400, 150, 250]
+                    ],
+                    type: 'bar'
+                },
+                bar: {
+                    width: {
+                        ratio: 0.90 // this makes bar width 50% of length between ticks
+                    }
+                },
+                size: {
+                    height: 240
+                }
+            });
+            
+            
+        </script>
     {% endif %}
 {% endblock %}
