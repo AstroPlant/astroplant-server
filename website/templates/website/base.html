@@ -42,7 +42,7 @@
                             <a href="{% url 'website:map' %}">{% bootstrap_icon 'map-marker' %}  Map</a>
                         </li>
                         <li>
-                            <a href="#">{% bootstrap_icon 'grain' %} Learn</a>
+                            <a href="http://astroplant.io">{% bootstrap_icon 'grain' %} About AstroPlant</a>
                         </li>
                         {% if user.is_authenticated %}   
                             <li class="{% navigation_active request 'website:dashboard' %}">
