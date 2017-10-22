@@ -89,5 +89,7 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
             measurement_serializer.is_valid(raise_exception = True)
             multiplexer.send({"success": "published"})
             self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], measurement_serializer.data)
+            print("Message sent")
         except:
             multiplexer.send({"error": "You must provide a valid measurement.'."})
+            print("Exception...")
