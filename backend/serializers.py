@@ -11,25 +11,31 @@ class HyperlinkedExperimentSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Experiment
         fields = ('url', 'kit', 'date_time_start', 'date_time_end')
 
-class HyperlinkedSensorDefinitionSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = models.SensorDefinition
-        fields = ('url', 'name', 'brand', 'type', 'class_name')
-
 class HyperlinkedSensorConfigurationDefinitionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.SensorConfigurationDefinition
         fields = ('url', 'sensor_definition', 'name', 'default_value', 'description')
 
-class HyperlinkedSensorSerializer(serializers.HyperlinkedModelSerializer):
+class HyperlinkedSensorDefinitionSerializer(serializers.HyperlinkedModelSerializer):
+    sensorconfigurationdefinition_set = HyperlinkedSensorConfigurationDefinitionSerializer(many=True)
+
     class Meta:
-        model = models.Sensor
-        fields = ('url', 'kit', 'sensor_definition', 'name', 'active', 'date_time_added', 'date_time_removed')
+        model = models.SensorDefinition
+        fields = ('url', 'name', 'brand', 'type', 'class_name', 'sensorconfigurationdefinition_set')
 
 class HyperlinkedSensorConfigurationSerializer(serializers.HyperlinkedModelSerializer):
+    sensor_configuration_definition = HyperlinkedSensorConfigurationDefinitionSerializer()
+
     class Meta:
         model = models.SensorConfiguration
-        fields = ('url', 'sensor', 'sensor_configuration_definition', 'value')
+        fields = ('sensor_configuration_definition', 'value')
+
+class HyperlinkedSensorSerializer(serializers.HyperlinkedModelSerializer):
+    sensorconfiguration_set = HyperlinkedSensorConfigurationSerializer(many=True)
+
+    class Meta:
+        model = models.Sensor
+        fields = ('url', 'kit', 'sensor_definition', 'name', 'active', 'date_time_added', 'date_time_removed', 'sensorconfiguration_set')
 
 class HyperlinkedMeasurementSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

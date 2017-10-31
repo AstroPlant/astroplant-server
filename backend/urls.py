@@ -75,6 +75,24 @@ class SensorDefinitionViewSet(viewsets.GenericViewSet,
         
     serializer_class = serializers.HyperlinkedSensorDefinitionSerializer
 
+class SensorConfigurationDefinitionViewSet(viewsets.GenericViewSet,
+                        mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin):
+    """
+    list:
+    List all sensor configuration definitions.
+
+    retrieve:
+    Return the given sensor configuration definition.
+    """
+    def get_queryset(self):
+        """
+        Get a queryset of all sensor configuration definitions.
+        """
+        return models.SensorConfigurationDefinition.objects.all()
+        
+    serializer_class = serializers.HyperlinkedSensorConfigurationDefinitionSerializer
+
 class SensorViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
                         mixins.RetrieveModelMixin):
@@ -135,6 +153,7 @@ router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
 router.register(r'experiments', ExperimentViewSet, base_name='experiment')
 router.register(r'sensor-definitions', SensorDefinitionViewSet, base_name='sensordefinition')
+router.register(r'sensor-configuration-definitions', SensorConfigurationDefinitionViewSet, base_name='sensorconfigurationdefinition')
 router.register(r'sensors', SensorViewSet, base_name='sensor')
 router.register(r'measurements', MeasurementViewSet, base_name='measurement')
 
