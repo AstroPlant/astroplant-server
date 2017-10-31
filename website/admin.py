@@ -98,15 +98,21 @@ class KitMembershipAdmin(admin.ModelAdmin):
     list_display = ('kit', 'user', 'date_time_linked')
     ordering = ('kit', 'user')
 
-@admin.register(models.SensorType)
-class SensorTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'brand', 'type', 'unit')
-    ordering = ('brand', 'type')
+@admin.register(models.SensorDefinition)
+class SensorDefinitionAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(models.SensorConfigurationDefinition)
+class SensorConfigurationDefinitionAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(models.Sensor)
 class SensorAdmin(admin.ModelAdmin):
-    list_display = ('type', 'kit')
-    ordering = ('type', 'kit')
+    pass
+
+@admin.register(models.SensorConfiguration)
+class SensorConfigurationAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(models.Experiment)
 class ExperimentAdmin(admin.ModelAdmin):
@@ -115,5 +121,5 @@ class ExperimentAdmin(admin.ModelAdmin):
 
 @admin.register(models.Measurement)
 class MeasurementAdmin(admin.ModelAdmin):
-    list_display = ('sensor_type', 'kit', 'experiment', 'date_time', 'value')
-    ordering = ('sensor_type', 'date_time')
+    list_display = ('sensor', 'kit', 'experiment', 'date_time', 'value')
+    ordering = ('sensor', 'date_time')

@@ -11,10 +11,25 @@ class HyperlinkedExperimentSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Experiment
         fields = ('url', 'kit', 'date_time_start', 'date_time_end')
 
-class HyperlinkedSensorTypeSerializer(serializers.HyperlinkedModelSerializer):
+class HyperlinkedSensorDefinitionSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = models.SensorType
-        fields = ('url', 'name', 'brand', 'type', 'unit')
+        model = models.SensorDefinition
+        fields = ('url', 'name', 'brand', 'type', 'class_name')
+
+class HyperlinkedSensorConfigurationDefinitionSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.SensorConfigurationDefinition
+        fields = ('url', 'sensor_definition', 'name', 'default_value', 'description')
+
+class HyperlinkedSensorSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Sensor
+        fields = ('url', 'kit', 'sensor_definition', 'name', 'active', 'date_time_added', 'date_time_removed')
+
+class HyperlinkedSensorConfigurationSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.SensorConfiguration
+        fields = ('url', 'sensor', 'sensor_configuration_definition', 'value')
 
 class HyperlinkedMeasurementSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -24,4 +39,4 @@ class HyperlinkedMeasurementSerializer(serializers.HyperlinkedModelSerializer):
 class MeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Measurement
-        fields = ('id', 'sensor_type', 'date_time', 'value')
+        fields = ('id', 'sensor', 'date_time', 'value')

@@ -57,20 +57,29 @@ class KitMembership(models.Model):
     def __str__(self):
         return "%s - %s" % (self.kit, self.user)
     
-class SensorType(models.Model):
+class SensorDefinition(models.Model):
     """
-    Model to hold sensor types. For example, an EC sensor
-    of brand A will be a row, and an EC sensor of brand B
-    will be a different row.
+    Model to hold sensor definitions. Each sensor of a specific
+    type will have its own sensor definition.
     """
 
     name = models.CharField(max_length = 100)
     brand = models.CharField(max_length = 100)
     type = models.CharField(max_length = 100)
-    unit = models.CharField(max_length = 100, blank = True)
+    class_name = models.CharField(max_length = 255)
 
     def __str__(self):
         return self.name
+
+class SensorConfigurationDefinition(models.Model):
+    """
+    Model to hold the definitions for configuration options of sensors.
+    """
+
+    sensor_definition = models.ForeignKey(SensorDefinition, on_delete = models.CASCADE)
+    name = models.CharField(max_length = 100)
+    default_value = models.CharField(max_length = 100)
+    description = models.TextField()
 
 class Sensor(models.Model):
     """
@@ -79,19 +88,39 @@ class Sensor(models.Model):
     """
 
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
-    type = models.ForeignKey(SensorType, on_delete = models.CASCADE)
+    sensor_definition = models.ForeignKey(SensorDefinition, on_delete = models.CASCADE)
+    name = models.CharField(max_length = 100)
+    active = models.BooleanField()
+    date_time_added = models.DateTimeField()
+    date_time_removed = models.DateTimeField(blank = True, null = True)
+
+    def __str__(self):
+        return self.name
+
+class SensorConfiguration(models.Model):
+    """
+    Model of configuration for individual sensors.
+    """
+    
+    sensor = models.ForeignKey(Sensor, on_delete = models.CASCADE)
+    sensor_configuration_definition = models.ForeignKey(SensorConfigurationDefinition, on_delete = models.CASCADE)
+    value = models.CharField(max_length = 100)
 
 class Measurement(models.Model):
     """
     Model to hold sensor measurements.
     """
 
-    sensor_type = models.ForeignKey(SensorType, on_delete = models.CASCADE)
-
+    sensor = models.ForeignKey(Sensor, on_delete = models.CASCADE)
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
 
     # Null allowed, as it is possible no experiment is running
     experiment = models.ForeignKey(Experiment, on_delete = models.CASCADE, null = True)
 
     date_time = models.DateTimeField()
+
+    # TODO: this should be made more robust (e.g. separate models for physical quantity and units)
+    physical_quantity = models.CharField(max_length = 100)
+    physical_unit = models.CharField(max_length = 100)
+
     value = models.FloatField()

@@ -57,12 +57,6 @@ class ExperimentViewSet(viewsets.GenericViewSet,
 
     serializer_class = serializers.HyperlinkedExperimentSerializer
 
-class SensorTypeViewSet(viewsets.GenericViewSet,
-                        mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin):
-    queryset = models.SensorType.objects.all()
-    serializer_class = serializers.HyperlinkedSensorTypeSerializer
-
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
                          mixins.RetrieveModelMixin,
@@ -98,7 +92,6 @@ class MeasurementViewSet(viewsets.GenericViewSet,
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
 router.register(r'experiments', ExperimentViewSet, base_name='experiment')
-router.register(r'sensor-types', SensorTypeViewSet)
 router.register(r'measurements', MeasurementViewSet, base_name='measurement')
 
 urlpatterns = [
