@@ -57,6 +57,48 @@ class ExperimentViewSet(viewsets.GenericViewSet,
 
     serializer_class = serializers.HyperlinkedExperimentSerializer
 
+class SensorDefinitionViewSet(viewsets.GenericViewSet,
+                        mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin):
+    """
+    list:
+    List all sensor definitions.
+
+    retrieve:
+    Return the given sensor definition.
+    """
+    def get_queryset(self):
+        """
+        Get a queryset of all sensor definitions.
+        """
+        return models.SensorDefinition.objects.all()
+        
+    serializer_class = serializers.HyperlinkedSensorDefinitionSerializer
+
+class SensorViewSet(viewsets.GenericViewSet,
+                        mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin):
+    """
+    list:
+    List all sensors the user has access to. A person user has access to sensors
+    of all kits it owns. A kit user has access to its sensors.
+
+    retrieve:
+    Return the given sensor, if the user has access to it.
+    """
+    def get_queryset(self):
+        """
+        Get a queryset of all sensors the user has access to.
+        """
+        user = self.request.user
+        if isinstance(user, models.Kit):
+            return models.Sensor.objects.filter(kit=user.pk)
+        else:
+            kits = models.Kit.objects.filter(users=user.pk)
+            return models.Sensor.objects.filter(kit__in=kits)
+
+    serializer_class = serializers.HyperlinkedSensorSerializer
+
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
                          mixins.RetrieveModelMixin,
@@ -92,6 +134,8 @@ class MeasurementViewSet(viewsets.GenericViewSet,
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
 router.register(r'experiments', ExperimentViewSet, base_name='experiment')
+router.register(r'sensor-definitions', SensorDefinitionViewSet, base_name='sensordefinition')
+router.register(r'sensors', SensorViewSet, base_name='sensor')
 router.register(r'measurements', MeasurementViewSet, base_name='measurement')
 
 urlpatterns = [

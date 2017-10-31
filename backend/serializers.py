@@ -4,7 +4,7 @@ from rest_framework import serializers
 class HyperlinkedKitSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Kit
-        fields = ('url', 'type', 'name', 'description', 'latitude', 'longitude', 'experiment_set')
+        fields = ('url', 'type', 'name', 'description', 'latitude', 'longitude', 'sensor_set', 'experiment_set')
 
 class HyperlinkedExperimentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
