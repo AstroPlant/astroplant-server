@@ -76,7 +76,9 @@ class SensorConfigurationDefinition(models.Model):
     Model to hold the definitions for configuration options of sensors.
     """
 
-    sensor_definition = models.ForeignKey(SensorDefinition, on_delete = models.CASCADE)
+    sensor_definition = models.ForeignKey(SensorDefinition,
+                                          on_delete = models.CASCADE,
+                                          related_name = 'sensor_configuration_definitions')
     name = models.CharField(max_length = 100)
     default_value = models.CharField(max_length = 100)
     description = models.TextField()
@@ -91,7 +93,8 @@ class Sensor(models.Model):
     """
 
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
-    sensor_definition = models.ForeignKey(SensorDefinition, on_delete = models.CASCADE)
+    sensor_definition = models.ForeignKey(SensorDefinition,
+                                          on_delete = models.CASCADE)
     name = models.CharField(max_length = 100)
     active = models.BooleanField()
     date_time_added = models.DateTimeField()
@@ -105,8 +108,11 @@ class SensorConfiguration(models.Model):
     Model of configuration for individual sensors.
     """
     
-    sensor = models.ForeignKey(Sensor, on_delete = models.CASCADE)
-    sensor_configuration_definition = models.ForeignKey(SensorConfigurationDefinition, on_delete = models.CASCADE)
+    sensor = models.ForeignKey(Sensor,
+                               on_delete = models.CASCADE,
+                               related_name = 'sensor_configurations')
+    sensor_configuration_definition = models.ForeignKey(SensorConfigurationDefinition,
+                                                        on_delete = models.CASCADE)
     value = models.CharField(max_length = 100)
 
     def __str__(self):
