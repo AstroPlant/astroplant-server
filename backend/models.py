@@ -81,6 +81,9 @@ class SensorConfigurationDefinition(models.Model):
     default_value = models.CharField(max_length = 100)
     description = models.TextField()
 
+    def __str__(self):
+        return "%s - %s" % (self.sensor_definition, self.name)
+
 class Sensor(models.Model):
     """
     Model of individual sensors. Each such sensor belongs
@@ -105,6 +108,9 @@ class SensorConfiguration(models.Model):
     sensor = models.ForeignKey(Sensor, on_delete = models.CASCADE)
     sensor_configuration_definition = models.ForeignKey(SensorConfigurationDefinition, on_delete = models.CASCADE)
     value = models.CharField(max_length = 100)
+
+    def __str__(self):
+        return "%s - %s" % (self.sensor, self.sensor_configuration_definition)
 
 class Measurement(models.Model):
     """
