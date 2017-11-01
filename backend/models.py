@@ -43,7 +43,38 @@ class Kit(User):
         Generate a dictionary containing the kit configuration.
         """
 
-        return {'config': 'Placeholder.'}
+        # Generate the configuration dictionary for each sensor
+        sensors = []
+        for sensor in self.sensor_set.filter(active = True).all():
+
+            # Get the sensor definition
+            sensor_definition = sensor.sensor_definition
+
+            # Get the sensor configuration definitions
+            sensor_configuration_definitions = sensor_definition.sensor_configuration_definitions.all()
+
+            # Get the sensor configurations
+            sensor_configurations = sensor.sensor_configurations.all()
+            sensor_configurations_dict = {configuration.sensor_configuration_definition: configuration for configuration in sensor_configurations}
+
+            # For each sensor configuration definition, see if the sensor provides a value
+            # otherwise use the default value.
+            param_config = []
+            for configuration_definition in sensor_configuration_definitions:
+                if configuration_definition in sensor_configurations_dict:
+                    value = sensor_configurations_dict[configuration_definition].value
+                else:
+                    value = configuration_definition.default_value
+
+                param_config.append({'parameter': configuration_definition.name, 'value': value})
+
+            sensors.append({
+                'sensor_definition_name': sensor_definition.name,
+                'sensor_name': sensor.name,
+                'class_name': sensor_definition.class_name,
+                'parameters': param_config})
+
+        return {'name': self.name, 'sensors': sensors}
 
 class Experiment(models.Model):
     """
