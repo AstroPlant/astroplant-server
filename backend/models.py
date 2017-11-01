@@ -38,6 +38,13 @@ class Kit(User):
         verbose_name = 'Kit'
         verbose_name_plural = 'Kits'
 
+    def generate_config(self):
+        """
+        Generate a dictionary containing the kit configuration.
+        """
+
+        return {'config': 'Placeholder.'}
+
 class Experiment(models.Model):
     """
     Model for experiments.

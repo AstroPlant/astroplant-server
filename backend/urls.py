@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from rest_framework import viewsets, mixins, routers, renderers, documentation
 import rest_framework_jwt.views
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import list_route, detail_route
 import rest_framework.schemas
 
 from backend import models
@@ -32,6 +32,16 @@ class KitViewSet(viewsets.GenericViewSet,
             return models.Kit.objects.filter(users=user.pk)
 
     serializer_class = serializers.HyperlinkedKitSerializer
+
+    @detail_route()
+    def config(self, request, pk = None):
+        qs = self.get_queryset()
+        kit_query = qs.filter(pk = pk)
+        if not kit_query:
+            return rest_framework.response.Response({"detail": "Not found."}, status = 404)
+
+        kit = kit_query.get()
+        return rest_framework.response.Response(kit.generate_config())
 
 class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
@@ -148,6 +158,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
 
     def perform_create(self, serializer):
         serializer.save(kit=self.request.user)
+
 
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
