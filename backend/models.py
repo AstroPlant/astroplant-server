@@ -101,7 +101,14 @@ class SensorDefinition(models.Model):
     type will have its own sensor definition.
     """
 
-    name = models.CharField(max_length = 100)
+    name = models.CharField(max_length = 100, unique = True)
+    description = models.TextField(blank = True)
+    official = models.BooleanField(default = False)
+    public = models.BooleanField(default = False)
+    owner = models.ForeignKey(PersonUser,
+                              related_name = 'sensor_definitions',
+                              blank = True,
+                              null = True)
     brand = models.CharField(max_length = 100)
     type = models.CharField(max_length = 100)
     class_name = models.CharField(max_length = 255)
