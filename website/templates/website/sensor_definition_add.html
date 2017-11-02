@@ -14,7 +14,7 @@
         <p>Please enter the basic sensor information below. Sensor configurations will be defined in the next step.</p>
         <form method="post">
             {% csrf_token %}
-            {% bootstrap_form form layout='inline' %}
+            {% bootstrap_form form layout='horizontal' %}
             {% buttons %}
                 <button type="submit" class="btn btn-primary">
                     {% bootstrap_icon "plus" %} Add

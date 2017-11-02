@@ -8,17 +8,17 @@
     <p>Sensor: {{ sensor_definition.name }}</p>
 {% endblock %}
 
-
 {% block content %}
     <div class="container">
         <p>Please update the sensor definition for sensor <em>{{ sensor_definition.name }}</em>.</p>
         <form method="post">
             {% csrf_token %}
-            <h2>Sensor definition</h2>
-            {% bootstrap_form form layout='inline' %}
+            {% bootstrap_form form layout='horizontal' %}
             
             <h2>Sensor configuration definitions</h2>
-            {% bootstrap_formset form_set layout='inline' %}
+            <div id="sensor-configuration-definitions">
+                {% bootstrap_formset form_set layout='horizontal' %}
+            </div>
             {% buttons %}
                 <button type="submit" class="btn btn-primary">
                     {% bootstrap_icon "plus" %} Add
