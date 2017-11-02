@@ -88,6 +88,10 @@ def kit_add(request):
         form = website.forms.AddKitForm()
         return render(request,'website/kit_add.html', {'form': form})
 
+def sensor_definition_list(request):
+    sensor_definitions = backend.models.SensorDefinition.objects.all()
+    return render(request,'website/sensor_definition_list.html', {'sensor_definitions': sensor_definitions})
+
 @decorators.login_required
 def sensor_definition_add(request):
     Form = django.forms.modelform_factory(backend.models.SensorDefinition,

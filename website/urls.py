@@ -13,6 +13,7 @@ urlpatterns = [
         ])),
     ])),
     url(r'^sensors/', include([
+        url(r'^$', views.sensor_definition_list, name='sensor_definition_list'),
         url(r'^add/$', views.sensor_definition_add, name='sensor_definition_add'),
         url(r'^(?P<sensor_definition_id>[0-9]+)/', include([
             url(r'^configure/$', views.sensor_definition_configure, name='sensor_definition_configure'),

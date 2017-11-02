@@ -1,0 +1,29 @@
+{% extends 'website/base.html' %}
+
+{% load static %}
+{% load bootstrap3 %}
+{% load rules %}
+
+{% block header %}
+    <h1>Sensor definitions</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for sensor_definition in sensor_definitions %}
+            {% has_perm 'backend.view_sensor_definition' user sensor_definition as can_view %}
+            {% has_perm 'backend.edit_sensor_definition' user sensor_definition as can_edit %}
+            
+            {% if can_view %}
+                <div>
+                    <p>{{ sensor_definition.name }}</p>
+                    
+                    {% if can_edit %}
+                        <p><a href="{% url 'website:sensor_definition_configure' sensor_definition.pk %}">{% bootstrap_icon 'edit' %} Configure definition</a></p>
+                    {% endif %}
+                </div>
+                <hr>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
