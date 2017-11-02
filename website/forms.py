@@ -11,3 +11,8 @@ class AddKitForm(django.forms.ModelForm):
     class Meta:
         model = backend.models.Kit
         fields = ('name',)
+
+class AddSensorDefinitionForm(django.forms.ModelForm):
+    class Meta:
+        model = backend.models.SensorDefinition
+        fields = ('name', 'description', 'official', 'public', 'owner', 'brand', 'type', 'class_name',)

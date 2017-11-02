@@ -73,6 +73,74 @@ def kit_add(request):
         form = website.forms.AddKitForm()
         return render(request,'website/kit_add.html', {'form': form})
 
+@decorators.login_required
+def sensor_definition_add(request):
+    Form = django.forms.modelform_factory(backend.models.SensorDefinition,
+                                          fields = ('name', 'description', 'public', 'brand', 'type', 'class_name',),
+                                          help_texts = {
+                                              'public': 'Should the sensor definition be available publicly?',
+                                              'class_name': 'The Python class name of the sensor implementation.'
+                                            })
+
+    if request.method == 'POST':
+        form = Form(request.POST)
+
+        if not form.is_valid():
+            return render(request,'website/sensor_definition_add.html', {'form': form})
+
+        # Get the sensor definition object
+        sensor_definition = form.save(commit=False)
+
+        # Set the current user as the owner
+        sensor_definition.owner = request.user
+
+        sensor_definition.save()
+        return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:sensor_definition_configure', kwargs={'sensor_definition_id': sensor_definition.pk}))
+    else:
+        form = Form()
+        return render(request,'website/sensor_definition_add.html', {'form': form})
+
+@decorators.login_required
+def sensor_definition_configure(request, sensor_definition_id):
+    """
+    View to configure a Django sensor definition.
+    """
+    sensor_definition_query = backend.models.SensorDefinition.objects.filter(pk = sensor_definition_id, owner = request.user)
+
+    if not sensor_definition_query:
+        return render(request, 'website/sensor_definition_configure_not_found.html', {})
+
+    sensor_definition = sensor_definition_query.first()
+
+    SensorDefinitionForm = django.forms.modelform_factory(backend.models.SensorDefinition,
+                                          fields = ('description', 'public', 'brand', 'type', 'class_name',),
+                                          help_texts = {
+                                              'public': 'Should the sensor definition be available publicly?',
+                                              'class_name': 'The Python class name of the sensor implementation.'
+                                            })
+    SensorConfigurationDefinitionFormSet = django.forms.inlineformset_factory(backend.models.SensorDefinition, backend.models.SensorConfigurationDefinition, exclude=[])
+
+    if request.method == 'POST':
+        form = SensorDefinitionForm(request.POST, instance=sensor_definition)
+        form_set = SensorConfigurationDefinitionFormSet(request.POST, instance=sensor_definition)
+
+        if not form.is_valid() or not form_set.is_valid():
+            return render(request,'website/sensor_definition_configure.html', {'sensor_definition': sensor_definition, 'form': form, 'form_set': form_set})
+
+        # Save the sensor definition
+        form.save()
+
+        # Save the sensor configuration definitions
+        form_set.save()
+
+        # Generate a new form set
+        form_set = SensorConfigurationDefinitionFormSet(instance=sensor_definition)
+        return render(request, 'website/sensor_definition_configure.html', {'sensor_definition': sensor_definition, 'form': form, 'form_set': form_set})
+    else:
+        form = SensorDefinitionForm(instance=sensor_definition)
+        form_set = SensorConfigurationDefinitionFormSet(instance=sensor_definition)
+        return render(request, 'website/sensor_definition_configure.html', {'sensor_definition': sensor_definition, 'form': form, 'form_set': form_set})
+
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')
 

@@ -12,4 +12,10 @@ urlpatterns = [
             url(r'^configure/$', views.kit, name='kit_configure'),
         ])),
     ])),
+    url(r'^sensors/', include([
+        url(r'^add/$', views.sensor_definition_add, name='sensor_definition_add'),
+        url(r'^(?P<sensor_definition_id>[0-9]+)/', include([
+            url(r'^configure/$', views.sensor_definition_configure, name='sensor_definition_configure'),
+        ])),
+    ])),
 ]

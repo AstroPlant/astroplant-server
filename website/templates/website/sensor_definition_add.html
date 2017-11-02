@@ -1,0 +1,25 @@
+{% extends 'website/base.html' %}
+
+{% load static %}
+{% load bootstrap3 %}
+
+{% block header %}
+    <h1>Add a sensor definition</h1>
+    <p></p>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <p>Please enter the basic sensor information below. Sensor configurations will be defined in the next step.</p>
+        <form method="post">
+            {% csrf_token %}
+            {% bootstrap_form form layout='inline' %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">
+                    {% bootstrap_icon "plus" %} Add
+                </button>
+            {% endbuttons %}
+        </form>
+    </div>
+{% endblock %}
