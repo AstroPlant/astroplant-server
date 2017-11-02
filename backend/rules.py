@@ -34,3 +34,4 @@ def is_kit_member(user, kit):
 # Permissions
 rules.add_perm('backend.view_kit_dashboard', is_public_kit | is_target | is_kit_member)
 rules.add_perm('backend.subscribe_to_kit_measurements_websocket', is_public_kit | is_target | is_kit_member)
+rules.add_perm('backend.configure_kit', is_kit_member | is_target)
