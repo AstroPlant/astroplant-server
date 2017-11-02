@@ -32,7 +32,17 @@
             <p>Sorry! That kit was not found, or you do not have access to it. If you own a kit, you can <a href="{% url 'website:kit_add' %}">add</a> it.</p>
         </div>
     {% else %}
+        
+        {% has_perm 'backend.configure_kit' user kit as can_configure %}
+    
         <div class="container dashboard">
+            {% if can_configure %}
+                <div class="row">
+                    <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5em;">
+                        <a href="{% url 'website:kit_configure' kit.pk %}">{% bootstrap_icon 'edit' %} Configure kit</a>
+                    </div>
+                </div>
+            {% endif %}
             <div class="row">
                 <div class="col-sm-8">
                     <div class="chart-wrapper">

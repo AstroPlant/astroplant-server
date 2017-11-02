@@ -1,0 +1,16 @@
+{% extends 'website/base.html' %}
+
+{% load static %}
+{% load bootstrap3 %}
+
+{% block header %}
+    <h1>Oops!</h1>
+    <p>{{ kit.description }}</p>
+{% endblock %}
+
+
+{% block content %}       
+    <div class="container">
+        <p>Sorry! That kit was not found, or you do not have access to its configuration. If you own a kit, you can <a href="{% url 'website:kit_add' %}">add</a> it.</p>
+    </div>
+{% endblock %}
