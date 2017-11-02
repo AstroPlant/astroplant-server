@@ -109,8 +109,8 @@ class SensorDefinition(models.Model):
                               related_name = 'sensor_definitions',
                               blank = True,
                               null = True)
-    brand = models.CharField(max_length = 100)
-    type = models.CharField(max_length = 100)
+    brand = models.CharField(max_length = 100, blank = True)
+    type = models.CharField(max_length = 100, blank = True)
     class_name = models.CharField(max_length = 255)
 
     def __str__(self):
