@@ -84,7 +84,7 @@ class Kit(User):
         # Generate a password without vowels to minimize the chance 
         # of generating bad words :)
         # also 0, (o), 1, l, 2, z, 5, s are removed, as they look similar
-        return ''.join(random.choice('346789bcdfghjkmnpqrtvwxy') for i in range(RANDOM_KIT_PASSWORD_LENGTH))
+        return ''.join(random.choice('346789bcdfghjkmnpqrtvwxyBCDFGHJKMNPQRTVWXY!@#$%&') for i in range(RANDOM_KIT_PASSWORD_LENGTH))
 
 class Experiment(models.Model):
     """
