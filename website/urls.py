@@ -12,6 +12,7 @@ urlpatterns = [
             url(r'^configure/', include([
                  url(r'^profile/$', views.kit_configure_profile, name='kit_configure_profile'),
                  url(r'^members/$', views.kit_configure_members, name='kit_configure_members'),
+                 url(r'^access/$', views.kit_configure_access, name='kit_configure_access'),
             ])),
         ])),
     ])),
