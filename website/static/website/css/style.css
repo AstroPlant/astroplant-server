@@ -36,6 +36,27 @@ header.navbar-static-top div.navbar-header {
   background-color: RGB(102, 102, 102);
 }
 
+/* Panel group menus */
+.panel-group.menu .panel-title {
+  color: RGB(102, 102, 102);
+}
+.panel-group.menu .panel-body {
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #ddd;
+}
+.panel-group.menu .menu-item {
+  padding: 0.5em;
+}
+.panel-group.menu .menu-item:not(:last-child) {
+  box-shadow: 0 1px 0 #ddd;
+}
+.panel-group.menu .menu-item.active {
+  font-weight: bold;
+  padding-left: calc(0.5em - 2px);
+  border-left: 2px solid RGB(230, 80, 15);
+}
+
 /* Main content */
 .content-header {
   padding: 30px;

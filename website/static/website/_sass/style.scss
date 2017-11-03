@@ -46,6 +46,34 @@ header.navbar-static-top {
     }
 }
 
+/* Panel group menus */
+
+.panel-group.menu {
+    .panel-title {
+        color: $textColorGray;
+    }
+
+    .panel-body {
+        margin: 0;
+        padding: 0;
+        border-top: 1px solid #ddd;
+    }
+
+    .menu-item {
+        padding: 0.5em;
+        
+        &:not(:last-child) {
+            box-shadow: 0 1px 0 #ddd;
+        }
+        
+        &.active {
+            font-weight: bold;
+            padding-left: calc(0.5em - 2px);
+            border-left: 2px solid $colorDarkRed;
+        }
+    }
+}
+
 /* Main content */ 
 
 .content-header {
