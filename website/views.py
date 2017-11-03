@@ -54,6 +54,19 @@ def kit_configure_profile(request, kit_id):
 
     return render(request, 'website/kit_configure_profile.html', context)
 
+@decorators.login_required
+def kit_configure_members(request, kit_id):
+    try:
+        kit = backend.models.Kit.objects.get(pk=kit_id)
+    except exceptions.ObjectDoesNotExist:
+        kit = None
+
+    if not kit or not request.user.has_perm('backend.configure_kit', kit):
+        return  render(request, 'website/kit_configure_not_found.html')
+
+    context = {'kit': kit}
+
+    return render(request, 'website/kit_configure_members.html', context)
 
 @decorators.login_required
 def kit_add(request):
