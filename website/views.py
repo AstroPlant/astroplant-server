@@ -135,10 +135,11 @@ def sensor_definition_configure(request, sensor_definition_id):
         return render(request, 'website/sensor_definition_configure_not_found.html', {})
 
     SensorDefinitionForm = django.forms.modelform_factory(backend.models.SensorDefinition,
-                                          fields = ('description', 'public', 'brand', 'type', 'class_name',),
+                                          fields = ('description', 'public', 'brand', 'type', 'class_name', 'measurement_types',),
                                           help_texts = {
                                               'public': 'Should the sensor definition be available publicly?',
-                                              'class_name': 'The Python class name of the sensor implementation.'
+                                              'class_name': 'The Python class name of the sensor implementation.',
+                                              'measurement_types': 'The measurement types to plot on the dashboard (other measurement types are supported, but will not be plotted).'
                                             })
     SensorConfigurationDefinitionFormSet = django.forms.inlineformset_factory(backend.models.SensorDefinition, backend.models.SensorConfigurationDefinition, exclude=[])
 
