@@ -72,9 +72,11 @@
                             Private
                         {% endif %}
                     </div>
-                    <div class="sensor-definition-owner">
-                        Owner: {{ sensor_definition.owner }}
-                    </div>
+                    {% if sensor_definition.owner %}
+                        <div class="sensor-definition-owner">
+                            Maintainer: {{ sensor_definition.owner }}
+                        </div>
+                    {% endif %}
                     
                     {% if can_edit %}
                         <p><a href="{% url 'website:sensor_definition_configure' sensor_definition.pk %}">{% bootstrap_icon 'edit' %} Configure definition</a></p>
