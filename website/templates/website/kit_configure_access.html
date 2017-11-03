@@ -18,15 +18,17 @@
         <p>Secret:</p>
         <pre>{% if secret %}{{ secret }}{% else %}*******{% endif %}</pre>
         
-        <form method="post">
-            {% csrf_token %}
-            
-            {% buttons %}
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    {% bootstrap_icon "refresh" %} Generate new secret
-                </button>
-            {% endbuttons %}
-        </form>
+        {% if not secret %}
+            <form method="post">
+                {% csrf_token %}
+                
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        {% bootstrap_icon "refresh" %} Generate new secret
+                    </button>
+                {% endbuttons %}
+            </form>
+        {% endif %}
     {% else %}
         {# No password has been generated yet #}
         <p>Press the button below to generate a kit secret. The secret will be used to configure the kit, and will enable it to communicate with the AstroPlant server.</p>
