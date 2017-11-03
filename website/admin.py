@@ -98,6 +98,10 @@ class KitMembershipAdmin(admin.ModelAdmin):
     list_display = ('kit', 'user', 'date_time_linked')
     ordering = ('kit', 'user')
 
+@admin.register(models.MeasurementType)
+class MeasurementTypeAdmin(admin.ModelAdmin):
+    pass
+
 @admin.register(models.SensorDefinition)
 class SensorDefinitionAdmin(admin.ModelAdmin):
     pass
