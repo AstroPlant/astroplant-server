@@ -87,6 +87,11 @@ footer a:hover {
   color: RGB(102, 102, 102);
 }
 
+/* Forms */
+.form-group {
+  overflow: auto;
+}
+
 /* Other entities */
 .glyphicon {
   margin-right: 0.3em;
