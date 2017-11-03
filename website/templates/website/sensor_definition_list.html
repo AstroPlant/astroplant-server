@@ -5,39 +5,7 @@
 {% load rules %}
 
 {% block head_ext %}
-    <style>
-        .sensor-definition
-        {
-            padding: 1.5em;
-            border-bottom: 1px solid #eaeaea;
-        }
-        
-        .sensor-definition div
-        {
-            margin-bottom: 0.5em;
-        }
-        
-        .sensor-definition-mark
-        {
-            font-size: 1.35em;
-        }
-        
-        .sensor-definition-mark-verified
-        {
-            color: #6090f0;
-        }
-        
-        .sensor-definition-mark-unverified
-        {
-            color: #f09060;
-        }
-        
-        .sensor-definition-name
-        {
-            vertical-align: text-bottom;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'website/css/sensors.css' %}">
 {% endblock %}
 
 {% block header %}
