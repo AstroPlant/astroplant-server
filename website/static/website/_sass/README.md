@@ -11,5 +11,5 @@
 ## Instructions
 1. Install required tools
 2. Open a terminal
-3. Open project directory in terminal
+3. Open website static files directory (`website/static/website`) in terminal
 4. Run `compass compile`
