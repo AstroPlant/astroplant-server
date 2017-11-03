@@ -4,6 +4,42 @@
 {% load bootstrap3 %}
 {% load rules %}
 
+{% block head_ext %}
+    <style>
+        .sensor-definition
+        {
+            padding: 1.5em;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .sensor-definition div
+        {
+            margin-bottom: 0.5em;
+        }
+        
+        .sensor-definition-mark
+        {
+            font-size: 1.35em;
+        }
+        
+        .sensor-definition-mark-official
+        {
+            color: #6090f0;
+        }
+        
+        .sensor-definition-mark-unofficial
+        {
+            color: #f09060;
+        }
+        
+        .sensor-definition-name
+        {
+            vertical-align: text-bottom;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
 {% block header %}
     <h1>Sensor definitions</h1>
 {% endblock %}
@@ -15,14 +51,35 @@
             {% has_perm 'backend.edit_sensor_definition' user sensor_definition as can_edit %}
             
             {% if can_view %}
-                <div>
-                    <p>{{ sensor_definition.name }}</p>
+                <div class="sensor-definition">
+                    <div class="sensor-definition-header" title="{% if sensor_definition.official %}Official sensor{% else %}Unofficial sensor{% endif %}">
+                        <span class="sensor-definition-mark">
+                            {% if sensor_definition.official %}
+                                <span class="sensor-definition-mark-official">{% bootstrap_icon "ok-sign" %}</span>
+                            {% else %}
+                                <span class="sensor-definition-mark-unofficial">{% bootstrap_icon "question-sign" %}</span>
+                            {% endif %}
+                        </span>
+                        
+                        <span class="sensor-definition-name">
+                            {{ sensor_definition.name }} 
+                        </span>
+                    </div>
+                    <div class="sensor-definition-public">
+                        {% if sensor_definition.public %}
+                            Public
+                        {% else %}
+                            Private
+                        {% endif %}
+                    </div>
+                    <div class="sensor-definition-owner">
+                        Owner: {{ sensor_definition.owner }}
+                    </div>
                     
                     {% if can_edit %}
                         <p><a href="{% url 'website:sensor_definition_configure' sensor_definition.pk %}">{% bootstrap_icon 'edit' %} Configure definition</a></p>
                     {% endif %}
                 </div>
-                <hr>
             {% endif %}
         {% endfor %}
     </div>
