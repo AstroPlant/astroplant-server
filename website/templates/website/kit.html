@@ -39,7 +39,7 @@
             {% if can_configure %}
                 <div class="row">
                     <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5em;">
-                        <a href="{% url 'website:kit_configure' kit.pk %}">{% bootstrap_icon 'edit' %} Configure kit</a>
+                        <a href="{% url 'website:kit_configure_profile' kit.pk %}">{% bootstrap_icon 'edit' %} Configure kit</a>
                     </div>
                 </div>
             {% endif %}

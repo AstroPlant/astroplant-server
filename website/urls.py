@@ -9,7 +9,9 @@ urlpatterns = [
         url(r'^add/$', views.kit_add, name='kit_add'),
         url(r'^(?P<kit_id>[0-9]+)/', include([
             url(r'^$', views.kit, name='kit'),
-            url(r'^configure/$', views.kit_configure, name='kit_configure'),
+            url(r'^configure/', include([
+                 url(r'^profile/$', views.kit_configure_profile, name='kit_configure_profile'),
+            ])),
         ])),
     ])),
     url(r'^sensors/', include([
