@@ -45,7 +45,7 @@
                             <a href="http://astroplant.io">{% bootstrap_icon 'grain' %} About AstroPlant</a>
                         </li>
                         {% if user.is_authenticated %}   
-                            <li class="{% navigation_active request 'website:dashboard' %}">
+                            <li class="{% navigation_active request 'website:dashboard website:kit' %}">
                                 <a href="{% url 'website:dashboard' %}">{% bootstrap_icon 'dashboard' %} Dashboard</a>
                             </li>
                         {% endif %}
