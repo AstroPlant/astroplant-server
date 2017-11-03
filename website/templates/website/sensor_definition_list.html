@@ -22,12 +22,12 @@
             font-size: 1.35em;
         }
         
-        .sensor-definition-mark-official
+        .sensor-definition-mark-verified
         {
             color: #6090f0;
         }
         
-        .sensor-definition-mark-unofficial
+        .sensor-definition-mark-unverified
         {
             color: #f09060;
         }
@@ -52,12 +52,12 @@
             
             {% if can_view %}
                 <div class="sensor-definition">
-                    <div class="sensor-definition-header" title="{% if sensor_definition.official %}Official sensor{% else %}Unofficial sensor{% endif %}">
+                    <div class="sensor-definition-header" title="{% if sensor_definition.verified %}Verified sensor{% else %}Unverified sensor{% endif %}">
                         <span class="sensor-definition-mark">
-                            {% if sensor_definition.official %}
-                                <span class="sensor-definition-mark-official">{% bootstrap_icon "ok-sign" %}</span>
+                            {% if sensor_definition.verified %}
+                                <span class="sensor-definition-mark-verified">{% bootstrap_icon "ok-sign" %}</span>
                             {% else %}
-                                <span class="sensor-definition-mark-unofficial">{% bootstrap_icon "question-sign" %}</span>
+                                <span class="sensor-definition-mark-unverified">{% bootstrap_icon "question-sign" %}</span>
                             {% endif %}
                         </span>
                         

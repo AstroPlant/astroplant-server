@@ -103,7 +103,7 @@ class SensorDefinition(models.Model):
 
     name = models.CharField(max_length = 100, unique = True)
     description = models.TextField(blank = True)
-    official = models.BooleanField(default = False)
+    verified = models.BooleanField(default = False)
     public = models.BooleanField(default = False)
     owner = models.ForeignKey(PersonUser,
                               related_name = 'sensor_definitions',
