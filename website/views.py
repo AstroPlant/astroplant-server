@@ -131,7 +131,7 @@ def kit_add(request):
 
             kit.username = identifier
             kit.save()
-            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit', kwargs={'kit_id': kit.pk}))
+            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_access', kwargs={'kit_id': kit.pk}))
     else:
         form = website.forms.AddKitForm()
         return render(request,'website/kit_add.html', {'form': form})
