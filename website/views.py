@@ -52,7 +52,7 @@ def kit_configure(request, kit_id):
 
     context = {'kit': kit}
 
-    return render(request, 'website/kit_configure.html', context)
+    return render(request, 'website/kit_configure_profile.html', context)
 
 
 @decorators.login_required

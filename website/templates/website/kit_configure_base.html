@@ -33,9 +33,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-9">
-                <p>Configuration placeholder.</p>
-                <p>Serial: {{ kit.username }}</p>
+            <div class="col-xs-9 config-content">
+                {% block config_content %}
+                {% endblock %}
             </div>
         
         </div>
