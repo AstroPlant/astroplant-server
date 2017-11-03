@@ -95,6 +95,19 @@ class KitMembership(models.Model):
     def __str__(self):
         return "%s - %s" % (self.kit, self.user)
     
+class MeasurementType(models.Model):
+    """
+    Model to hold the definitions for the types of measurements.
+    """
+
+    name = models.CharField(max_length = 100)
+    physical_quantity = models.CharField(max_length = 100)
+    physical_unit = models.CharField(max_length = 100)
+    physical_unit_symbol = models.CharField(max_length = 100)
+
+    def __str__(self):
+        return "%s (%s)" % (self.physical_quantity, self.physical_unit)
+
 class SensorDefinition(models.Model):
     """
     Model to hold sensor definitions. Each sensor of a specific
@@ -112,6 +125,7 @@ class SensorDefinition(models.Model):
     brand = models.CharField(max_length = 100, blank = True)
     type = models.CharField(max_length = 100, blank = True)
     class_name = models.CharField(max_length = 255)
+    measurement_types = models.ManyToManyField(MeasurementType)
 
     def __str__(self):
         return self.name
@@ -170,14 +184,13 @@ class Measurement(models.Model):
 
     sensor = models.ForeignKey(Sensor, on_delete = models.CASCADE)
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
+    measurement_type = models.ForeignKey(MeasurementType, on_delete = models.CASCADE, null = True)
 
     # Null allowed, as it is possible no experiment is running
     experiment = models.ForeignKey(Experiment, on_delete = models.CASCADE, null = True)
 
     date_time = models.DateTimeField()
-
-    # TODO: this should be made more robust (e.g. separate models for physical quantity and units)
-    physical_quantity = models.CharField(max_length = 100)
-    physical_unit = models.CharField(max_length = 100)
-
     value = models.FloatField()
+
+    physical_quantity = models.CharField(max_length = 100, null = True)
+    physical_unit = models.CharField(max_length = 100, null = True)
