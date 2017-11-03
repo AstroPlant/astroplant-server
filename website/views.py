@@ -55,6 +55,10 @@ def kit_configure_profile(request, kit_id):
                                           help_texts = {
                                               'privacy_show_on_map': 'May the kit be displayed on the public map?',
                                               'privacy_public_dashboard': 'Should the kit\'s dashboard be public?',
+                                          },
+                                          labels = {
+                                              'privacy_show_on_map': 'Show on map',
+                                              'privacy_public_dashboard': 'Public dashboard',
                                           })
 
     if request.method == 'POST':
