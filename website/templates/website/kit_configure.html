@@ -3,6 +3,10 @@
 {% load static %}
 {% load bootstrap3 %}
 
+{% block head_ext %}
+    
+{% endblock %}
+
 {% block header %}
     <h1>{{ kit.name }}</h1>
     <p>{{ kit.description }}</p>
@@ -11,7 +15,29 @@
 
 {% block content %}       
     <div class="container">
-        <p>Configuration placeholder.</p>
-        <p>Serial: {{ kit.username }}</p>
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="panel-group menu">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">Kit settings</h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="menu-item active">
+                                Placeholder
+                            </div>
+                            <div class="menu-item">
+                                Placeholder
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <p>Configuration placeholder.</p>
+                <p>Serial: {{ kit.username }}</p>
+            </div>
+        
+        </div>
     </div>
 {% endblock %}
