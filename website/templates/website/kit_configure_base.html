@@ -46,6 +46,9 @@
                                 <div class="menu-item {% navigation_active request 'website:kit_configure_access' %}">
                                     <a href="{% url 'website:kit_configure_access' kit.pk %}">Access</a>
                                 </div>
+                                <div class="menu-item {% navigation_active request 'website:kit_configure_danger_zone' %}">
+                                    <a href="{% url 'website:kit_configure_danger_zone' kit.pk %}">Danger zone</a>
+                                </div>
                             </div>
                         </div>
                     </div>

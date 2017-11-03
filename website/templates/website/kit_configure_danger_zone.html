@@ -1,0 +1,39 @@
+{% extends 'website/kit_configure_base.html' %}
+
+{% load static %}
+{% load bootstrap3 %}
+
+{% block head_ext %}
+    <script src="{% static 'website/js/bootstrap-confirmation.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]'
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block config_header %} 
+    Access
+{% endblock %}
+
+{% block config_content %}
+    <p>All actions performed on this page are final and cannot be undone! Tread carefully.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        
+        {% buttons %}
+            <hr>
+            <button type="submit" class="btn btn-danger" data-toggle="confirmation" style="width: 100%;">
+                {% bootstrap_icon "remove" %} Permanently remove kit and all associated data
+            </button>
+            <hr>
+            <button type="submit" class="btn btn-danger" data-toggle="confirmation" style="width: 100%;">
+                {% bootstrap_icon "remove" %} Permanently remove all kit measurements
+            </button>
+        {% endbuttons %}
+    </form>
+{% endblock %}

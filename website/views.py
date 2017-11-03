@@ -104,6 +104,33 @@ def kit_configure_access(request, kit_id):
     return render(request, 'website/kit_configure_access.html', {'kit': kit, 'secret': secret})
 
 @decorators.login_required
+def kit_configure_danger_zone(request, kit_id):
+    try:
+        kit = backend.models.Kit.objects.get(pk=kit_id)
+    except exceptions.ObjectDoesNotExist:
+        kit = None
+
+    if not kit or not request.user.has_perm('backend.configure_kit', kit):
+        return render(request, 'website/kit_configure_not_found.html')
+
+    Form = django.forms.modelform_factory(backend.models.Kit,
+                                          fields = ('name',),
+                                          help_texts = {'name': 'Write the name of the kit ("%s") to confirm.' % kit.name})
+    if request.method == 'POST':
+        form = Form(request.POST)
+
+        if form.is_valid():
+            kit_ = form.save(commit=False)
+            if kit_.name == kit.name:
+                pass # Todo: do stuff
+            else:
+                messages.add_message(request, messages.ERROR, 'The kit name entered is incorrect. Note that the name is case sensitive.')
+    else:
+        form = Form()
+    
+    return render(request, 'website/kit_configure_danger_zone.html', {'kit': kit, 'form': form})
+
+@decorators.login_required
 def kit_add(request):
     #: The length of the kit identifier to be generated
     RANDOM_KIT_IDENTIFIER_LENGTH = 8
