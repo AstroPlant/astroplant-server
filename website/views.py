@@ -91,7 +91,17 @@ def kit_configure_access(request, kit_id):
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
 
-    return render(request, 'website/kit_configure_access.html', {'kit': kit})
+    if request.method == 'POST':
+        secret = backend.models.Kit.generate_password()
+
+        kit.set_password(secret)
+        kit.save()
+
+        messages.add_message(request, messages.SUCCESS, 'A new secret has been generated: %s' % secret)
+    else:
+        secret = None
+
+    return render(request, 'website/kit_configure_access.html', {'kit': kit, 'secret': secret})
 
 @decorators.login_required
 def kit_add(request):

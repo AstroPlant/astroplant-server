@@ -76,6 +76,16 @@ class Kit(User):
 
         return {'name': self.name, 'sensors': sensors}
 
+    def generate_password():
+        import random
+
+        RANDOM_KIT_PASSWORD_LENGTH = 24
+
+        # Generate a password without vowels to minimize the chance 
+        # of generating bad words :)
+        # also 0, (o), 1, l, 2, z, 5, s are removed, as they look similar
+        return ''.join(random.choice('346789bcdfghjkmnpqrtvwxy') for i in range(RANDOM_KIT_PASSWORD_LENGTH))
+
 class Experiment(models.Model):
     """
     Model for experiments.

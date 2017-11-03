@@ -1,9 +1,46 @@
 {% extends 'website/kit_configure_base.html' %}
 
+{% load bootstrap3 %}
+
 {% block config_header %} 
     Access
 {% endblock %}
 
 {% block config_content %}
-    {{ kit.username }}
+    {% if kit.password %}
+        {# A password has been generated already, offer to generate a new one #}
+        <p>Use the following details to authenticate your kit with the backend.</p>
+        <p>The kit secret cannot be retrieved after generation. If you lose the secret, please generate a new one.</p>
+
+        <p>Serial:</p>
+        <pre>{{ kit.username }}</pre>
+        
+        <p>Secret:</p>
+        <pre>{% if secret %}{{ secret }}{% else %}*******{% endif %}</pre>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% buttons %}
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    {% bootstrap_icon "refresh" %} Generate new secret
+                </button>
+            {% endbuttons %}
+        </form>
+    {% else %}
+        {# No password has been generated yet #}
+        <p>Press the button below to generate a kit secret. The secret will be used to configure the kit, and will enable it to communicate with the AstroPlant server.</p>
+        <p>Once generated, the secret will be shown. It cannot be retrieved afterwards.</p>
+        <p>If you lose the kit secret, you can always generate a new one.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% buttons %}
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    {% bootstrap_icon "refresh" %} Generate secret
+                </button>
+            {% endbuttons %}
+        </form>
+    {% endif %}
 {% endblock %}
