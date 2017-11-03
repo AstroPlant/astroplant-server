@@ -92,6 +92,10 @@ footer a:hover {
   overflow: auto;
 }
 
+textarea.form-control {
+  height: 7.5em;
+}
+
 /* Other entities */
 .glyphicon {
   margin-right: 0.3em;
