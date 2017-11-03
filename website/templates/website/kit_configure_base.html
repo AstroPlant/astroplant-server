@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load bootstrap3 %}
+{% load website_extras %}
 
 {% block head_ext %}
     <link rel="stylesheet" href="{% static 'website/css/kitconfig.css' %}">
@@ -24,11 +25,11 @@
                                 <h4 class="panel-title">Kit settings</h4>
                             </div>
                             <div class="panel-body">
-                                <div class="menu-item active">
-                                    Placeholder
+                                <div class="menu-item {% navigation_active request 'website:kit_configure_profile' %}">
+                                    <a href="{% url 'website:kit_configure_profile' kit.pk %}">Profile</a>
                                 </div>
-                                <div class="menu-item">
-                                    Placeholder
+                                <div class="menu-item {% navigation_active request 'website:kit_configure_members' %}">
+                                    <a href="{% url 'website:kit_configure_members' kit.pk %}">Members</a>
                                 </div>
                             </div>
                         </div>
