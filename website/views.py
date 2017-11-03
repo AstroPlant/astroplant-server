@@ -125,8 +125,8 @@ def kit_configure_danger_zone(request, kit_id):
                 pass # Todo: do stuff
             else:
                 messages.add_message(request, messages.ERROR, 'The kit name entered is incorrect. Note that the name is case sensitive.')
-    else:
-        form = Form()
+                                         
+    form = Form()
     
     return render(request, 'website/kit_configure_danger_zone.html', {'kit': kit, 'form': form})
 
