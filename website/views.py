@@ -48,11 +48,24 @@ def kit_configure_profile(request, kit_id):
         kit = None
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
-        return  render(request, 'website/kit_configure_not_found.html')
+        return render(request, 'website/kit_configure_not_found.html')
+   
+    Form = django.forms.modelform_factory(backend.models.Kit,
+                                          fields = ('name', 'description', 'privacy_show_on_map', 'privacy_public_dashboard',),
+                                          help_texts = {
+                                              'privacy_show_on_map': 'May the kit be displayed on the public map?',
+                                              'privacy_public_dashboard': 'Should the kit\'s dashboard be public?',
+                                          })
 
-    context = {'kit': kit}
+    if request.method == 'POST':
+        form = Form(request.POST, instance=kit)
 
-    return render(request, 'website/kit_configure_profile.html', context)
+        if form.is_valid():
+            form.save()
+    else:
+        form = Form(instance=kit)
+
+    return render(request,'website/kit_configure_profile.html', {'kit': kit, 'form': form})
 
 @decorators.login_required
 def kit_configure_members(request, kit_id):
@@ -62,7 +75,7 @@ def kit_configure_members(request, kit_id):
         kit = None
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
-        return  render(request, 'website/kit_configure_not_found.html')
+        return render(request, 'website/kit_configure_not_found.html')
 
     context = {'kit': kit}
 

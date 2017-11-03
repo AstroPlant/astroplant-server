@@ -1,5 +1,20 @@
 {% extends 'website/kit_configure_base.html' %}
 
+{% load bootstrap3 %}
+
 {% block config_header %} 
     Profile
+{% endblock %}
+
+{% block config_content %}
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+        
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                {% bootstrap_icon "ok" %} Save
+            </button>
+        {% endbuttons %}
+    </form>
 {% endblock %}
