@@ -124,12 +124,15 @@ def sensor_definition_configure(request, sensor_definition_id):
     """
     View to configure a Django sensor definition.
     """
-    sensor_definition_query = backend.models.SensorDefinition.objects.filter(pk = sensor_definition_id, owner = request.user)
+    sensor_definition_query = backend.models.SensorDefinition.objects.filter(pk = sensor_definition_id)
 
     if not sensor_definition_query:
         return render(request, 'website/sensor_definition_configure_not_found.html', {})
 
     sensor_definition = sensor_definition_query.first()
+
+    if not request.user.has_perm('backend.edit_sensor_definition', sensor_definition):
+        return render(request, 'website/sensor_definition_configure_not_found.html', {})
 
     SensorDefinitionForm = django.forms.modelform_factory(backend.models.SensorDefinition,
                                           fields = ('description', 'public', 'brand', 'type', 'class_name',),
