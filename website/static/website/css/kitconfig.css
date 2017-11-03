@@ -1,3 +1,6 @@
-.config-content h1, .config-content h2, .config-content h3, .config-content h4, .config-content h5, .config-content h6 {
+.config-header {
+  border-bottom: 1px solid RGB(221, 221, 221);
+}
+.config-header h1, .config-header h2, .config-header h3, .config-header h4, .config-header h5, .config-header h6 {
   margin-top: 2px;
 }

@@ -1,7 +1,9 @@
 @import "variables.scss";
 
-.config-content {
+.config-header {
     #{headings(1,6)} {
         margin-top: 2px;
     }
+    
+    border-bottom: 1px solid $borderColorLightGray;
 }

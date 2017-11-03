@@ -17,25 +17,36 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-3">
-                <div class="panel-group menu">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4 class="panel-title">Kit settings</h4>
-                        </div>
-                        <div class="panel-body">
-                            <div class="menu-item active">
-                                Placeholder
+                <nav>
+                    <div class="panel-group menu">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">Kit settings</h4>
                             </div>
-                            <div class="menu-item">
-                                Placeholder
+                            <div class="panel-body">
+                                <div class="menu-item active">
+                                    Placeholder
+                                </div>
+                                <div class="menu-item">
+                                    Placeholder
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </nav>
             </div>
-            <div class="col-xs-9 config-content">
-                {% block config_content %}
-                {% endblock %}
+            <div class="col-xs-9">
+                <section class="config">
+                    <header class="config-header">
+                        {% block config_header %}
+                        {% endblock %}
+                    </header>
+                
+                    <div class="config-content">
+                        {% block config_content %}
+                        {% endblock %}
+                    </div>
+                </section>
             </div>
         
         </div>
