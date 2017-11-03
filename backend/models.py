@@ -100,7 +100,6 @@ class MeasurementType(models.Model):
     Model to hold the definitions for the types of measurements.
     """
 
-    name = models.CharField(max_length = 100)
     physical_quantity = models.CharField(max_length = 100)
     physical_unit = models.CharField(max_length = 100)
     physical_unit_symbol = models.CharField(max_length = 100)
