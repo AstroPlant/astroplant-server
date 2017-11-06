@@ -56,13 +56,14 @@
         map.fitWorld();
         
         map.on('click', function(e) {
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(map);
             control.options.geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
                 var r = results[0];
                 if (r) {
-                    if (marker) {
-                        map.removeLayer(marker);
-                    }
-                    marker = L.marker(e.latlng).bindPopup(r.html || r.name).addTo(map).openPopup();
+                    marker = marker.bindPopup(r.html || r.name).openPopup();
                 }
             })
         });
