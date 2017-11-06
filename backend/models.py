@@ -2,6 +2,7 @@
 Module defining backend AstroPlant models.
 """
 
+import datetime
 from django.db import models
 import django.contrib.auth.models
 from django.contrib.auth.models import AbstractUser
@@ -117,7 +118,7 @@ class KitMembership(models.Model):
     """
     user = models.ForeignKey(PersonUser, on_delete = models.CASCADE, related_name = 'memberships')
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE, related_name = 'memberships')
-    date_time_linked = models.DateTimeField()
+    date_time_linked = models.DateTimeField(default=datetime.datetime.now)
 
     def __str__(self):
         return "%s - %s" % (self.kit, self.user)
