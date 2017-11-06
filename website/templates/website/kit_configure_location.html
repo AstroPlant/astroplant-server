@@ -1,0 +1,71 @@
+{% extends 'website/kit_configure_base.html' %}
+
+{% load bootstrap3 %}
+
+{% block head_ext %}
+    {{ block.super }}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css"
+       integrity="sha384-roIisdke7t73jKsr2CM69N0uJch+a+lQBCuw3Li2ZuLKaWn46fxTAp31h9VA4odd"
+       crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"
+        integrity="sha384-9fzrQY4JobN87hT5sQ0JnL9XZQ5q94Qj46ZFqpcBzz03D3UDKAkN/pKct1IVlP2Y"
+        crossorigin=""></script>
+        
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder@1.5.6/dist/Control.Geocoder.css"
+        integrity="sha384-48hw9klGkX4DXjcuRywApw352iiYhe0lCFnm1Gz2gBO3aHNJFVpukSCkEZzipJdK"
+        crossorigin=""/>
+    <script src="https://unpkg.com/leaflet-control-geocoder@1.5.6/dist/Control.Geocoder.js"
+        integrity="sha384-swY/FbGwFh85wmt9i/9sFcESBzPZyJUVpiURQ8EqqidhdW1oPRVnCvP0YK5CRZJT"
+        crossorigin=""></script>
+        
+    <style>
+        #leaflet-map { height: 650px; }
+    </style>
+{% endblock %}
+
+{% block config_header %} 
+    Location
+{% endblock %}
+
+{% block config_content %}
+    <div id="leaflet-map"></div>
+    <script>
+        var map = L.map('leaflet-map');
+                
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+            maxZoom: 18,
+            continuousWorld: false,
+            noWrap: true
+        }).addTo(map);
+        
+        var control = L.Control.geocoder({
+            defaultMarkGeocode: false
+        })
+            .on('markgeocode', function(e) {
+                map.fitBounds(e.geocode.bbox);
+                
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                marker = L.marker(e.geocode.center).bindPopup(e.geocode.html || e.geocode.name).addTo(map).openPopup();
+            })
+            .addTo(map);
+        var marker;
+        
+        map.fitWorld();
+        
+        map.on('click', function(e) {
+            control.options.geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
+                var r = results[0];
+                if (r) {
+                    if (marker) {
+                        map.removeLayer(marker);
+                    }
+                    marker = L.marker(e.latlng).bindPopup(r.html || r.name).addTo(map).openPopup();
+                }
+            })
+        });
+        
+    </script>
+{% endblock %}
