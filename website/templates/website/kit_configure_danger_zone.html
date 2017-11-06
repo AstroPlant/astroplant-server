@@ -27,11 +27,11 @@
         
         {% buttons %}
             <hr>
-            <button type="submit" class="btn btn-danger" data-toggle="confirmation" style="width: 100%;">
+            <button type="submit" name="action" value="remove_kit" class="btn btn-danger" data-toggle="confirmation" style="width: 100%;">
                 {% bootstrap_icon "remove" %} Permanently remove kit and all associated data
             </button>
             <hr>
-            <button type="submit" class="btn btn-danger" data-toggle="confirmation" style="width: 100%;">
+            <button type="submit" name="action" value="remove_measurements" class="btn btn-danger" data-toggle="confirmation" style="width: 100%;">
                 {% bootstrap_icon "remove" %} Permanently remove all kit measurements
             </button>
         {% endbuttons %}

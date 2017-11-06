@@ -127,7 +127,15 @@ def kit_configure_danger_zone(request, kit_id):
         if form.is_valid():
             kit_ = form.save(commit=False)
             if kit_.name == kit.name:
-                pass # Todo: do stuff
+                if request.POST.get('action') == "remove_measurements":
+                    kit.measurement_set.all().delete()
+                    messages.add_message(request, messages.SUCCESS, 'All measurements have been removed from the kit.')
+                elif request.POST.get('action') == "remove_kit":
+                    kit.delete()
+                    messages.add_message(request, messages.SUCCESS, 'The kit has been removed.')
+                    return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:dashboard'))
+                else: 
+                    messages.add_message(request, messages.ERROR, 'An error occured. Please try again.')
             else:
                 messages.add_message(request, messages.ERROR, 'The kit name entered is incorrect. Note that the name is case sensitive.')
                                          
