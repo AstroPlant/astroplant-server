@@ -1,0 +1,6 @@
+{% load gravatar %}
+{% if user.use_gravatar %}
+    {% gravatar user.email size %}
+{% else %}
+    {% gravatar user.gravatar_alternative size %}
+{% endif %}

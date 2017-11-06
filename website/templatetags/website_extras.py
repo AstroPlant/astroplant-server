@@ -1,5 +1,6 @@
 from django import template
 from django.core.urlresolvers import resolve
+from django.shortcuts import render
 
 register = template.Library()
 
@@ -11,3 +12,6 @@ def navigation_active(request, urls):
         return "active"
     return ""
     
+@register.inclusion_tag('website/fragments/gravatar.html')
+def user_avatar(user, size = 150):
+    return {'user': user, 'size': size}
