@@ -1,6 +1,2 @@
 {% load gravatar %}
-{% if user.use_gravatar %}
-    {% gravatar user.email size %}
-{% else %}
-    {% gravatar user.gravatar_alternative size %}
-{% endif %}
+<img class="avatar gravatar" src="{% if user.use_gravatar %}{% gravatar_url user.email size %}{% else %}{% gravatar_url user.gravatar_alternative size %}{% endif %}" width="{{ size }}" height="{{ size }}" alt="{{ user.username }}'s avatar" />

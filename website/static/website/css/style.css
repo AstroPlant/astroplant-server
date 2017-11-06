@@ -71,6 +71,11 @@ main {
   margin-bottom: 2.5em;
 }
 
+/* Avatars */
+img.avatar {
+  border-radius: 3px;
+}
+
 /* Footer */
 footer {
   padding: 4em 0 4em;
