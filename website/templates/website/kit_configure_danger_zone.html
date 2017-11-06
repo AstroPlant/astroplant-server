@@ -4,6 +4,8 @@
 {% load bootstrap3 %}
 
 {% block head_ext %}
+    {{ block.super }}
+
     <script src="{% static 'website/js/bootstrap-confirmation.min.js' %}"></script>
     <script>
         $(document).ready(function() {
