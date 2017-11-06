@@ -39,19 +39,20 @@
             noWrap: true
         }).addTo(map);
         
+        var marker;
+        
         var control = L.Control.geocoder({
             defaultMarkGeocode: false
         })
-            .on('markgeocode', function(e) {
-                map.fitBounds(e.geocode.bbox);
-                
-                if (marker) {
-                    map.removeLayer(marker);
-                }
-                marker = L.marker(e.geocode.center).bindPopup(e.geocode.html || e.geocode.name).addTo(map).openPopup();
-            })
-            .addTo(map);
-        var marker;
+        .on('markgeocode', function(e) {
+            map.fitBounds(e.geocode.bbox);
+            
+            if (marker) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker(e.geocode.center).bindPopup(e.geocode.html || e.geocode.name).addTo(map).openPopup();
+        })
+        .addTo(map);
         
         map.fitWorld();
         
