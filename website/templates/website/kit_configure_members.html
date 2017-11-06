@@ -1,5 +1,47 @@
 {% extends 'website/kit_configure_base.html' %}
 
+{% load static %}
+{% load bootstrap3 %}
+{% load website_extras %}
+
+{% block head_ext %}
+    {{ block.super }}
+
+    <script src="{% static 'website/js/bootstrap-confirmation.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle=confirmation]').confirmation({
+                rootSelector: '[data-toggle=confirmation]'
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block config_header %} 
     Members
+{% endblock %}
+
+{% block config_content %}
+    <form method="post">
+        {% csrf_token %}
+    
+        {% for membership in memberships %}
+            <div class="members-user">
+                <div class="user">
+                    <div class="avatar">
+                        {% user_avatar membership.user 75 %}
+                    </div>
+                    <div class="username">
+                        {{ membership.user.username }}
+                    </div>
+                </div>
+                <div class="controls">
+                    <button type="submit" name="remove_user" value="{{ membership.user.pk }}" class="btn btn-danger" data-toggle="confirmation">
+                        {% bootstrap_icon "remove" %} Remove
+                    </button>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+    </form>
 {% endblock %}

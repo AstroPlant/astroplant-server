@@ -1,4 +1,5 @@
 @import "variables.scss";
+@import "mixins.scss";
 
 .config-header {
     #{headings(1,6)} {
@@ -7,4 +8,27 @@
     
     border-bottom: 1px solid $borderColorLightGray;
     margin-bottom: 1em;
+}
+
+
+.members-user {
+    @include clearfix();
+    
+    .user {
+        float: left;
+
+        .avatar {
+            margin-right: 0.5em;
+            display: inline;
+        }
+        
+        .username {
+            display: inline;
+            font-size: 1.2em;
+        }
+    }
+    
+    .controls {
+        float: right;
+    }
 }

@@ -81,8 +81,17 @@ def kit_configure_members(request, kit_id):
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
 
-    context = {'kit': kit}
+    if request.method == 'POST':
+        user_to_remove = request.POST.get('remove_user')
+        membership = kit.memberships.filter(user=user_to_remove).first()
+        if membership:
+            membership.delete()
+            messages.add_message(request, messages.SUCCESS, 'The user has been removed.')
+        else: 
+            messages.add_message(request, messages.ERROR, 'The user could not be found.')
 
+    memberships = kit.memberships.all()
+    context = {'kit': kit, 'memberships': memberships}
     return render(request, 'website/kit_configure_members.html', context)
 
 @decorators.login_required
