@@ -95,9 +95,17 @@ main {
     margin-bottom: 2.5em;
 }
 
-/* Avatars */
-img.avatar {
-    border-radius: 3px;
+/* Avatars and users */
+
+.user {
+    .avatar {
+        margin-right: 0.5em;
+        border-radius: 3px;
+    }
+    
+    .username {
+        display: inline;
+    }
 }
 
 /* Footer */

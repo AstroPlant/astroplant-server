@@ -13,5 +13,9 @@ def navigation_active(request, urls):
     return ""
     
 @register.inclusion_tag('website/fragments/gravatar.html')
-def user_avatar(user, size = 150):
+def user_avatar(user, size = 100):
     return {'user': user, 'size': size}
+
+@register.inclusion_tag('website/fragments/user.html')
+def user_with_avatar(user, avatar_size = 100):
+    return {'user': user, 'avatar_size': avatar_size}

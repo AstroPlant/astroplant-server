@@ -1,5 +1,8 @@
 from django.conf.urls import include, url
 from . import views
+from . import autocomplete
+
+import backend
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -23,5 +26,8 @@ urlpatterns = [
         url(r'^(?P<sensor_definition_id>[0-9]+)/', include([
             url(r'^configure/$', views.sensor_definition_configure, name='sensor_definition_configure'),
         ])),
+    ])),
+    url(r'^autocomplete/', include([
+        url(r'^users/$', autocomplete.PersonUserAutocomplete.as_view(), name='autocomplete-users'),
     ])),
 ]

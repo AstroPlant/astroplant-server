@@ -77,9 +77,13 @@ main {
   margin-bottom: 2.5em;
 }
 
-/* Avatars */
-img.avatar {
+/* Avatars and users */
+.user .avatar {
+  margin-right: 0.5em;
   border-radius: 3px;
+}
+.user .username {
+  display: inline;
 }
 
 /* Footer */

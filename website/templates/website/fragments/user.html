@@ -1,0 +1,10 @@
+{% load website_extras %}
+
+<span class="user">
+    <span class="user-avatar">
+        {% user_avatar user avatar_size %}
+    </span>
+    <span class="user-name">
+        {{ user }}
+    </span>
+</span>
