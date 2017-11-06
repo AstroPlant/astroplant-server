@@ -1,6 +1,7 @@
 # Project
 tmp/
 server/secretsettings.py
+bower_components
 
 # Python / Django
 *.egg-info

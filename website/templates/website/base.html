@@ -7,11 +7,10 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{% static 'website/bower_components/jquery/dist/jquery.min.js' %}"></script>
+        <script src="{% static 'website/bower_components/bootstrap/dist/js/bootstrap.min.js' %}"></script>
         
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
-        
+        <link rel="stylesheet" href="{% static 'website/bower_components/bootstrap/dist/css/bootstrap.min.css' %}">
         <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato|Roboto:300"> 
         <link rel="stylesheet" href="{% static 'website/css/style.css' %}">
         
