@@ -15,6 +15,8 @@
             });
         });
     </script>
+    
+    {{ form.media }}
 {% endblock %}
 
 {% block config_header %} 
@@ -28,12 +30,7 @@
         {% for membership in memberships %}
             <div class="members-user">
                 <div class="user">
-                    <div class="avatar">
-                        {% user_avatar membership.user 75 %}
-                    </div>
-                    <div class="username">
-                        {{ membership.user.username }}
-                    </div>
+                    {% user_with_avatar membership.user %}
                 </div>
                 <div class="controls">
                     <button type="submit" name="remove_user" value="{{ membership.user.pk }}" class="btn btn-danger" data-toggle="confirmation">
@@ -43,5 +40,16 @@
             </div>
             <hr>
         {% endfor %}
+    </form>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        
+        {% buttons %}
+            <button type="submit" name="add_user" value="add_user" class="btn btn-primary" style="width: 100%;">
+                {% bootstrap_icon "add" %} Add user
+            </button>
+        {% endbuttons %}
     </form>
 {% endblock %}

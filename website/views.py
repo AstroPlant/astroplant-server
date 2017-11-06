@@ -8,6 +8,7 @@ import django.http
 import django.urls.base
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
 from registration.backends.hmac import views as registration_views
+from dal import autocomplete
 
 import backend.models
 import website.forms
@@ -81,17 +82,38 @@ def kit_configure_members(request, kit_id):
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
 
-    if request.method == 'POST':
-        user_to_remove = request.POST.get('remove_user')
-        membership = kit.memberships.filter(user=user_to_remove).first()
-        if membership:
-            membership.delete()
-            messages.add_message(request, messages.SUCCESS, 'The user has been removed.')
-        else: 
-            messages.add_message(request, messages.ERROR, 'The user could not be found.')
+    Form = django.forms.modelform_factory(backend.models.KitMembership,
+                                        fields = ('user',),
+                                        labels = {'user': 'Add a user to the kit'},
+                                        widgets = {'user': autocomplete.Select2(url='website:autocomplete-users', attrs={'data-html': True})})
 
+    if request.method == 'POST':
+        if request.POST.get('remove_user'):
+            user_to_remove = request.POST.get('remove_user')
+            membership = kit.memberships.filter(user=user_to_remove).first()
+            if membership:
+                membership.delete()
+                messages.add_message(request, messages.SUCCESS, 'The user has been removed.')
+            else: 
+                messages.add_message(request, messages.ERROR, 'The user could not be found.')
+        elif request.POST.get('add_user'):
+            form = Form(request.POST)
+            
+            if form.is_valid():
+                membership = form.save(commit = False)
+
+                existing_membership = kit.memberships.filter(user=membership.user)
+                if existing_membership:
+                    messages.add_message(request, messages.ERROR, 'That user already is a member.')
+                else:
+                    membership.kit = kit
+                    membership.save()
+                    messages.add_message(request, messages.SUCCESS, 'The user has been added.')
+
+    form = Form()
+    
     memberships = kit.memberships.all()
-    context = {'kit': kit, 'memberships': memberships}
+    context = {'kit': kit, 'memberships': memberships, 'form': form}
     return render(request, 'website/kit_configure_members.html', context)
 
 @decorators.login_required
