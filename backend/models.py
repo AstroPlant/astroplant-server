@@ -6,12 +6,29 @@ from django.db import models
 import django.contrib.auth.models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
+import random
 
 class User(AbstractUser):
     pass
 
+def _generate_gravatar_alternative():
+    """
+    Users can opt-out of using gravatar (as some consider it a privacy risk,
+    as the hash of their e-mail is published).
+
+    This method generates a random string (but unique per user) that can be used 
+    in lieu of email addresses to generate unique gravatar identicons.
+    """
+    import random
+
+    RANDOM_STRING_LENGTH = 125
+
+    return ''.join(random.choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(RANDOM_STRING_LENGTH))
+
 class PersonUser(User):
-    pass
+    use_gravatar = models.BooleanField(default = True)
+    gravatar_alternative = models.TextField(max_length = 255, default = _generate_gravatar_alternative)
+
 
 class Kit(User):
     """
@@ -98,8 +115,8 @@ class KitMembership(models.Model):
     """
     Link table for kits and users, with additional data fields.
     """
-    user = models.ForeignKey(PersonUser, on_delete = models.CASCADE)
-    kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
+    user = models.ForeignKey(PersonUser, on_delete = models.CASCADE, related_name = 'memberships')
+    kit = models.ForeignKey(Kit, on_delete = models.CASCADE, related_name = 'memberships')
     date_time_linked = models.DateTimeField()
 
     def __str__(self):

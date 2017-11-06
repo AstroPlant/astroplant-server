@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Third part apps
     'bootstrap3',
     'braces',
+    'django_gravatar',
     'rules.apps.AutodiscoverRulesConfig',
     'rest_framework',
     'channels',
@@ -180,3 +181,6 @@ EMAIL_FILE_PATH = 'tmp/mails'
 
 # Timezones
 USE_TZ = True
+
+# Gravatar
+GRAVATAR_DEFAULT_IMAGE = 'identicon'
