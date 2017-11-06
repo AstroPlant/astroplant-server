@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     # Own apps (place them first, so our templates overwrite built-in and third party templates)
     'website',
     'backend',
+    # Autocomplete
+    'dal',
+    'dal_select2',
     # Django apps
     'django.contrib.admin',
     'django.contrib.auth',
