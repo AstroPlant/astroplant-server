@@ -84,7 +84,7 @@ def kit_configure_members(request, kit_id):
 
     Form = django.forms.modelform_factory(backend.models.KitMembership,
                                         fields = ('user',),
-                                        labels = {'user': 'Add a user to the kit'},
+                                        labels = {'user': 'Add another user to %s' % kit.name},
                                         widgets = {'user': autocomplete.Select2(url='website:autocomplete-users', attrs={'data-html': True})})
 
     if request.method == 'POST':
