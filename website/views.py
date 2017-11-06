@@ -119,7 +119,8 @@ def kit_configure_danger_zone(request, kit_id):
 
     Form = django.forms.modelform_factory(backend.models.Kit,
                                           fields = ('name',),
-                                          help_texts = {'name': 'Write the name of the kit ("%s") to confirm.' % kit.name})
+                                          help_texts = {'name': 'Write the name of the kit ("%s") to confirm.' % kit.name},
+                                          widgets = {'name': django.forms.TextInput(attrs={'autocomplete': 'off'})},)
     if request.method == 'POST':
         form = Form(request.POST)
 
