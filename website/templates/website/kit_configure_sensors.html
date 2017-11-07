@@ -1,0 +1,70 @@
+{% extends 'website/kit_configure_base.html' %}
+
+{% load bootstrap3 %}
+
+{% block title %}Sensors | {{ block.super }}{% endblock %}
+
+{% block config_header %} 
+    Sensors
+{% endblock %}
+
+{% block config_content %}
+    <h3>Active sensors</h3>
+    {% for sensor in active_sensors %}
+        <div class="sensor">
+            <h4>{{ sensor.name }}</h4>
+            {% with sensor.sensor_definition as sensor_definition %}
+            <div class="row">
+                <div class="col-sm-3"><strong>Sensor type</strong></div>
+                <div class="col-sm-9">{{ sensor_definition }}</div>
+                
+                <div class="col-sm-3"><strong>Date added</strong></div>
+                <div class="col-sm-9">{{ sensor.date_time_added }}</div>
+                
+                {% if sensor_definition.sensor_configuration_definitions.all %}
+                    <div class="col-xs-12"><h4>Configuration</h4></div>
+                    {% for sensor_configuration in sensor.sensor_configurations.all %}
+                        <div class="col-sm-3"><strong>{{ sensor_configuration.sensor_configuration_definition.name }}</strong></div>
+                        <div class="col-sm-9">{{ sensor_configuration.value }}</div>
+                    {% empty %}
+                        <div class="col-xs-12">All parameters are at their defaults.</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% endwith %}
+    {% empty %}
+        <div class="col-xs-12"><p>There are no active sensors on the kit.</p></div>
+    {% endfor %}
+    
+    <h3>Removed sensors</h3>
+    {% for sensor in inactive_sensors %}
+        <div class="sensor">
+            <h4>{{ sensor.name }}</h4>
+            {% with sensor.sensor_definition as sensor_definition %}
+            <div class="row">
+                <div class="col-sm-3"><strong>Sensor type</strong></div>
+                <div class="col-sm-9">{{ sensor_definition }}</div>
+                
+                <div class="col-sm-3"><strong>Date added</strong></div>
+                <div class="col-sm-9">{{ sensor.date_time_added }}</div>
+                
+                <div class="col-sm-3"><strong>Date removed</strong></div>
+                <div class="col-sm-9">{{ sensor.date_time_removed }}</div>
+                
+                {% if sensor_definition.sensor_configuration_definitions.all %}
+                    <div class="col-xs-12"><h4>Configuration</h4></div>
+                    {% for sensor_configuration in sensor.sensor_configurations.all %}
+                        <div class="col-sm-3"><strong>{{ sensor_configuration.sensor_configuration_definition.name }}</strong></div>
+                        <div class="col-sm-9">{{ sensor_configuration.value }}</div>
+                    {% empty %}
+                        <div class="col-xs-12">All parameters are at their defaults.</div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% endwith %}
+    {% empty %}
+        <div class="col-xs-12"><p>There are no removed sensors.</p></div>
+    {% endfor %}
+{% endblock %}

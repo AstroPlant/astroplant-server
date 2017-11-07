@@ -36,8 +36,8 @@
                                 <div class="menu-item {% navigation_active request 'website:kit_configure_location' %}">
                                     <a href="{% url 'website:kit_configure_location' kit.pk %}">Location</a>
                                 </div>
-                                <div class="menu-item">
-                                    <a href="#">Sensors</a>
+                                <div class="menu-item {% navigation_active request 'website:kit_configure_sensors' %}">
+                                    <a href="{% url 'website:kit_configure_sensors' kit.pk %}">Sensors</a>
                                 </div>
                                 <div class="menu-item">
                                     <a href="#">Actuators</a>
