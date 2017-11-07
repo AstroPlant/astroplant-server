@@ -63,7 +63,7 @@ class Kit(User):
 
         # Generate the configuration dictionary for each sensor
         sensors = []
-        for sensor in self.sensor_set.filter(active = True).all():
+        for sensor in self.sensors.filter(active = True).all():
 
             # Get the sensor definition
             sensor_definition = sensor.sensor_definition
@@ -178,7 +178,9 @@ class Sensor(models.Model):
     to a single kit.
     """
 
-    kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
+    kit = models.ForeignKey(Kit,
+                            on_delete = models.CASCADE,
+                            related_name = 'sensors')
     sensor_definition = models.ForeignKey(SensorDefinition,
                                           on_delete = models.CASCADE)
     name = models.CharField(max_length = 100)
