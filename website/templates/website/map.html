@@ -33,7 +33,9 @@
         
         L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
-            maxZoom: 18
+            maxZoom: 18,
+            continuousWorld: false,
+            noWrap: true
         }).addTo(map);
         
         var markers = [];
