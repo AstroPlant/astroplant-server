@@ -126,7 +126,21 @@ def kit_configure_location(request, kit_id):
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
 
-    context = {'kit': kit}
+    Form = django.forms.modelform_factory(backend.models.Kit,
+                                          fields = ('latitude', 'longitude',))
+
+    form = Form(instance=kit)
+
+    if request.method == 'POST':
+        form = Form(request.POST, instance=kit)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, 'The kit\'s location has been saved.')
+        else:
+            messages.add_message(request, messages.ERROR, 'An error occurred while attempting to save the kit\'s location.')
+
+
+    context = {'kit': kit, 'form': form}
     return render(request, 'website/kit_configure_location.html', context)
 
 

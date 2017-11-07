@@ -28,7 +28,29 @@
 {% endblock %}
 
 {% block config_content %}
+    {% if kit.privacy_show_on_map %}
+        <p>The kit will be shown on the public map.</p>
+    {% else %}
+        <p>The kit will not be shown on the public map.</p>
+    {% endif %}
+    <p>This can be configured <a href="{% url 'website:kit_configure_profile' kit.pk %}">here</a>.</p>
+
     <div id="leaflet-map"></div>
+    
+    <hr>
+    
+    <form method="post">
+        {% csrf_token %}
+    
+        <input type="text" name="latitude" hidden>
+        <input type="text" name="longitude" hidden>
+        
+        {% buttons %}
+            <button type="submit" class="btn btn-primary" data-toggle="confirmation">
+                {% bootstrap_icon "ok" %} Save
+            </button>
+        {% endbuttons %}
+    </form>
     <script>
         var map = L.map('leaflet-map');
                 
@@ -46,6 +68,7 @@
         })
         .on('markgeocode', function(e) {
             map.fitBounds(e.geocode.bbox);
+            setLatLng(e.geocode.center);
             
             if (marker) {
                 map.removeLayer(marker);
@@ -57,9 +80,12 @@
         map.fitWorld();
         
         map.on('click', function(e) {
+            setLatLng(e.latlng);
+            
             if (marker) {
                 map.removeLayer(marker);
             }
+            
             marker = L.marker(e.latlng).addTo(map);
             control.options.geocoder.reverse(e.latlng, map.options.crs.scale(map.getZoom()), function(results) {
                 var r = results[0];
@@ -69,5 +95,21 @@
             })
         });
         
+        {% if kit.latitude and kit.longitude %}
+            var latlng = {lat: {{ kit.latitude }}, lng: {{ kit.longitude }}};
+            marker = L.marker(latlng).addTo(map);
+            map.setView(latlng, 12);
+            control.options.geocoder.reverse(latlng, map.options.crs.scale(map.getZoom()), function(results) {
+                var r = results[0];
+                if (r) {
+                    marker = marker.bindPopup(r.html || r.name).openPopup();
+                }
+            })
+        {% endif %}
+        
+        function setLatLng(latlng) {
+            $('[name="latitude"]').val(latlng.lat.toFixed(4));
+            $('[name="longitude"]').val(latlng.lng.toFixed(4));
+        }
     </script>
 {% endblock %}
