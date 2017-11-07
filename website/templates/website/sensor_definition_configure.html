@@ -3,6 +3,8 @@
 {% load static %}
 {% load bootstrap3 %}
 
+{% block title %}Configure sensor definition - {{ block.super }}{% endblock %}
+
 {% block header %}
     <h1>{{ sensor_definition.name }}</h1>
     <p>Configure sensor definition</p>

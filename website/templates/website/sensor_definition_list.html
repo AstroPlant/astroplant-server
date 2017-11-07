@@ -4,6 +4,8 @@
 {% load bootstrap3 %}
 {% load rules %}
 
+{% block title %}Sensor definitions - {{ block.super }}{% endblock %}
+
 {% block head_ext %}
     <link rel="stylesheet" href="{% static 'website/css/sensors.css' %}">
 {% endblock %}

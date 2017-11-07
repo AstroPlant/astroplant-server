@@ -4,6 +4,8 @@
 {% load bootstrap3 %}
 {% load website_extras %}
 
+{% block title %}Kit configuration - {{ block.super }}{% endblock %}
+
 {% block head_ext %}
     <link rel="stylesheet" href="{% static 'website/css/kitconfig.css' %}">
 {% endblock %}

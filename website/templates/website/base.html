@@ -16,7 +16,7 @@
         
         <link rel="icon" type="image/png" href="{% static 'website/images/favicons/icon.png' %}" sizes="16x16">
         
-        <title>AstroPlant</title>
+        <title>{% block title %}AstroPlant{% endblock %}</title>
         {% block head_ext %}
         {% endblock %}
     </head>

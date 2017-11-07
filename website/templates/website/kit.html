@@ -4,6 +4,11 @@
 {% load bootstrap3 %}
 {% load rules %}
 
+{% block title %}
+    {% if can_view_kit_dashboard %}{{ kit.name }} - {{ block.super }}{% else %}Kit not found - {{ block.super }}{% endif %}
+{% endblock %}
+
+
 {% block head_ext %}
     {% if can_view_kit_dashboard %}
         <link rel="stylesheet" href="{% static 'website/css/bootstrap-stacked-tabs.min.css' %}">
