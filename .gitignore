@@ -1,7 +1,6 @@
 # Project
 tmp/
 server/secretsettings.py
-bower_components
 website/static/website/css
 website/static/website/js
 
