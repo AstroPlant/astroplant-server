@@ -1,0 +1,26 @@
+{
+  "name": "astroplant-server",
+  "version": "0.1.0",
+  "repository": "https://github.com/AstroPlant/astroplant-server.git",
+  "author": "AstroPlant",
+  "scripts": {
+    "build": "webpack"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "bootstrap-confirmation2": "~2.4.0",
+    "c3": "~0.4.18",
+    "jquery": "~3.2.1"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.7",
+    "expose-loader": "^0.7.3",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.5",
+    "node-sass": "^4.6.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.19.0",
+    "url-loader": "^0.6.2",
+    "webpack": "^3.8.1"
+  }
+}

@@ -2,6 +2,8 @@
 tmp/
 server/secretsettings.py
 bower_components
+website/static/website/css
+website/static/website/js
 
 # Python / Django
 *.egg-info
@@ -19,6 +21,9 @@ tests/.coverage
 build/
 tests/report/
 migrations
+
+# Node
+node_modules/
 
 # Visual studio
 *.sln

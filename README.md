@@ -11,6 +11,22 @@ The server requires a database to function. It has only been tested with MySQL/M
 
 Edit `server/settings.py`.
 
+# Prepare static resources
+
+The static javascript and css resources have to be prepared prior to running the server.
+
+To do this, ensure npm is installed. Now install the project dependencies. In the root directory of the project, run:
+
+```
+npm install
+```
+
+Next, build the assets to static files:
+
+```
+npm run-script build
+```
+
 # Running the server
 
 It is recommended to host the server through a webserver using `server/WSGI.py`, such as Nginx with uWGSI.
