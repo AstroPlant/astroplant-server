@@ -1,7 +1,7 @@
 {% extends 'website/base.html' %}
 
-{% load static %}
-{% load bootstrap3 %}
+{% load bootstrap4 %}
+{% load website_extras %}
 
 {% block header %}
     <h1>Add a sensor definition</h1>
@@ -17,7 +17,7 @@
             {% bootstrap_form form layout='horizontal' %}
             {% buttons %}
                 <button type="submit" class="btn btn-primary">
-                    {% bootstrap_icon "plus" %} Add
+                    {% icon "plus" %} Add
                 </button>
             {% endbuttons %}
         </form>

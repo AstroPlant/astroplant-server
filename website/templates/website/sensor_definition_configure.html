@@ -1,7 +1,7 @@
 {% extends 'website/base.html' %}
 
-{% load static %}
-{% load bootstrap3 %}
+{% load bootstrap4 %}
+{% load website_extras %}
 
 {% block title %}Configure sensor definition - {{ block.super }}{% endblock %}
 
@@ -23,7 +23,7 @@
             </div>
             {% buttons %}
                 <button type="submit" class="btn btn-primary">
-                    {% bootstrap_icon "ok" %} Save
+                    {% icon "check" %} Save
                 </button>
             {% endbuttons %}
         </form>
