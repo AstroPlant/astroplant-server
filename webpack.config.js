@@ -43,8 +43,23 @@ module.exports = {
                 }]
             })
         }, {
-            test: /\.(png|woff|woff2|eot|ttf|svg)$/,
-            loader: 'url-loader?limit=100000'
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url-loader?name=../files/[hash].[ext]&limit=10000&mimetype=application/font-woff"
+        }, {
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url-loader?name=../files/[hash].[ext]&limit=10000&mimetype=application/font-woff"
+        }, {
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url-loader?name=../files/[hash].[ext]&limit=10000&mimetype=application/octet-stream"
+        }, {
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "file-loader?name=../files/[hash].[ext]"
+        }, {
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            loader: "url-loader?name=../files/[hash].[ext]&limit=10000&mimetype=image/svg+xml"
+        }, {
+            test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'url-loader?name=../files/[hash].[ext]&limit=100000&mimetype=image/png'
         }, {
             test: require.resolve('jquery'),
             use: [{

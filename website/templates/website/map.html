@@ -1,7 +1,7 @@
 {% extends 'website/base.html' %}
 
 {% load static %}
-{% load bootstrap3 %}
+{% load website_extras %}
 
 {% block title %}Map - {{ block.super }}{% endblock %}
 
@@ -46,7 +46,7 @@
             {% if kit.latitude and kit.longitude %}
                 var marker = L.marker([{{ kit.latitude }}, {{ kit.longitude }}]);
                 {% if kit.privacy_public_dashboard %}
-                    marker.bindPopup('<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p><p><a href="{% url 'website:kit' kit.id %}" title="Access kit" type="button" class="btn btn-primary" style="color: #fff;">{% bootstrap_icon 'triangle-right' %} Open</a></p>');
+                    marker.bindPopup('<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p><p><a href="{% url 'website:kit' kit.id %}" title="Access kit" type="button" class="btn btn-primary" style="color: #fff;">{% icon 'chevron-right' %} Open</a></p>');
                 {% else %}
                     marker.bindPopup('<h3>{{ kit.name }}</h3><p>{{ kit.description }}</p>');
                 {% endif %}

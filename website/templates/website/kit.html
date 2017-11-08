@@ -1,8 +1,8 @@
 {% extends 'website/base.html' %}
 
 {% load static %}
-{% load bootstrap3 %}
 {% load rules %}
+{% load website_extras %}
 
 {% block title %}
     {% if can_view_kit_dashboard %}{{ kit.name }} - {{ block.super }}{% else %}Kit not found - {{ block.super }}{% endif %}
@@ -37,14 +37,12 @@
         {% has_perm 'backend.configure_kit' user kit as can_configure %}
     
         <div class="container dashboard">
-            {% if can_configure %}
-                <div class="row">
-                    <div class="col-sm-12" style="text-align: right; margin-bottom: 0.5em;">
-                        <a href="{% url 'website:kit_configure_profile' kit.pk %}">{% bootstrap_icon 'edit' %} Configure kit</a>
-                    </div>
-                </div>
-            {% endif %}
             <div class="row">
+                {% if can_configure %}
+                    <div class="col-12 text-right mb-2">
+                        <a href="{% url 'website:kit_configure_profile' kit.pk %}">{% icon 'cog' %} Configure kit</a>
+                    </div>
+                {% endif %}
                 <div class="col-sm-8">
                     <div class="chart-wrapper">
                         <div class="chart-title">

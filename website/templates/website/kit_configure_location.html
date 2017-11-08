@@ -1,6 +1,7 @@
 {% extends 'website/kit_configure_base.html' %}
 
-{% load bootstrap3 %}
+{% load bootstrap4 %}
+{% load website_extras %}
 
 {% block title %}Location | {{ block.super }}{% endblock %}
 
@@ -49,7 +50,7 @@
         
         {% buttons %}
             <button type="submit" class="btn btn-primary" data-toggle="confirmation">
-                {% bootstrap_icon "ok" %} Save
+                {% icon "check" %} Save
             </button>
         {% endbuttons %}
     </form>

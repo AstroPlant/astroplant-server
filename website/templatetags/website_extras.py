@@ -1,6 +1,7 @@
 from django import template
 from django.core.urlresolvers import resolve
 from django.shortcuts import render
+from django.utils.html import format_html
 
 register = template.Library()
 
@@ -11,6 +12,12 @@ def navigation_active(request, urls):
     if name in urls.split():
         return "active"
     return ""
+
+@register.simple_tag
+def icon(icon):
+    return format_html("<span class=\"fa fa-{}\"></span>",
+        icon
+    )
     
 @register.inclusion_tag('website/fragments/gravatar.html')
 def user_avatar(user, size = 100):

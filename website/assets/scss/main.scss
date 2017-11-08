@@ -1,5 +1,10 @@
-@import "~bootstrap/dist/css/bootstrap.css";
+@import "~bootstrap/scss/bootstrap.scss";
+
+$fa-font-path: "~font-awesome/fonts";
+@import "~font-awesome/scss/font-awesome.scss";
+
 @import "../css/bootstrap-stacked-tabs.min.css";
+
 @import "variables.scss";
 
 html, body {
@@ -22,16 +27,31 @@ body {
 }
 
 /* Header and navigation bar */
-header.navbar-static-top {
-    margin-bottom: 0;
-    border: 0;
+nav#main-navbar {
+    padding: 0;
     
-    li.active {
-        background-color: rgb(245, 245, 245);
+    .navbar-toggler {
+        height: 38px;
+        color: $textColorGray;
+        
+        &:hover {
+            background-color: #f9f9f9;
+            border: 1px solid #f7f7f7;
+        }
     }
     
-    div.navbar-header {
-        border-right: 1px solid rgb(215, 215, 215);
+    #main-navbar-items {
+        @include media-breakpoint-up(lg) { 
+            border-left: 1px solid $borderColorLightGray;
+        }
+    }
+    
+    li {
+        padding: 0.3em;
+    
+        &.active {
+            background-color: rgb(245, 245, 245);
+        }
     }
     
     img.avatar {
@@ -41,40 +61,24 @@ header.navbar-static-top {
     }
 }
 
-.navbar-header {
-    .navbar-toggle {
-        &:hover {
-            background-color: #f9f9f9;
-            border: 1px solid #f7f7f7;
-        }
-    
-        .icon-bar {
-            background-color: $textColorGray;
-        }
-    }
-}
-
 /* Panel group menus */
 
-.panel-group.menu {
-    .panel-title {
-        color: $textColorGray;
-    }
-
-    .panel-body {
-        margin: 0;
-        padding: 0;
-        border-top: 1px solid #ddd;
-    }
-
-    .menu-item {
+.card-group.menu {
+    .list-group-item {
         padding: 0.5em;
         
-        &:not(:last-child) {
-            box-shadow: 0 1px 0 #ddd;
+        &, &.active {
+            border: none;
+            border-radius: 0 !important; /* override bootstrap */
+            
+            &+ .list-group-item {
+                border-top: 1px solid $borderColorLightGray;
+            }
         }
         
         &.active {
+            background-color: inherit;
+            
             font-weight: bold;
             padding-left: calc(0.5em - 2px);
             border-left: 2px solid $colorDarkRed;
@@ -139,7 +143,7 @@ textarea.form-control {
 }
 
 /* Other entities */
-.glyphicon {
+.fa {
     margin-right: 0.3em;
 }
 

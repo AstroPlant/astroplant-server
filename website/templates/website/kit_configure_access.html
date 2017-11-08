@@ -1,6 +1,7 @@
 {% extends 'website/kit_configure_base.html' %}
 
-{% load bootstrap3 %}
+{% load bootstrap4 %}
+{% load website_extras %}
 
 {% block title %}Access | {{ block.super }}{% endblock %}
 
@@ -15,18 +16,19 @@
         <p>The kit secret cannot be retrieved after generation. If you lose the secret, please generate a new one.</p>
 
         <p>Serial:</p>
-        <pre>{{ kit.username }}</pre>
+        <code>{{ kit.username }}</code>
         
         <p>Secret:</p>
-        <pre>{% if secret %}{{ secret }}{% else %}*******{% endif %}</pre>
+        <code>{% if secret %}{{ secret }}{% else %}*******{% endif %}</code>
         
         {% if not secret %}
+            <hr>
             <form method="post">
                 {% csrf_token %}
                 
                 {% buttons %}
                     <button type="submit" class="btn btn-primary" style="width: 100%;">
-                        {% bootstrap_icon "refresh" %} Generate new secret
+                        {% icon "refresh" %} Generate new secret
                     </button>
                 {% endbuttons %}
             </form>
@@ -42,7 +44,7 @@
             
             {% buttons %}
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    {% bootstrap_icon "refresh" %} Generate secret
+                    {% icon "refresh" %} Generate secret
                 </button>
             {% endbuttons %}
         </form>

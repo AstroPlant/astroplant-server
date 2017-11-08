@@ -1,7 +1,7 @@
 {% extends 'website/base.html' %}
 
 {% load static %}
-{% load bootstrap3 %}
+{% load website_extras %}
 
 {% block title %}Dashboard - {{ block.super }}{% endblock %}
 
@@ -12,31 +12,18 @@
 
 {% block content %}
     <div class="container">
-        <div class="panel">
-            <a href="{% url 'website:kit_add' %}" title="Add kit" type="button" class="btn btn-default btn-block">{% bootstrap_icon 'plus' %} Add kit</a>
-        </div>
+        <a href="{% url 'website:kit_add' %}" title="Add kit" type="button" class="btn btn-secondary btn-block">{% icon 'plus' %} Add kit</a>
         
-        <div class="row">
+        <hr>
+        
+        <div class="row" id="kit-list">
             {% for kit in kits %}
-                <div class="col-xs-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">{{ kit.name }}</div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-8">
-                                    <p>{{ kit.description }}</p>
-                                </div>
-                                <div class="col-xs-4">
-                                    <div>
-                                        <a href="{% url 'website:kit' kit.id %}" title="Access kit" type="button" class="btn btn-primary">{% bootstrap_icon 'triangle-right' %} Open</a>
-                                    </div>
-                                    <!--
-                                        <div>
-                                            <a href="{% url 'website:index' %}" title="Configure kit">{% bootstrap_icon 'cog' %} Configure</a>
-                                        </div>
-                                    -->
-                                </div>
-                            </div>
+                <div class="col-12 mb-3">
+                    <div class="card">
+                        <div class="card-block">
+                            <h4 class="card-title">{{ kit.name }}</h4>
+                            <p class="pull-left">{{ kit.description }}</p>
+                            <a href="{% url 'website:kit' kit.id %}" title="Access kit" type="button" class="btn btn-primary pull-right">{% icon 'chevron-right' %} Open</a>                            
                         </div>
                     </div>
                 </div>

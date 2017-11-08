@@ -1,7 +1,7 @@
 {% extends 'website/base.html' %}
 
 {% load static %}
-{% load bootstrap3 %}
+{% load website_extras %}
 
 {% block header %}
 <h1>AstroPlant Prototype</h1>
@@ -19,27 +19,27 @@
         Cras bibendum molestie urna, vel sodales orci condimentum id. Donec a blandit mauris. Nam feugiat dui risus, non porttitor dolor finibus quis. Suspendisse dui ipsum, tempor id ex et, rutrum malesuada nulla. Donec in porttitor nulla. Sed euismod lorem felis, et rutrum nunc ullamcorper ut.
     </p>
     <div class="row">
-        <div class="col-xs-12 col-sm-6 col-lg-4">
-            <h3 class="title">{% bootstrap_icon 'map-marker' %} See</h3>
+        <div class="col-xs-12 col-lg mb-3 mb-lg-0">
+            <h3 class="title">{% icon 'map-marker' %} See</h3>
             <p>See the AstroPlant kits in the world.</p>
             <div class="more">
-                <a href="{% url 'website:map' %}" title="Map" type="button" class="btn btn-primary btn-lg outline">{% bootstrap_icon 'triangle-right' %} Show map</a>
+                <a href="{% url 'website:map' %}" title="Map" type="button" class="btn btn-primary btn-lg outline">{% icon 'caret-right' %} Show map</a>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-lg-4">
-            <h3 class="title">{% bootstrap_icon 'grain' %} Learn</h3>
+        <div class="col-xs-12 col-lg mb-3 mb-lg-0">
+            <h3 class="title">{% icon 'pagelines' %} Learn</h3>
             <p>Learn about growing plants and AstroPlant.</p>
             <div class="more">
-                <a href="http://astroplant.io" title="Learn" type="button" class="btn btn-primary btn-lg outline">{% bootstrap_icon 'triangle-right' %} Read more</a>
+                <a href="http://astroplant.io" title="Learn" type="button" class="btn btn-primary btn-lg outline">{% icon 'caret-right' %} Read more</a>
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-lg-4">
-            <h3 class="title">{% bootstrap_icon 'dashboard' %} Analyze</h3>
+        <div class="col-xs-12 col-lg mb-3 mb-lg-0">
+            <h3 class="title">{% icon 'dashboard' %} Analyze</h3>
             <p>Analyze real-time aquaponics data.</p>
             <div class="more">
-                <a href="#" title="Systems" type="button" class="btn btn-primary btn-lg outline">{% bootstrap_icon 'triangle-right' %} Analyze System</a>
+                <a href="#" title="Systems" type="button" class="btn btn-primary btn-lg outline">{% icon 'caret-right' %} Analyze System</a>
             </div>
         </div>
     </div>

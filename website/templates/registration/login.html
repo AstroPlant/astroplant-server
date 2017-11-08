@@ -1,11 +1,10 @@
 {% extends 'website/base.html' %}
 
-{% load bootstrap3 %}
+{% load bootstrap4 %}
+{% load website_extras %}
 
 {% block header %}
-
     <h1>Log in</h1>
-
 {% endblock %}
 
 {% block content %}
@@ -17,7 +16,7 @@
             {% bootstrap_form form layout='inline' %}
             {% buttons %}
                 <button type="submit" class="btn btn-primary">
-                    {% bootstrap_icon "ok" %} Log in
+                    {% icon "sign-in" %} Log in
                 </button>
             {% endbuttons %}
         </form>

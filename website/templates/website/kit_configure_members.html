@@ -1,7 +1,7 @@
 {% extends 'website/kit_configure_base.html' %}
 
 {% load static %}
-{% load bootstrap3 %}
+{% load bootstrap4 %}
 {% load website_extras %}
 
 {% block title %}Members | {{ block.super }}{% endblock %}
@@ -35,7 +35,7 @@
                 </div>
                 <div class="controls">
                     <button type="submit" name="remove_user" value="{{ membership.user.pk }}" class="btn btn-danger" data-toggle="confirmation">
-                        {% bootstrap_icon "remove" %} Remove
+                        {% icon "remove" %} Remove
                     </button>
                 </div>
             </div>
@@ -49,7 +49,7 @@
         
         {% buttons %}
             <button type="submit" name="add_user" value="add_user" class="btn btn-primary" style="width: 100%;">
-                {% bootstrap_icon "plus" %} Add user
+                {% icon "plus" %} Add user
             </button>
         {% endbuttons %}
     </form>
