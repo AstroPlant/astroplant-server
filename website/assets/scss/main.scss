@@ -95,6 +95,10 @@ nav#main-navbar {
     background-image: linear-gradient(to top left, #3dadbf 0, #2577a1 85%);
     font-size: 1.5rem;
     margin-bottom: 0.5em;
+    
+    p {
+        margin-bottom: 0;
+    }
 }
 
 main {
