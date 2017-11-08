@@ -49,7 +49,7 @@
                     </ul>
                     <ul class="navbar-nav navbar-right">
                         {% if user.is_authenticated %}
-                            <li class="mav-item dropdown">
+                            <li class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     {% user_avatar user 32 %} {% if user.get_full_name %} {{ user.get_full_name }} {% else %} {{ user.username }} {% endif %}
                                 </a>
@@ -58,11 +58,11 @@
                                 </ul>
                             </li>
                         {% else %}
-                            <li>
-                                <a href="{% url 'registration_register' %}">{% icon 'plus' %} Create account</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'registration_register' %}">{% icon 'plus' %} Create account</a>
                             </li>
-                            <li>
-                                <a href="{% url 'auth_login' %}">{% icon 'sign-in' %} Log in</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'auth_login' %}">{% icon 'sign-in' %} Log in</a>
                             </li>
                         {% endif %}
                     </ul>
