@@ -29,14 +29,16 @@
         {% csrf_token %}
     
         {% for membership in memberships %}
-            <div class="members-user">
-                <div class="user">
-                    {% user_with_avatar membership.user %}
-                </div>
-                <div class="controls">
-                    <button type="submit" name="remove_user" value="{{ membership.user.pk }}" class="btn btn-danger" data-toggle="confirmation">
-                        {% icon "remove" %} Remove
-                    </button>
+            <div class="row">
+                <div class="col-12">
+                    <div class="pull-left">
+                        {% user_with_avatar membership.user %}
+                    </div>
+                    <div class="pull-right">
+                        <button type="submit" name="remove_user" value="{{ membership.user.pk }}" class="btn btn-danger" data-toggle="confirmation">
+                            {% icon "remove" %} Remove
+                        </button>
+                    </div>
                 </div>
             </div>
             <hr>

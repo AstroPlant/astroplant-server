@@ -10,23 +10,6 @@
     margin-bottom: 1em;
 }
 
-
-.members-user {
-    @include clearfix();
-    
-    .user {
-        float: left;
-        
-        .user-name {
-            font-size: 1.2em;
-        }
-    }
-    
-    .controls {
-        float: right;
-    }
-}
-
 .sensor {
     padding: 0.5em 1em 0.5em 1em;
     border: 1px solid $borderColorLightGray;
