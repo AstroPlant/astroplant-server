@@ -1,0 +1,47 @@
+{% extends 'website/kit_configure_base.html' %}
+
+{% load bootstrap4 %}
+{% load website_extras %}
+
+{% block title %}Add sensor | {{ block.super }}{% endblock %}
+
+{% block config_header %} 
+    Configure new sensor
+{% endblock %}
+
+{% block config_content %}
+    <p>Adding: <strong>{{ sensor_definition }}</strong>.</p>
+    <p>Configure the sensor and add it to your kit.</p>
+    <p>Note that a sensor cannot be changed after adding. It can only be removed. You can always add a new sensor.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form sensor_form layout='horizontal' %}
+        
+        {{ sensor_configuration_form_set.management_form }}
+        
+        {% for sensor_configuration_form in sensor_configuration_forms %}
+            {% with sensor_configuration_form.initial.sensor_configuration_definition as sensor_configuration_definition %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        {% icon 'sliders' %} {{ sensor_configuration_definition.name }}
+                    </div>
+                    <div class="card-block">
+                        {{ sensor_configuration_definition.description|linebreaks }}
+                        <div class="form-group row">
+                            <span class="col-md-3 col-form-label">Default value</span>
+                            <span class="col-md-9 col-form-label">{{ sensor_configuration_definition.default_value }}</span>
+                        </div>
+                        {% bootstrap_form sensor_configuration_form layout='horizontal' %}
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+        
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                {% icon "plus" %} Add
+            </button>
+        {% endbuttons %}
+    </form>
+{% endblock %}

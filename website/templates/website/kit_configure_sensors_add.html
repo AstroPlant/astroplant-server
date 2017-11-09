@@ -10,5 +10,16 @@
 {% endblock %}
 
 {% block config_content %}
+    <p>Select the sensor definition to create a new sensor for.</p>
     
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+        
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                {% icon "chevron-right" %} Continue
+            </button>
+        {% endbuttons %}
+    </form>
 {% endblock %}

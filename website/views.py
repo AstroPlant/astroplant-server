@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.core import exceptions
 from django.contrib.auth import login, decorators
 from django.contrib.auth import views as auth_views
+from django.db.models import Q
 import django.http
 import django.urls.base
 from braces.views import AnonymousRequiredMixin, LoginRequiredMixin
@@ -170,9 +171,92 @@ def kit_configure_sensors_add(request, kit_id):
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
 
-    context = {'kit': kit}
+    Form = django.forms.modelform_factory(backend.models.Sensor,
+                                          fields = ('sensor_definition',),)
+
+    if request.method == 'POST':
+        form = Form(request.POST)
+
+        if form.is_valid():
+            sensor = form.save(commit=False)
+            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_sensors_add_step2', kwargs={
+                                                                                 'kit_id': kit.pk,
+                                                                                 'sensor_definition_id': sensor.sensor_definition.pk,
+                                                                             }))
+    else:
+        form = Form()
+
+    context = {'kit': kit, 'form': form}
 
     return render(request, 'website/kit_configure_sensors_add.html', context)
+
+@decorators.login_required
+def kit_configure_sensors_add_step2(request, kit_id, sensor_definition_id):
+    try:
+        kit = backend.models.Kit.objects.get(pk=kit_id)
+    except exceptions.ObjectDoesNotExist:
+        kit = None
+
+    if not kit or not request.user.has_perm('backend.configure_kit', kit):
+        return render(request, 'website/kit_configure_not_found.html')
+
+    
+
+    try:
+        sensor_definition = backend.models.SensorDefinition.objects.get(pk=sensor_definition_id)
+    except exceptions.ObjectDoesNotExist:
+        sensor_definition = None
+
+    if not sensor_definition or not request.user.has_perm('backend.assign_sensor_definition', sensor_definition):
+        messages.add_message(request, messages.ERROR, 'That sensor was not found or you do not have permission to access it.')
+        return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_sensors_add', kwargs={
+                                                                                 'kit_id': kit.pk,
+                                                                             }))
+
+    # Form definition for the sensor instantiation itself
+    SensorForm = django.forms.modelform_factory(backend.models.Sensor,
+                                          fields = ('name',),
+                                          help_texts = {'name': 'The sensor name'})
+
+    # Form definition for a configuration parameter of the sensor
+    SensorConfigurationForm = django.forms.modelform_factory(backend.models.SensorConfiguration,
+                                          fields = ('value',),
+                                          help_texts = {'value': 'Leave blank for default'})
+
+    # Form set definition for the configuration parameters of the sensor
+    sensor_configuration_definitions = sensor_definition.sensor_configuration_definitions.all()
+
+    SensorConfigurationFormSet = django.forms.formset_factory(SensorConfigurationForm, extra = 0)
+
+    if request.method == 'POST':
+        sensor_form = SensorForm(request.POST)
+        sensor_configuration_form_set = SensorConfigurationFormSet(request.POST, initial = [{} for sensor_configuration_definition in sensor_configuration_definitions])
+
+        if sensor_form.is_valid() and sensor_configuration_form_set.is_valid():
+            sensor = sensor_form.save(commit=False)
+            sensor.kit = kit
+            sensor.sensor_definition = sensor_definition
+            sensor.save()
+
+            # Save all sensor configurations with a non-blank value
+            for sensor_configuration_definition, sensor_configuration_form in zip(sensor_configuration_definitions, sensor_configuration_form_set.forms):
+                sensor_configuration = sensor_configuration_form.save(commit=False)
+                sensor_configuration.sensor = sensor
+                sensor_configuration.sensor_configuration_definition = sensor_configuration_definition
+                if sensor_configuration.value:
+                    sensor_configuration.save()
+    else:
+        sensor_form = SensorForm()
+        sensor_configuration_form_set = SensorConfigurationFormSet(initial = [{'sensor_configuration_definition': sensor_configuration_definition} for sensor_configuration_definition in sensor_configuration_definitions])
+
+    context = {
+        'kit': kit,
+        'sensor_definition': sensor_definition,
+        'sensor_form': sensor_form,
+        'sensor_configuration_form_set': sensor_configuration_form_set,
+        'sensor_configuration_forms': sensor_configuration_form_set.forms
+    }
+    return render(request, 'website/kit_configure_sensors_add_step2.html', context)
 
 @decorators.login_required
 def kit_configure_access(request, kit_id):

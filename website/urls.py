@@ -18,6 +18,7 @@ urlpatterns = [
                  url(r'^location/$', views.kit_configure_location, name='kit_configure_location'),
                  url(r'^sensors/$', views.kit_configure_sensors, name='kit_configure_sensors'),
                  url(r'^sensors/add/$', views.kit_configure_sensors_add, name='kit_configure_sensors_add'),
+                 url(r'^sensors/add/(?P<sensor_definition_id>[0-9]+)/$', views.kit_configure_sensors_add_step2, name='kit_configure_sensors_add_step2'),
                  url(r'^access/$', views.kit_configure_access, name='kit_configure_access'),
                  url(r'^danger/$', views.kit_configure_danger_zone, name='kit_configure_danger_zone'),
             ])),
