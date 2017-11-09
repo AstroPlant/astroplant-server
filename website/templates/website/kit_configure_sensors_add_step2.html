@@ -20,7 +20,7 @@
         
         {{ sensor_configuration_form_set.management_form }}
         
-        {% for sensor_configuration_form in sensor_configuration_forms %}
+        {% for sensor_configuration_form in sensor_configuration_form_set.forms %}
             {% with sensor_configuration_form.initial.sensor_configuration_definition as sensor_configuration_definition %}
                 <div class="card mb-3">
                     <div class="card-header">

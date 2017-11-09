@@ -253,8 +253,7 @@ def kit_configure_sensors_add_step2(request, kit_id, sensor_definition_id):
         'kit': kit,
         'sensor_definition': sensor_definition,
         'sensor_form': sensor_form,
-        'sensor_configuration_form_set': sensor_configuration_form_set,
-        'sensor_configuration_forms': sensor_configuration_form_set.forms
+        'sensor_configuration_form_set': sensor_configuration_form_set
     }
     return render(request, 'website/kit_configure_sensors_add_step2.html', context)
 
