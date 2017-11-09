@@ -156,15 +156,32 @@ def kit_configure_sensors(request, kit_id):
         return render(request, 'website/kit_configure_not_found.html')
 
     if request.method == 'POST':
-        sensor_to_remove = request.POST.get('remove_sensor')
-        sensor = kit.sensors.filter(id=sensor_to_remove).first()
-        if sensor:
-            sensor.active = False;
-            sensor.date_time_removed = datetime.datetime.now()
-            sensor.save()
-            messages.add_message(request, messages.SUCCESS, 'The sensor has been removed.')
-        else: 
-            messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
+        if request.POST.get('deactivate_sensor'):
+            sensor_id = request.POST.get('deactivate_sensor')
+            sensor = kit.sensors.filter(id=sensor_id, active=True).first()
+            if sensor:
+                sensor.active = False;
+                sensor.save()
+                messages.add_message(request, messages.SUCCESS, 'The sensor has been deactivated.')
+            else: 
+                messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
+        elif request.POST.get('activate_sensor'):
+            sensor_id = request.POST.get('activate_sensor')
+            sensor = kit.sensors.filter(id=sensor_id, active=False).first()
+            if sensor:
+                sensor.active = True;
+                sensor.save()
+                messages.add_message(request, messages.SUCCESS, 'The sensor has been activated.')
+            else: 
+                messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
+        elif request.POST.get('permanently_remove_sensor'):
+            sensor_id = request.POST.get('permanently_remove_sensor')
+            sensor = kit.sensors.filter(id=sensor_id, active=False).first()
+            if sensor:
+                sensor.delete()
+                messages.add_message(request, messages.SUCCESS, 'The sensor has been removed.')
+            else: 
+                messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
 
     context = {'kit': kit,
                'active_sensors': kit.sensors.filter(active=True),

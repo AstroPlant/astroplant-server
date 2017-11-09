@@ -186,7 +186,6 @@ class Sensor(models.Model):
     name = models.CharField(max_length = 100)
     active = models.BooleanField(default=True)
     date_time_added = models.DateTimeField(default=datetime.datetime.now)
-    date_time_removed = models.DateTimeField(blank = True, null = True)
 
     def __str__(self):
         return self.name
