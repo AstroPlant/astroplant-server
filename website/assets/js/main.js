@@ -1,4 +1,4 @@
 require('jquery');
-Tether = require('tether');
+Popper = require('popper.js');
 require('bootstrap');
 require('bootstrap-confirmation2/bootstrap-confirmation.js');

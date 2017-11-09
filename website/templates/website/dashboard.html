@@ -20,7 +20,7 @@
             {% for kit in kits %}
                 <div class="col-12 mb-3">
                     <div class="card">
-                        <div class="card-block">
+                        <div class="card-body">
                             <h4 class="card-title">{{ kit.name }}</h4>
                             <p class="pull-left">{{ kit.description }}</p>
                             <a href="{% url 'website:kit' kit.id %}" title="Access kit" type="button" class="btn btn-primary pull-right">{% icon 'chevron-right' %} Open</a>                            
