@@ -245,6 +245,11 @@ def kit_configure_sensors_add_step2(request, kit_id, sensor_definition_id):
                 sensor_configuration.sensor_configuration_definition = sensor_configuration_definition
                 if sensor_configuration.value:
                     sensor_configuration.save()
+
+            messages.add_message(request, messages.SUCCESS, 'The sensor has been added.')
+            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_sensors', kwargs={
+                                                                                 'kit_id': kit.pk,
+                                                                             }))
     else:
         sensor_form = SensorForm()
         sensor_configuration_form_set = SensorConfigurationFormSet(initial = [{'sensor_configuration_definition': sensor_configuration_definition} for sensor_configuration_definition in sensor_configuration_definitions])
