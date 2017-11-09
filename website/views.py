@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
@@ -153,6 +154,17 @@ def kit_configure_sensors(request, kit_id):
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
+
+    if request.method == 'POST':
+        sensor_to_remove = request.POST.get('remove_sensor')
+        sensor = kit.sensors.filter(id=sensor_to_remove).first()
+        if sensor:
+            sensor.active = False;
+            sensor.date_time_removed = datetime.datetime.now()
+            sensor.save()
+            messages.add_message(request, messages.SUCCESS, 'The sensor has been removed.')
+        else: 
+            messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
 
     context = {'kit': kit,
                'active_sensors': kit.sensors.filter(active=True),

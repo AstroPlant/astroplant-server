@@ -16,55 +16,67 @@
         
     <hr>
     
-    {% for sensor in active_sensors %}
-        <div class="row">
-            <div class="col-12 mb-3">
-                <div class="card">
-                    <div class="card-header">
-                        {{ sensor.name }}
-                    </div>
-                    <div class="card-block">
-                    {% with sensor.sensor_definition as sensor_definition %}
-                        <div class="row">
-                            <div class="col-sm-3"><strong>Sensor type</strong></div>
-                            <div class="col-sm-9">{{ sensor_definition }}</div>
-                            
-                            <div class="col-sm-3"><strong>Date added</strong></div>
-                            <div class="col-sm-9">{{ sensor.date_time_added }}</div>
+    <form method="post">
+        {% csrf_token %}
+        {% for sensor in active_sensors %}
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ sensor.name }}
                         </div>
-                    </div>
-                    <div class="card-block">
-                        {% if sensor_definition.sensor_configuration_definitions.all %}
-                            <h4>Configuration</h4>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Parameter</th>
-                                        <th>Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for sensor_configuration in sensor.sensor_configurations.all %}
+                        <div class="card-block">
+                        {% with sensor.sensor_definition as sensor_definition %}
+                            <div class="row">
+                                <div class="col-12 col-lg">
+                                    <div class="row">
+                                        <div class="col-sm-3"><strong>Sensor type</strong></div>
+                                        <div class="col-sm-9">{{ sensor_definition }}</div>
+                                        
+                                        <div class="col-sm-3"><strong>Date added</strong></div>
+                                        <div class="col-sm-9">{{ sensor.date_time_added }}</div>
+                                    </div>
+                                </div>
+                                <div class="col col-md-auto">
+                                    <button type="submit" name="remove_sensor" value="{{ sensor.pk }}" class="btn btn-danger" data-toggle="confirmation">
+                                        {% icon "remove" %} Remove
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-block">
+                            {% if sensor_definition.sensor_configuration_definitions.all %}
+                                <h4>Configuration</h4>
+                                <table class="table">
+                                    <thead>
                                         <tr>
-                                            <th scope="row">{{ sensor_configuration.sensor_configuration_definition.name }}</th>
-                                            <td>{{ sensor_configuration.value }}</td>
+                                            <th>Parameter</th>
+                                            <th>Value</th>
                                         </tr>
-                                    {% empty %}
-                                        <tr>
-                                            <td colspan="2">All parameters are at their defaults.</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        {% endif %}
+                                    </thead>
+                                    <tbody>
+                                        {% for sensor_configuration in sensor.sensor_configurations.all %}
+                                            <tr>
+                                                <th scope="row">{{ sensor_configuration.sensor_configuration_definition.name }}</th>
+                                                <td>{{ sensor_configuration.value }}</td>
+                                            </tr>
+                                        {% empty %}
+                                            <tr>
+                                                <td colspan="2">All parameters are at their defaults.</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endwith %}
-    {% empty %}
-        <div class="col-xs-12"><p>There are no active sensors on the kit.</p></div>
-    {% endfor %}
+            {% endwith %}
+        {% empty %}
+            <div class="col-xs-12"><p>There are no active sensors on the kit.</p></div>
+        {% endfor %}
+    </form>
     <hr>
     <h3>Removed sensors</h3>
     {% for sensor in inactive_sensors %}
