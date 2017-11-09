@@ -184,8 +184,8 @@ class Sensor(models.Model):
     sensor_definition = models.ForeignKey(SensorDefinition,
                                           on_delete = models.CASCADE)
     name = models.CharField(max_length = 100)
-    active = models.BooleanField()
-    date_time_added = models.DateTimeField()
+    active = models.BooleanField(default=True)
+    date_time_added = models.DateTimeField(default=datetime.datetime.now)
     date_time_removed = models.DateTimeField(blank = True, null = True)
 
     def __str__(self):
@@ -201,7 +201,7 @@ class SensorConfiguration(models.Model):
                                related_name = 'sensor_configurations')
     sensor_configuration_definition = models.ForeignKey(SensorConfigurationDefinition,
                                                         on_delete = models.CASCADE)
-    value = models.CharField(max_length = 100)
+    value = models.CharField(max_length = 100, blank = True)
 
     def __str__(self):
         return "%s - %s" % (self.sensor, self.sensor_configuration_definition)
