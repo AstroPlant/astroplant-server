@@ -16,10 +16,10 @@
         <p>The kit secret cannot be retrieved after generation. If you lose the secret, please generate a new one.</p>
 
         <p>Serial:</p>
-        <code>{{ kit.username }}</code>
+        <p><code>{{ kit.username }}</code></p>
         
         <p>Secret:</p>
-        <code>{% if secret %}{{ secret }}{% else %}*******{% endif %}</code>
+        <p><code>{% if secret %}{{ secret }}{% else %}*******{% endif %}</code></p>
         
         {% if not secret %}
             <hr>
