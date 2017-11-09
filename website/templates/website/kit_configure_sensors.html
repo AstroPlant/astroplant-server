@@ -1,6 +1,7 @@
 {% extends 'website/kit_configure_base.html' %}
 
 {% load bootstrap4 %}
+{% load website_extras %}
 
 {% block title %}Sensors | {{ block.super }}{% endblock %}
 
@@ -10,6 +11,11 @@
 
 {% block config_content %}
     <h3>Active sensors</h3>
+    
+    <a href="{% url 'website:kit_configure_sensors_add' kit.pk %}" title="Add sensor" type="button" class="btn btn-secondary btn-block">{% icon 'plus' %} Add sensor</a>
+        
+    <hr>
+    
     {% for sensor in active_sensors %}
         <div class="row">
             <div class="col-12 mb-3">
