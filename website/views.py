@@ -146,7 +146,7 @@ def kit_configure_location(request, kit_id):
     return render(request, 'website/kit_configure_location.html', context)
 
 @decorators.login_required
-def kit_configure_sensors(request, kit_id):
+def kit_configure_peripherals(request, kit_id):
     try:
         kit = backend.models.Kit.objects.get(pk=kit_id)
     except exceptions.ObjectDoesNotExist:
@@ -156,42 +156,42 @@ def kit_configure_sensors(request, kit_id):
         return render(request, 'website/kit_configure_not_found.html')
 
     if request.method == 'POST':
-        if request.POST.get('deactivate_sensor'):
-            sensor_id = request.POST.get('deactivate_sensor')
-            sensor = kit.sensors.filter(id=sensor_id, active=True).first()
-            if sensor:
-                sensor.active = False;
-                sensor.save()
-                messages.add_message(request, messages.SUCCESS, 'The sensor has been deactivated.')
+        if request.POST.get('deactivate_peripheral'):
+            peripheral_id = request.POST.get('deactivate_peripheral')
+            peripheral = kit.peripherals.filter(id=peripheral_id, active=True).first()
+            if peripheral:
+                peripheral.active = False;
+                peripheral.save()
+                messages.add_message(request, messages.SUCCESS, 'The peripheral has been deactivated.')
             else: 
-                messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
-        elif request.POST.get('activate_sensor'):
-            sensor_id = request.POST.get('activate_sensor')
-            sensor = kit.sensors.filter(id=sensor_id, active=False).first()
-            if sensor:
-                sensor.active = True;
-                sensor.save()
-                messages.add_message(request, messages.SUCCESS, 'The sensor has been activated.')
+                messages.add_message(request, messages.ERROR, 'The peripheral could not be found.')
+        elif request.POST.get('activate_peripheral'):
+            peripheral_id = request.POST.get('activate_peripheral')
+            peripheral = kit.peripherals.filter(id=peripheral_id, active=False).first()
+            if peripheral:
+                peripheral.active = True;
+                peripheral.save()
+                messages.add_message(request, messages.SUCCESS, 'The peripheral has been activated.')
             else: 
-                messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
-        elif request.POST.get('permanently_remove_sensor'):
-            sensor_id = request.POST.get('permanently_remove_sensor')
-            sensor = kit.sensors.filter(id=sensor_id, active=False).first()
-            if sensor:
-                sensor.delete()
-                messages.add_message(request, messages.SUCCESS, 'The sensor has been removed.')
+                messages.add_message(request, messages.ERROR, 'The peripheral could not be found.')
+        elif request.POST.get('permanently_remove_peripheral'):
+            peripheral_id = request.POST.get('permanently_remove_peripheral')
+            peripheral = kit.peripherals.filter(id=peripheral_id, active=False).first()
+            if peripheral:
+                peripheral.delete()
+                messages.add_message(request, messages.SUCCESS, 'The peripheral has been removed.')
             else: 
-                messages.add_message(request, messages.ERROR, 'The sensor could not be found.')
+                messages.add_message(request, messages.ERROR, 'The peripheral could not be found.')
 
     context = {'kit': kit,
-               'active_sensors': kit.sensors.filter(active=True),
-               'inactive_sensors': kit.sensors.filter(active=False),
+               'active_peripherals': kit.peripherals.filter(active=True),
+               'inactive_peripherals': kit.peripherals.filter(active=False),
     }
 
-    return render(request, 'website/kit_configure_sensors.html', context)
+    return render(request, 'website/kit_configure_peripherals.html', context)
 
 @decorators.login_required
-def kit_configure_sensors_add(request, kit_id):
+def kit_configure_peripherals_add(request, kit_id):
     try:
         kit = backend.models.Kit.objects.get(pk=kit_id)
     except exceptions.ObjectDoesNotExist:
@@ -200,27 +200,28 @@ def kit_configure_sensors_add(request, kit_id):
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
 
-    Form = django.forms.modelform_factory(backend.models.Sensor,
-                                          fields = ('sensor_definition',),)
+    Form = django.forms.modelform_factory(backend.models.Peripheral,
+                                          fields = ('peripheral_definition',),
+                                          labels = {'peripheral_definition': 'Peripheral device definition',})
 
     if request.method == 'POST':
         form = Form(request.POST)
 
         if form.is_valid():
-            sensor = form.save(commit=False)
-            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_sensors_add_step2', kwargs={
+            peripheral = form.save(commit=False)
+            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_peripherals_add_step2', kwargs={
                                                                                  'kit_id': kit.pk,
-                                                                                 'sensor_definition_id': sensor.sensor_definition.pk,
+                                                                                 'peripheral_definition_id': peripheral.peripheral_definition.pk,
                                                                              }))
     else:
         form = Form()
 
     context = {'kit': kit, 'form': form}
 
-    return render(request, 'website/kit_configure_sensors_add.html', context)
+    return render(request, 'website/kit_configure_peripherals_add.html', context)
 
 @decorators.login_required
-def kit_configure_sensors_add_step2(request, kit_id, sensor_definition_id):
+def kit_configure_peripherals_add_step2(request, kit_id, peripheral_definition_id):
     try:
         kit = backend.models.Kit.objects.get(pk=kit_id)
     except exceptions.ObjectDoesNotExist:
@@ -232,64 +233,64 @@ def kit_configure_sensors_add_step2(request, kit_id, sensor_definition_id):
     
 
     try:
-        sensor_definition = backend.models.SensorDefinition.objects.get(pk=sensor_definition_id)
+        peripheral_definition = backend.models.PeripheralDefinition.objects.get(pk=peripheral_definition_id)
     except exceptions.ObjectDoesNotExist:
-        sensor_definition = None
+        peripheral_definition = None
 
-    if not sensor_definition or not request.user.has_perm('backend.assign_sensor_definition', sensor_definition):
-        messages.add_message(request, messages.ERROR, 'That sensor was not found or you do not have permission to access it.')
-        return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_sensors_add', kwargs={
+    if not peripheral_definition or not request.user.has_perm('backend.assign_peripheral_definition', peripheral_definition):
+        messages.add_message(request, messages.ERROR, 'That peripheral device was not found or you do not have permission to access it.')
+        return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_peripherals_add', kwargs={
                                                                                  'kit_id': kit.pk,
                                                                              }))
 
-    # Form definition for the sensor instantiation itself
-    SensorForm = django.forms.modelform_factory(backend.models.Sensor,
+    # Form definition for the peripheral device instantiation itself
+    PeripheralForm = django.forms.modelform_factory(backend.models.Peripheral,
                                           fields = ('name',),
-                                          help_texts = {'name': 'The sensor name'})
+                                          help_texts = {'name': 'The peripheral device name'})
 
-    # Form definition for a configuration parameter of the sensor
-    SensorConfigurationForm = django.forms.modelform_factory(backend.models.SensorConfiguration,
+    # Form definition for a configuration parameter of the peripheral device
+    PeripheralConfigurationForm = django.forms.modelform_factory(backend.models.PeripheralConfiguration,
                                           fields = ('value',),
                                           help_texts = {'value': 'Leave blank for default'})
 
-    # Form set definition for the configuration parameters of the sensor
-    sensor_configuration_definitions = sensor_definition.sensor_configuration_definitions.all()
+    # Form set definition for the configuration parameters of the peripheral device
+    peripheral_configuration_definitions = peripheral_definition.peripheral_configuration_definitions.all()
 
-    SensorConfigurationFormSet = django.forms.formset_factory(SensorConfigurationForm, extra = 0)
+    PeripheralConfigurationFormSet = django.forms.formset_factory(PeripheralConfigurationForm, extra = 0)
 
     if request.method == 'POST':
-        sensor_form = SensorForm(request.POST)
-        sensor_configuration_form_set = SensorConfigurationFormSet(request.POST, initial = [{} for sensor_configuration_definition in sensor_configuration_definitions])
+        peripheral_form = PeripheralForm(request.POST)
+        peripheral_configuration_form_set = PeripheralConfigurationFormSet(request.POST, initial = [{} for peripheral_configuration_definition in peripheral_configuration_definitions])
 
-        if sensor_form.is_valid() and sensor_configuration_form_set.is_valid():
-            sensor = sensor_form.save(commit=False)
-            sensor.kit = kit
-            sensor.sensor_definition = sensor_definition
-            sensor.save()
+        if peripheral_form.is_valid() and peripheral_configuration_form_set.is_valid():
+            peripheral = peripheral_form.save(commit=False)
+            peripheral.kit = kit
+            peripheral.peripheral_definition = peripheral_definition
+            peripheral.save()
 
-            # Save all sensor configurations with a non-blank value
-            for sensor_configuration_definition, sensor_configuration_form in zip(sensor_configuration_definitions, sensor_configuration_form_set.forms):
-                sensor_configuration = sensor_configuration_form.save(commit=False)
-                sensor_configuration.sensor = sensor
-                sensor_configuration.sensor_configuration_definition = sensor_configuration_definition
-                if sensor_configuration.value:
-                    sensor_configuration.save()
+            # Save all peripheral device configurations with a non-blank value
+            for peripheral_configuration_definition, peripheral_configuration_form in zip(peripheral_configuration_definitions, peripheral_configuration_form_set.forms):
+                peripheral_configuration = peripheral_configuration_form.save(commit=False)
+                peripheral_configuration.peripheral = peripheral
+                peripheral_configuration.peripheral_configuration_definition = peripheral_configuration_definition
+                if peripheral_configuration.value:
+                    peripheral_configuration.save()
 
-            messages.add_message(request, messages.SUCCESS, 'The sensor has been added.')
-            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_sensors', kwargs={
+            messages.add_message(request, messages.SUCCESS, 'The peripheral device has been added.')
+            return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_peripherals', kwargs={
                                                                                  'kit_id': kit.pk,
                                                                              }))
     else:
-        sensor_form = SensorForm()
-        sensor_configuration_form_set = SensorConfigurationFormSet(initial = [{'sensor_configuration_definition': sensor_configuration_definition} for sensor_configuration_definition in sensor_configuration_definitions])
+        peripheral_form = PeripheralForm()
+        peripheral_configuration_form_set = PeripheralConfigurationFormSet(initial = [{'peripheral_configuration_definition': peripheral_configuration_definition} for peripheral_configuration_definition in peripheral_configuration_definitions])
 
     context = {
         'kit': kit,
-        'sensor_definition': sensor_definition,
-        'sensor_form': sensor_form,
-        'sensor_configuration_form_set': sensor_configuration_form_set
+        'peripheral_definition': peripheral_definition,
+        'peripheral_form': peripheral_form,
+        'peripheral_configuration_form_set': peripheral_configuration_form_set
     }
-    return render(request, 'website/kit_configure_sensors_add_step2.html', context)
+    return render(request, 'website/kit_configure_peripherals_add_step2.html', context)
 
 @decorators.login_required
 def kit_configure_access(request, kit_id):
@@ -382,81 +383,81 @@ def kit_add(request):
         form = website.forms.AddKitForm()
         return render(request,'website/kit_add.html', {'form': form})
 
-def sensor_definition_list(request):
-    sensor_definitions = backend.models.SensorDefinition.objects.all()
-    return render(request,'website/sensor_definition_list.html', {'sensor_definitions': sensor_definitions})
+def peripheral_definition_list(request):
+    peripheral_definitions = backend.models.PeripheralDefinition.objects.all()
+    return render(request,'website/peripheral_definition_list.html', {'peripheral_definitions': peripheral_definitions})
 
 @decorators.login_required
-def sensor_definition_add(request):
-    Form = django.forms.modelform_factory(backend.models.SensorDefinition,
+def peripheral_definition_add(request):
+    Form = django.forms.modelform_factory(backend.models.PeripheralDefinition,
                                           fields = ('name', 'description', 'public', 'brand', 'type', 'class_name',),
                                           help_texts = {
-                                              'public': 'Should the sensor definition be available publicly?',
-                                              'class_name': 'The Python class name of the sensor implementation.'
+                                              'public': 'Should the peripheral device definition be available publicly?',
+                                              'class_name': 'The Python class name of the peripheral device implementation.'
                                             })
 
     if request.method == 'POST':
         form = Form(request.POST)
 
         if not form.is_valid():
-            return render(request,'website/sensor_definition_add.html', {'form': form})
+            return render(request,'website/peripheral_definition_add.html', {'form': form})
 
-        # Get the sensor definition object
-        sensor_definition = form.save(commit=False)
+        # Get the peripheral device definition object
+        peripheral_definition = form.save(commit=False)
 
         # Set the current user as the owner
-        sensor_definition.owner = request.user
+        peripheral_definition.owner = request.user
 
-        sensor_definition.save()
-        return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:sensor_definition_configure', kwargs={'sensor_definition_id': sensor_definition.pk}))
+        peripheral_definition.save()
+        return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:peripheral_definition_configure', kwargs={'peripheral_definition_id': peripheral_definition.pk}))
     else:
         form = Form()
-        return render(request,'website/sensor_definition_add.html', {'form': form})
+        return render(request,'website/peripheral_definition_add.html', {'form': form})
 
 @decorators.login_required
-def sensor_definition_configure(request, sensor_definition_id):
+def peripheral_definition_configure(request, peripheral_definition_id):
     """
-    View to configure a Django sensor definition.
+    View to configure a Django peripheral device definition.
     """
-    sensor_definition_query = backend.models.SensorDefinition.objects.filter(pk = sensor_definition_id)
+    peripheral_definition_query = backend.models.PeripheralDefinition.objects.filter(pk = peripheral_definition_id)
 
-    if not sensor_definition_query:
-        return render(request, 'website/sensor_definition_configure_not_found.html', {})
+    if not peripheral_definition_query:
+        return render(request, 'website/peripheral_definition_configure_not_found.html', {})
 
-    sensor_definition = sensor_definition_query.first()
+    peripheral_definition = peripheral_definition_query.first()
 
-    if not request.user.has_perm('backend.edit_sensor_definition', sensor_definition):
-        return render(request, 'website/sensor_definition_configure_not_found.html', {})
+    if not request.user.has_perm('backend.edit_peripheral_definition', peripheral_definition):
+        return render(request, 'website/peripheral_definition_configure_not_found.html', {})
 
-    SensorDefinitionForm = django.forms.modelform_factory(backend.models.SensorDefinition,
+    PeripheralDefinitionForm = django.forms.modelform_factory(backend.models.PeripheralDefinition,
                                           fields = ('description', 'public', 'brand', 'type', 'class_name', 'measurement_types',),
                                           help_texts = {
-                                              'public': 'Should the sensor definition be available publicly?',
-                                              'class_name': 'The Python class name of the sensor implementation.',
+                                              'public': 'Should the peripheral device definition be available publicly?',
+                                              'class_name': 'The Python class name of the peripheral device implementation.',
                                               'measurement_types': 'The measurement types to plot on the dashboard (other measurement types are supported, but will not be plotted).'
                                             })
-    SensorConfigurationDefinitionFormSet = django.forms.inlineformset_factory(backend.models.SensorDefinition, backend.models.SensorConfigurationDefinition, exclude=[])
+    PeripheralConfigurationDefinitionFormSet = django.forms.inlineformset_factory(backend.models.PeripheralDefinition, backend.models.PeripheralConfigurationDefinition, exclude=[])
 
     if request.method == 'POST':
-        form = SensorDefinitionForm(request.POST, instance=sensor_definition)
-        form_set = SensorConfigurationDefinitionFormSet(request.POST, instance=sensor_definition)
+        form = PeripheralDefinitionForm(request.POST, instance=peripheral_definition)
+        form_set = PeripheralConfigurationDefinitionFormSet(request.POST, instance=peripheral_definition)
 
         if not form.is_valid() or not form_set.is_valid():
-            return render(request,'website/sensor_definition_configure.html', {'sensor_definition': sensor_definition, 'form': form, 'form_set': form_set})
+            return render(request,'website/peripheral_definition_configure.html', {'peripheral_definition': peripheral_definition, 'form': form, 'form_set': form_set})
 
-        # Save the sensor definition
+        # Save the peripheral device definition
         form.save()
 
-        # Save the sensor configuration definitions
+        # Save the peripheral device configuration definitions
         form_set.save()
 
         # Generate a new form set
-        form_set = SensorConfigurationDefinitionFormSet(instance=sensor_definition)
-        return render(request, 'website/sensor_definition_configure.html', {'sensor_definition': sensor_definition, 'form': form, 'form_set': form_set})
+        form_set = PeripheralConfigurationDefinitionFormSet(instance=peripheral_definition)
+        return render(request, 'website/peripheral_definition_configure.html', {'peripheral_definition': peripheral_definition, 'form': form, 'form_set': form_set})
     else:
-        form = SensorDefinitionForm(instance=sensor_definition)
-        form_set = SensorConfigurationDefinitionFormSet(instance=sensor_definition)
-        return render(request, 'website/sensor_definition_configure.html', {'sensor_definition': sensor_definition, 'form': form, 'form_set': form_set})
+        form = PeripheralDefinitionForm(instance=peripheral_definition)
+        form_set = PeripheralConfigurationDefinitionFormSet(instance=peripheral_definition)
+        return render(request, 'website/peripheral_definition_configure.html', {'peripheral_definition': peripheral_definition, 'form': form, 'form_set': form_set})
 
 class LoginView(AnonymousRequiredMixin, auth_views.LoginView):
     authenticated_redirect_url = reverse_lazy(u'website:dashboard')

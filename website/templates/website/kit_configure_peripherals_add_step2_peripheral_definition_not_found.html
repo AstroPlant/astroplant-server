@@ -1,0 +1,14 @@
+{% extends 'website/kit_configure_base.html' %}
+
+{% load bootstrap4 %}
+{% load website_extras %}
+
+{% block title %}Add peripheral device | {{ block.super }}{% endblock %}
+
+{% block config_header %} 
+    Add peripheral device
+{% endblock %}
+
+{% block config_content %}
+    <p class="text-danger">That peripheral device definition was not found or you do not have permission to access it.</p>
+{% endblock %}

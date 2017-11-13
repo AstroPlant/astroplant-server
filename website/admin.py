@@ -102,20 +102,20 @@ class KitMembershipAdmin(admin.ModelAdmin):
 class MeasurementTypeAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(models.SensorDefinition)
-class SensorDefinitionAdmin(admin.ModelAdmin):
+@admin.register(models.PeripheralDefinition)
+class PeripheralDefinitionAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(models.SensorConfigurationDefinition)
-class SensorConfigurationDefinitionAdmin(admin.ModelAdmin):
+@admin.register(models.PeripheralConfigurationDefinition)
+class PeripheralConfigurationDefinitionAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(models.Sensor)
-class SensorAdmin(admin.ModelAdmin):
+@admin.register(models.Peripheral)
+class PeripheralAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(models.SensorConfiguration)
-class SensorConfigurationAdmin(admin.ModelAdmin):
+@admin.register(models.PeripheralConfiguration)
+class PeripheralConfigurationAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(models.Experiment)
@@ -125,5 +125,5 @@ class ExperimentAdmin(admin.ModelAdmin):
 
 @admin.register(models.Measurement)
 class MeasurementAdmin(admin.ModelAdmin):
-    list_display = ('sensor', 'kit', 'experiment', 'date_time', 'value')
-    ordering = ('sensor', 'date_time')
+    list_display = ('peripheral', 'kit', 'experiment', 'date_time', 'value')
+    ordering = ('peripheral', 'date_time')

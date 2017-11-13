@@ -3,22 +3,22 @@
 {% load bootstrap4 %}
 {% load website_extras %}
 
-{% block title %}Configure sensor definition - {{ block.super }}{% endblock %}
+{% block title %}Configure peripheral device definition - {{ block.super }}{% endblock %}
 
 {% block header %}
-    <h1>{{ sensor_definition.name }}</h1>
-    <p>Configure sensor definition</p>
+    <h1>{{ peripheral_definition.name }}</h1>
+    <p>Configure peripheral device definition</p>
 {% endblock %}
 
 {% block content %}
     <div class="container">
-        <p>Please update the sensor definition for sensor <em>{{ sensor_definition.name }}</em>.</p>
+        <p>Please update the definition for peripheral device <em>{{ peripheral_definition.name }}</em>.</p>
         <form method="post">
             {% csrf_token %}
             {% bootstrap_form form layout='horizontal' %}
             
-            <h2>Sensor configuration definitions</h2>
-            <div id="sensor-configuration-definitions">
+            <h2>Peripheral device configuration definitions</h2>
+            <div id="peripheral-configuration-definitions">
                 {% bootstrap_formset form_set layout='horizontal' %}
             </div>
             {% buttons %}

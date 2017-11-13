@@ -18,8 +18,8 @@ module.exports = {
         kitconfig: [
             __dirname + '/website/assets/scss/kitconfig.scss'
         ],
-        sensors: [
-            __dirname + '/website/assets/scss/sensors.scss'
+        peripherals: [
+            __dirname + '/website/assets/scss/peripherals.scss'
         ]
     },
     devtool: 'source-map',

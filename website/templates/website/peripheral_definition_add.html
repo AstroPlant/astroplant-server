@@ -4,14 +4,14 @@
 {% load website_extras %}
 
 {% block header %}
-    <h1>Add a sensor definition</h1>
+    <h1>Add a peripheral device definition</h1>
     <p></p>
 {% endblock %}
 
 
 {% block content %}
     <div class="container">
-        <p>Please enter the basic sensor information below. Sensor configurations will be defined in the next step.</p>
+        <p>Please enter the basic peripheral device information below. Peripheral device configurations will be defined in the next step.</p>
         <form method="post">
             {% csrf_token %}
             {% bootstrap_form form layout='horizontal' %}

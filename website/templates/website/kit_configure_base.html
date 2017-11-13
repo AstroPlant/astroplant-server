@@ -35,11 +35,8 @@
                                 <li class="list-group-item {% navigation_active request 'website:kit_configure_location' %}">
                                     <a href="{% url 'website:kit_configure_location' kit.pk %}">Location</a>
                                 </li>
-                                <li class="list-group-item {% navigation_active request 'website:kit_configure_sensors website:kit_configure_sensors_add website:kit_configure_sensors_add_step2' %}">
-                                    <a href="{% url 'website:kit_configure_sensors' kit.pk %}">Sensors</a>
-                                </li>
-                                <li class="list-group-item">
-                                    <a href="#">Actuators</a>
+                                <li class="list-group-item {% navigation_active request 'website:kit_configure_peripherals website:kit_configure_peripherals_add website:kit_configure_peripherals_add_step2' %}">
+                                    <a href="{% url 'website:kit_configure_peripherals' kit.pk %}">Peripheral devices</a>
                                 </li>
                                 <li class="list-group-item">
                                     <a href="#">Growth recipe</a>

@@ -67,65 +67,65 @@ class ExperimentViewSet(viewsets.GenericViewSet,
 
     serializer_class = serializers.HyperlinkedExperimentSerializer
 
-class SensorDefinitionViewSet(viewsets.GenericViewSet,
-                        mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin):
+class PeripheralDefinitionViewSet(viewsets.GenericViewSet,
+                                  mixins.ListModelMixin,
+                                  mixins.RetrieveModelMixin):
     """
     list:
-    List all sensor definitions.
+    List all peripheral device definitions.
 
     retrieve:
-    Return the given sensor definition.
+    Return the given peripheral device definition.
     """
     def get_queryset(self):
         """
-        Get a queryset of all sensor definitions.
+        Get a queryset of all peripheral device definitions.
         """
-        return models.SensorDefinition.objects.all()
+        return models.PeripheralDefinition.objects.all()
         
-    serializer_class = serializers.HyperlinkedSensorDefinitionSerializer
+    serializer_class = serializers.HyperlinkedPeripheralDefinitionSerializer
 
-class SensorConfigurationDefinitionViewSet(viewsets.GenericViewSet,
-                        mixins.ListModelMixin,
-                        mixins.RetrieveModelMixin):
+class PeripheralConfigurationDefinitionViewSet(viewsets.GenericViewSet,
+                                               mixins.ListModelMixin,
+                                               mixins.RetrieveModelMixin):
     """
     list:
-    List all sensor configuration definitions.
+    List all peripheral device configuration definitions.
 
     retrieve:
-    Return the given sensor configuration definition.
+    Return the given peripheral device configuration definition.
     """
     def get_queryset(self):
         """
-        Get a queryset of all sensor configuration definitions.
+        Get a queryset of all peripheral device configuration definitions.
         """
-        return models.SensorConfigurationDefinition.objects.all()
+        return models.PeripheralConfigurationDefinition.objects.all()
         
-    serializer_class = serializers.HyperlinkedSensorConfigurationDefinitionSerializer
+    serializer_class = serializers.HyperlinkedPeripheralConfigurationDefinitionSerializer
 
-class SensorViewSet(viewsets.GenericViewSet,
+class PeripheralViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
                         mixins.RetrieveModelMixin):
     """
     list:
-    List all sensors the user has access to. A person user has access to sensors
-    of all kits it owns. A kit user has access to its sensors.
+    List all peripheral devices the user has access to. A person user has access to peripheral devices
+    of all kits it owns. A kit user has access to its peripheral devices.
 
     retrieve:
-    Return the given sensor, if the user has access to it.
+    Return the given peripheral device, if the user has access to it.
     """
     def get_queryset(self):
         """
-        Get a queryset of all sensors the user has access to.
+        Get a queryset of all peripheral devices the user has access to.
         """
         user = self.request.user
         if isinstance(user, models.Kit):
-            return models.Sensor.objects.filter(kit=user.pk)
+            return models.Peripheral.objects.filter(kit=user.pk)
         else:
             kits = models.Kit.objects.filter(users=user.pk)
-            return models.Sensor.objects.filter(kit__in=kits)
+            return models.Peripheral.objects.filter(kit__in=kits)
 
-    serializer_class = serializers.HyperlinkedSensorSerializer
+    serializer_class = serializers.HyperlinkedPeripheralSerializer
 
 class MeasurementViewSet(viewsets.GenericViewSet,
                          mixins.ListModelMixin,
@@ -163,9 +163,9 @@ class MeasurementViewSet(viewsets.GenericViewSet,
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
 router.register(r'experiments', ExperimentViewSet, base_name='experiment')
-router.register(r'sensor-definitions', SensorDefinitionViewSet, base_name='sensordefinition')
-router.register(r'sensor-configuration-definitions', SensorConfigurationDefinitionViewSet, base_name='sensorconfigurationdefinition')
-router.register(r'sensors', SensorViewSet, base_name='sensor')
+router.register(r'peripheral-definitions', PeripheralDefinitionViewSet, base_name='peripheraldefinition')
+router.register(r'peripheral-configuration-definitions', PeripheralConfigurationDefinitionViewSet, base_name='peripheralconfigurationdefinition')
+router.register(r'peripherals', PeripheralViewSet, base_name='peripheral')
 router.register(r'measurements', MeasurementViewSet, base_name='measurement')
 
 urlpatterns = [

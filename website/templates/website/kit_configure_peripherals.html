@@ -3,49 +3,49 @@
 {% load bootstrap4 %}
 {% load website_extras %}
 
-{% block title %}Sensors | {{ block.super }}{% endblock %}
+{% block title %}Peripheral devices | {{ block.super }}{% endblock %}
 
 {% block config_header %} 
-    Sensors
+    Peripheral devices
 {% endblock %}
 
 {% block config_content %}
-    <h3>Active sensors</h3>
+    <h3>Active peripheral devices</h3>
     
-    <a href="{% url 'website:kit_configure_sensors_add' kit.pk %}" title="Add sensor" type="button" class="btn btn-secondary btn-block">{% icon 'plus' %} Add sensor</a>
+    <a href="{% url 'website:kit_configure_peripherals_add' kit.pk %}" title="Add peripheral" type="button" class="btn btn-secondary btn-block">{% icon 'plus' %} Add peripheral device</a>
         
     <hr>
     
     <form method="post">
         {% csrf_token %}
-        {% for sensor in active_sensors %}
+        {% for peripheral in active_peripherals %}
             <div class="row">
                 <div class="col-12 mb-3">
                     <div class="card">
                         <div class="card-header">
-                            {{ sensor.name }}
+                            {{ peripheral.name }}
                         </div>
                         <div class="card-body">
-                        {% with sensor.sensor_definition as sensor_definition %}
+                        {% with peripheral.peripheral_definition as peripheral_definition %}
                             <div class="row">
                                 <div class="col-12 col-lg">
                                     <div class="row">
-                                        <div class="col-sm-3"><strong>Sensor type</strong></div>
-                                        <div class="col-sm-9">{{ sensor_definition }}</div>
+                                        <div class="col-sm-3"><strong>Peripheral device type</strong></div>
+                                        <div class="col-sm-9">{{ peripheral_definition }}</div>
                                         
                                         <div class="col-sm-3"><strong>Date added</strong></div>
-                                        <div class="col-sm-9">{{ sensor.date_time_added }}</div>
+                                        <div class="col-sm-9">{{ peripheral.date_time_added }}</div>
                                     </div>
                                 </div>
                                 <div class="col col-md-auto">
-                                    <button type="submit" name="deactivate_sensor" value="{{ sensor.pk }}" class="btn btn-warning" data-toggle="confirmation">
+                                    <button type="submit" name="deactivate_peripheral" value="{{ peripheral.pk }}" class="btn btn-warning" data-toggle="confirmation">
                                         {% icon "power-off" %} Deactivate
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            {% if sensor_definition.sensor_configuration_definitions.all %}
+                            {% if peripheral_definition.peripheral_configuration_definitions.all %}
                                 <h4>Configuration</h4>
                                 <table class="table">
                                     <thead>
@@ -55,10 +55,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for sensor_configuration in sensor.sensor_configurations.all %}
+                                        {% for peripheral_configuration in peripheral.peripheral_configurations.all %}
                                             <tr>
-                                                <th scope="row">{{ sensor_configuration.sensor_configuration_definition.name }}</th>
-                                                <td>{{ sensor_configuration.value }}</td>
+                                                <th scope="row">{{ peripheral_configuration.peripheral_configuration_definition.name }}</th>
+                                                <td>{{ peripheral_configuration.value }}</td>
                                             </tr>
                                         {% empty %}
                                             <tr>
@@ -74,40 +74,40 @@
             </div>
             {% endwith %}
         {% empty %}
-            <div class="col-xs-12"><p>There are no active sensors on the kit.</p></div>
+            <div class="col-xs-12"><p>There are no active peripheral devices on the kit.</p></div>
         {% endfor %}
     </form>
     <hr>
-    <h3>Inactive sensors</h3>
+    <h3>Inactive peripheral devices</h3>
     <form method="post">
     {% csrf_token %}
-        {% for sensor in inactive_sensors %}
+        {% for peripheral in inactive_peripherals %}
             <div class="row">
                 <div class="col-12 mb-3">
                     <div class="card">
                         <div class="card-header">
-                            {{ sensor.name }}
+                            {{ peripheral.name }}
                         </div>
                         <div class="card-body">
-                            {% with sensor.sensor_definition as sensor_definition %}
+                            {% with peripheral.peripheral_definition as peripheral_definition %}
                                 <div class="row">
                                     <div class="col-12 col-lg">
                                         <div class="row">
-                                            <div class="col-sm-3"><strong>Sensor type</strong></div>
-                                            <div class="col-sm-9">{{ sensor_definition }}</div>
+                                            <div class="col-sm-3"><strong>Peripheral device type</strong></div>
+                                            <div class="col-sm-9">{{ peripheral_definition }}</div>
                                             
                                             <div class="col-sm-3"><strong>Date added</strong></div>
-                                            <div class="col-sm-9">{{ sensor.date_time_added }}</div>
+                                            <div class="col-sm-9">{{ peripheral.date_time_added }}</div>
                                         </div>
                                     </div>
                                     <div class="col col-md-auto">
                                         <div class="row mb-1">
-                                            <button type="submit" name="activate_sensor" value="{{ sensor.pk }}" class="btn btn-primary btn-block" data-toggle="confirmation">
+                                            <button type="submit" name="activate_peripheral" value="{{ peripheral.pk }}" class="btn btn-primary btn-block" data-toggle="confirmation">
                                                 {% icon "power-off" %} Activate
                                             </button>
                                         </div>
                                         <div class="row">
-                                            <button type="submit" name="permanently_remove_sensor" value="{{ sensor.pk }}" class="btn btn-danger btn-block" data-toggle="confirmation">
+                                            <button type="submit" name="permanently_remove_peripheral" value="{{ peripheral.pk }}" class="btn btn-danger btn-block" data-toggle="confirmation">
                                                 {% icon "remove" %} Permanently remove
                                             </button>
                                         </div>
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                         <div class="card-body">
-                            {% if sensor_definition.sensor_configuration_definitions.all %}
+                            {% if peripheral_definition.peripheral_configuration_definitions.all %}
                                 <h4>Configuration</h4>
                                 <table class="table">
                                     <thead>
@@ -125,10 +125,10 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for sensor_configuration in sensor.sensor_configurations.all %}
+                                        {% for peripheral_configuration in peripheral.peripheral_configurations.all %}
                                             <tr>
-                                                <th scope="row">{{ sensor_configuration.sensor_configuration_definition.name }}</th>
-                                                <td>{{ sensor_configuration.value }}</td>
+                                                <th scope="row">{{ peripheral_configuration.peripheral_configuration_definition.name }}</th>
+                                                <td>{{ peripheral_configuration.value }}</td>
                                             </tr>
                                         {% empty %}
                                             <tr>
@@ -144,7 +144,7 @@
             </div>
             {% endwith %}
         {% empty %}
-            <div class="col-xs-12"><p>There are no removed sensors.</p></div>
+            <div class="col-xs-12"><p>There are no removed peripheral devices.</p></div>
         {% endfor %}
     </form>
 {% endblock %}

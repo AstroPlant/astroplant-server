@@ -1,6 +1,6 @@
 @import "variables.scss";
 
-.sensor-definition
+.peripheral-definition
 {
     padding: 1.5em;
     border-bottom: 1px solid #eaeaea;
@@ -10,22 +10,22 @@
         margin-bottom: 0.5em;
     }
     
-    .sensor-definition-mark
+    .peripheral-definition-mark
     {
         font-size: 1.35em;
     }
 
-    .sensor-definition-mark-verified
+    .peripheral-definition-mark-verified
     {
         color: #6090f0;
     }
 
-    .sensor-definition-mark-unverified
+    .peripheral-definition-mark-unverified
     {
         color: #f09060;
     }
 
-    .sensor-definition-name
+    .peripheral-definition-name
     {
         vertical-align: text-bottom;
         font-weight: bold;

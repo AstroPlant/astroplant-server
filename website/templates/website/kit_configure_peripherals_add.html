@@ -3,14 +3,14 @@
 {% load bootstrap4 %}
 {% load website_extras %}
 
-{% block title %}Add sensor | {{ block.super }}{% endblock %}
+{% block title %}Add peripheral device | {{ block.super }}{% endblock %}
 
 {% block config_header %} 
-    Add sensor
+    Add peripheral device
 {% endblock %}
 
 {% block config_content %}
-    <p>Select the sensor definition to create a new sensor for.</p>
+    <p>Select the definition to create a new peripheral device for.</p>
     
     <form method="post">
         {% csrf_token %}

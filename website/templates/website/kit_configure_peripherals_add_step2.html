@@ -1,0 +1,47 @@
+{% extends 'website/kit_configure_base.html' %}
+
+{% load bootstrap4 %}
+{% load website_extras %}
+
+{% block title %}Add peripheral device | {{ block.super }}{% endblock %}
+
+{% block config_header %} 
+    Configure new peripheral device
+{% endblock %}
+
+{% block config_content %}
+    <p>Adding: <strong>{{ peripheral_definition }}</strong>.</p>
+    <p>Configure the peripheral device and add it to your kit.</p>
+    <p>Note that a peripheral device cannot be changed after adding. It can only be removed. You can always add a new peripheral device.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form peripheral_form layout='horizontal' %}
+        
+        {{ peripheral_configuration_form_set.management_form }}
+        
+        {% for peripheral_configuration_form in peripheral_configuration_form_set.forms %}
+            {% with peripheral_configuration_form.initial.peripheral_configuration_definition as peripheral_configuration_definition %}
+                <div class="card mb-3">
+                    <div class="card-header">
+                        {% icon 'sliders' %} {{ peripheral_configuration_definition.name }}
+                    </div>
+                    <div class="card-body">
+                        {{ peripheral_configuration_definition.description|linebreaks }}
+                        <div class="form-group row">
+                            <span class="col-md-3 col-form-label">Default value</span>
+                            <span class="col-md-9 col-form-label">{{ peripheral_configuration_definition.default_value }}</span>
+                        </div>
+                        {% bootstrap_form peripheral_configuration_form layout='horizontal' %}
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+        
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                {% icon "plus" %} Add
+            </button>
+        {% endbuttons %}
+    </form>
+{% endblock %}

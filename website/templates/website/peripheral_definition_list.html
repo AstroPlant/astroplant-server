@@ -1,0 +1,59 @@
+{% extends 'website/base.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% load rules %}
+{% load website_extras %}
+
+{% block title %}Peripheral device definitions - {{ block.super }}{% endblock %}
+
+{% block head_ext %}
+    <link rel="stylesheet" href="{% static 'website/css/peripherals.css' %}">
+{% endblock %}
+
+{% block header %}
+    <h1>Peripheral device definitions</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for peripheral_definition in peripheral_definitions %}
+            {% has_perm 'backend.view_peripheral_definition' user peripheral_definition as can_view %}
+            {% has_perm 'backend.edit_peripheral_definition' user peripheral_definition as can_edit %}
+            
+            {% if can_view %}
+                <div class="peripheral-definition">
+                    <div class="peripheral-definition-header" title="{% if peripheral_definition.verified %}Verified peripheral{% else %}Unverified peripheral{% endif %}">
+                        <span class="peripheral-definition-mark">
+                            {% if peripheral_definition.verified %}
+                                <span class="peripheral-definition-mark-verified">{% icon "check-circle" %}</span>
+                            {% else %}
+                                <span class="peripheral-definition-mark-unverified">{% icon "question-circle" %}</span>
+                            {% endif %}
+                        </span>
+                        
+                        <span class="peripheral-definition-name">
+                            {{ peripheral_definition.name }} 
+                        </span>
+                    </div>
+                    <div class="peripheral-definition-public">
+                        {% if peripheral_definition.public %}
+                            Public
+                        {% else %}
+                            Private
+                        {% endif %}
+                    </div>
+                    {% if peripheral_definition.owner %}
+                        <div class="peripheral-definition-owner">
+                            Maintainer: {{ peripheral_definition.owner }}
+                        </div>
+                    {% endif %}
+                    
+                    {% if can_edit %}
+                        <p><a href="{% url 'website:peripheral_definition_configure' peripheral_definition.pk %}">{% icon 'edit' %} Configure definition</a></p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
