@@ -36,160 +36,175 @@
         
         {% has_perm 'backend.configure_kit' user kit as can_configure %}
     
-        <div class="container dashboard">
-            <div class="row">
-                {% if can_configure %}
-                    <div class="col-12 text-right mb-2">
-                        <a href="{% url 'website:kit_configure_profile' kit.pk %}">{% icon 'cog' %} Configure kit</a>
-                    </div>
-                {% endif %}
-                <div class="col-sm-8">
-                    <div class="card mb-4">
-                        <div class="card-header text-muted">
-                            Line charts
+        {% with kit.active_peripherals_and_measurement_types as active_peripherals_and_measurement_types %}
+            <div class="container dashboard">
+                <div class="row">
+                    {% if can_configure %}
+                        <div class="col-12 text-right mb-2">
+                            <a href="{% url 'website:kit_configure_profile' kit.pk %}">{% icon 'cog' %} Configure kit</a>
                         </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-5 col-lg-3">
-                                    <ul class="nav nav-pills flex-column" role="tablist">
-                                        {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
-                                            <li class="nav-item">
-                                                <a class="nav-link{% if forloop.first %} active{% endif %}" href="#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" data-toggle="tab" role="tab" aria-controls="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ measurement_type.physical_quantity }} - {{ peripheral }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
+                    {% endif %}
+                    {% if active_peripherals_and_measurement_types %}
+                        <div class="col-sm-8">
+                            <div class="card mb-4">
+                                <div class="card-header text-muted">
+                                    Line charts
                                 </div>
-                                <div class="col-md-7 col-lg-9 tab-content">
-                                    {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
-                                        <div class="tab-pane fade {% if forloop.first %} show active{% endif %}" id="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" role="tabpanel" aria-labelledby="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}-tab"></div>
-                                    {% endfor %}
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-5 col-lg-3">
+                                            <ul class="nav nav-pills flex-column" role="tablist">
+                                                {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
+                                                    <li class="nav-item">
+                                                        <a class="nav-link{% if forloop.first %} active{% endif %}" href="#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" data-toggle="tab" role="tab" aria-controls="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ measurement_type.physical_quantity }} - {{ peripheral }}</a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-7 col-lg-9 tab-content">
+                                            {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
+                                                <div class="tab-pane fade {% if forloop.first %} show active{% endif %}" id="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" role="tabpanel" aria-labelledby="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}-tab"></div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        
+                        {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
+                            <div class="col-sm-4">
+                                <div class="card mb-4">
+                                    <div class="card-header text-muted">
+                                        {{ measurement_type.physical_quantity }}
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="chart-{{ peripheral.pk }}-{{ measurement_type.pk }}"></div>
+                                    </div>
+                                    <div class="card-footer text-muted">
+                                        {{ peripheral }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header text-muted">
+                                    No active peripherals making measurements
+                                </div>
+                                <div class="card-body">
+                                    This kit currently has no active peripherals making measurements.
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
-                
-                {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
-                    <div class="col-sm-4">
-                        <div class="card mb-4">
-                            <div class="card-header text-muted">
-                                {{ measurement_type.physical_quantity }}
-                            </div>
-                            <div class="card-body">
-                                <div id="chart-{{ peripheral.pk }}-{{ measurement_type.pk }}"></div>
-                            </div>
-                            <div class="card-footer text-muted">
-                                {{ peripheral }}
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
             </div>
-        </div>
-        
-        <script>
-            {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
-                var line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
-                    bindto: "#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}",
-                    data: {
-                        x: 'x',
-                        xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                        columns: [
-                            ['x'],
-                            ['{{ meaurement_type.physical_quantity }}']
-                        ],
-                        type: 'area-spline'
-                    },
-                    type: 'timeseries',
-                    axis: {
-                        x: {
-                            'type': 'timeseries',
-                            tick: {
-                                format: '%Y-%m-%d %H:%M:%S',
-                                count: 4
-                            },
-                            padding: 0
+            
+            <script>
+                {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
+                    var line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
+                        bindto: "#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}",
+                        data: {
+                            x: 'x',
+                            xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+                            columns: [
+                                ['x'],
+                                ['{{ meaurement_type.physical_quantity }}']
+                            ],
+                            type: 'area-spline'
                         },
-                        y: {
-                            label: "{{ measurement_type.physical_unit_symbol }}",
-                            padding: {
-                                top: 5,
-                                bottom: 0
+                        type: 'timeseries',
+                        axis: {
+                            x: {
+                                'type': 'timeseries',
+                                tick: {
+                                    format: '%Y-%m-%d %H:%M:%S',
+                                    count: 4
+                                },
+                                padding: 0
+                            },
+                            y: {
+                                label: "{{ measurement_type.physical_unit_symbol }}",
+                                padding: {
+                                    top: 5,
+                                    bottom: 0
+                                }
+                            }
+                        },
+                        size: {
+                            height: 210
+                        }
+                    });
+                    
+                    var gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
+                        bindto: "#chart-{{ peripheral.pk }}-{{ measurement_type.pk }}",
+                        data: {
+                            columns: [
+                                ['data', 0]
+                            ],
+                            type: 'gauge'
+                        },
+                        gauge: {
+                            label: {
+                                format: function(value, ratio) {
+                                    return value.toFixed(2); // return the value and not the ratio
+                                },
+                            },
+                            min: 0,
+                            max: 50,
+                            units: '{{ measurement_type.physical_unit_symbol }}'
+                        },
+                        color: {
+                            pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                            threshold: {
+                                values: [30, 60, 90, 100]
                             }
                         }
-                    },
-                    size: {
-                        height: 210
-                    }
-                });
+                    });
+                    
+                {% endfor %}
                 
-                var gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
-                    bindto: "#chart-{{ peripheral.pk }}-{{ measurement_type.pk }}",
-                    data: {
+                {# Connect to websocket #}
+                var wsProtocol = location.protocol == 'https:' ? 'wss:' : 'ws:';
+                var ws = new WebSocket(wsProtocol + "//" + location.host);
+
+                ws.onmessage = function(str) {
+                    var data = JSON.parse(str.data);
+                    console.log("Received: ", data);
+                    if (!data.value)
+                    {
+                        return;
+                    }
+                    
+                    var currentdate = new Date(); 
+                    
+                    chart1.flow({
                         columns: [
-                            ['data', 0]
+                            ['x', currentdate.toISOString()],
+                            ['Temperature', data.value]
                         ],
-                        type: 'gauge'
-                    },
-                    gauge: {
-                        label: {
-                            format: function(value, ratio) {
-                                return value.toFixed(2); // return the value and not the ratio
-                            },
-                        },
-                        min: 0,
-                        max: 50,
-                        units: '{{ measurement_type.physical_unit_symbol }}'
-                    },
-                    color: {
-                        pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
-                        threshold: {
-                            values: [30, 60, 90, 100]
+                        length: 0 // Don't pop
+                    });
+                    
+                    chart3.load({
+                        columns: [
+                            ['data', data.value]
+                        ]
+                    });
+                };
+
+                {# Subscribe to websocket #}
+                ws.onopen = function() {
+                    ws.send(JSON.stringify({
+                        stream: 'measurements-subscribe',
+                        payload: {
+                            action: 'subscribe',
+                            kit: '{{ kit.username }}'
                         }
-                    }
-                });
-                
-            {% endfor %}
-            
-            {# Connect to websocket #}
-            var wsProtocol = location.protocol == 'https:' ? 'wss:' : 'ws:';
-            var ws = new WebSocket(wsProtocol + "//" + location.host);
-
-            ws.onmessage = function(str) {
-                var data = JSON.parse(str.data);
-                console.log("Received: ", data);
-                if (!data.value)
-                {
-                    return;
+                    }));
                 }
-                
-                var currentdate = new Date(); 
-                
-                chart1.flow({
-                    columns: [
-                        ['x', currentdate.toISOString()],
-                        ['Temperature', data.value]
-                    ],
-                    length: 0 // Don't pop
-                });
-                
-                chart3.load({
-                    columns: [
-                        ['data', data.value]
-                    ]
-                });
-            };
-
-            {# Subscribe to websocket #}
-            ws.onopen = function() {
-                ws.send(JSON.stringify({
-                    stream: 'measurements-subscribe',
-                    payload: {
-                        action: 'subscribe',
-                        kit: '{{ kit.username }}'
-                    }
-                }));
-            }
-        </script>
+            </script>
+        {% endwith %}
     {% endif %}
 {% endblock %}
