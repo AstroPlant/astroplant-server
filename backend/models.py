@@ -55,6 +55,24 @@ class Kit(User):
     class Meta:
         verbose_name = 'Kit'
         verbose_name_plural = 'Kits'
+    
+    def active_peripherals(self):
+        """
+        Get all active peripheral devices.
+        """
+        return self.peripherals.filter(active=True)
+
+    def active_peripherals_and_measurement_types(self):
+        """
+        Get a list of tuples of activate peripheral devices and their
+        measurement types.
+        """
+        peripherals_and_measurements = []
+        for peripheral in self.active_peripherals():
+            for measurement_type in peripheral.peripheral_definition.measurement_types.all():
+                peripherals_and_measurements.append((peripheral, measurement_type,))
+        return peripherals_and_measurements
+
 
     def generate_config(self):
         """
