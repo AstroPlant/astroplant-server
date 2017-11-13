@@ -56,7 +56,11 @@
                                             <ul class="nav nav-pills flex-column" role="tablist">
                                                 {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
                                                     <li class="nav-item">
-                                                        <a class="nav-link{% if forloop.first %} active{% endif %}" href="#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" data-toggle="tab" role="tab" aria-controls="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ measurement_type.physical_quantity }} - {{ peripheral }}</a>
+                                                        <a class="nav-link{% if forloop.first %} active{% endif %}" href="#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" data-toggle="tab" role="tab" aria-controls="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                                            {{ measurement_type.physical_quantity }}
+                                                            <br>
+                                                            <small>{{ peripheral }}</small>
+                                                        </a>
                                                     </li>
                                                 {% endfor %}
                                             </ul>
