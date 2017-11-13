@@ -46,201 +46,114 @@
                 <div class="col-sm-8">
                     <div class="card mb-4">
                         <div class="card-header text-muted">
-                            Test!
+                            Line charts
                         </div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-5 col-lg-3">
-                                    <ul class="nav nav-pills flex-column">
-                                        <li class="nav-item"><a class="nav-link active" href="#chart_temperature" data-toggle="tab">Temperature</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#chart_ec" data-toggle="tab">EC</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#chart_light" data-toggle="tab">Light</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#chart_ph" data-toggle="tab">pH</a></li>
+                                    <ul class="nav nav-pills flex-column" role="tablist">
+                                        {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
+                                            <li class="nav-item">
+                                                <a class="nav-link{% if forloop.first %} active{% endif %}" href="#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" data-toggle="tab" role="tab" aria-controls="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ measurement_type.physical_quantity }} - {{ peripheral }}</a>
+                                            </li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
-                                <div class="col-md-7 col-lg-9">
-                                    <div id="chart-1-1"></div>
+                                <div class="col-md-7 col-lg-9 tab-content">
+                                    {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
+                                        <div class="tab-pane fade {% if forloop.first %} show active{% endif %}" id="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" role="tabpanel" aria-labelledby="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}-tab"></div>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="col-sm-4">
-                    <div class="card mb-4">
-                        <div class="card-header text-muted">
-                            Current experiment progress
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-1-2"></div>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Notes about this chart (optional)
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="card mb-4">
-                        <div class="card-header text-muted">
-                            Temperature
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-2-1"></div>
+                {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
+                    <div class="col-sm-4">
+                        <div class="card mb-4">
+                            <div class="card-header text-muted">
+                                {{ measurement_type.physical_quantity }}
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-{{ peripheral.pk }}-{{ measurement_type.pk }}"></div>
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{ peripheral }}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="card mb-4">
-                        <div class="card-header text-muted">
-                            Experiment duration
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-2-2"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="card mb-4">
-                        <div class="card-header text-muted">
-                            And some other data
-                        </div>
-                        <div class="card-body">
-                            <div id="chart-2-3"></div>
-                        </div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
         
         <script>
-            var chart1 = c3.generate({
-                bindto: "#chart-1-1",
-                data: {
-                    x: 'x',
-                    xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                    columns: [
-                        /*['x', '2017-10-01', '2017-10-02', '2017-10-03', '2017-10-04', '2017-10-05', '2017-10-06', '2017-10-07', '2017-10-08', '2017-10-09', '2017-10-10', '2017-10-11', '2017-10-12', '2017-10-13', '2017-10-14', '2017-10-15', '2017-10-16', '2017-10-17', '2017-10-18', '2017-10-19', '2017-10-20', '2017-10-21', '2017-10-22', '2017-10-23', '2017-10-24', '2017-10-25'],
-                        ['Temperature', 16.5, 16, 17, 17.5, 16.5, 15, 14.2, 14.3, 16, 18.8, 23.5, 25.9, 26.8, 27.8, 29.8, 30.2, 28.3, 27.7, 24.6, 22.2, 20.5, 19.8, 18.2, 17, 15.8]*/
-                        ['x'],
-                        ['Temperature']
-                    ],
-                    type: 'area-spline'
-                },
-                type: 'timeseries',
-                axis: {
-                    x: {
-                        'type': 'timeseries',
-                        tick: {
-                            format: '%Y-%m-%d %H:%M:%S',
-                            count: 4
-                        },
-                        padding: 0
+            {% for peripheral, measurement_type in kit.active_peripherals_and_measurement_types %}
+                var line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
+                    bindto: "#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}",
+                    data: {
+                        x: 'x',
+                        xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+                        columns: [
+                            ['x'],
+                            ['{{ meaurement_type.physical_quantity }}']
+                        ],
+                        type: 'area-spline'
                     },
-                    y: {
+                    type: 'timeseries',
+                    axis: {
+                        x: {
+                            'type': 'timeseries',
+                            tick: {
+                                format: '%Y-%m-%d %H:%M:%S',
+                                count: 4
+                            },
+                            padding: 0
+                        },
+                        y: {
+                            label: "{{ measurement_type.physical_unit_symbol }}",
+                            padding: {
+                                top: 5,
+                                bottom: 0
+                            }
+                        }
+                    },
+                    size: {
+                        height: 210
+                    }
+                });
+                
+                var gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
+                    bindto: "#chart-{{ peripheral.pk }}-{{ measurement_type.pk }}",
+                    data: {
+                        columns: [
+                            ['data', 0]
+                        ],
+                        type: 'gauge'
+                    },
+                    gauge: {
+                        label: {
+                            format: function(value, ratio) {
+                                return value.toFixed(2); // return the value and not the ratio
+                            },
+                        },
                         min: 0,
-                        max: 30,
-                        label: "°C",
-                        padding: {
-                            top: 5,
-                            bottom: 0
+                        max: 50,
+                        units: '{{ measurement_type.physical_unit }}'
+                    },
+                    color: {
+                        pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                        threshold: {
+                            values: [30, 60, 90, 100]
                         }
                     }
-                },
-                size: {
-                    height: 210
-                }
-            });
+                });
+                
+            {% endfor %}
             
-            var chart2 = c3.generate({
-                bindto: "#chart-1-2",
-                data: {
-                    columns: [
-                        ['data', 91.4]
-                    ],
-                    type: 'gauge'
-                },
-                gauge: {
-                },
-                color: {
-                    pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
-                    threshold: {
-                        values: [30, 60, 90, 100]
-                    }
-                },
-                size: {
-                    height: 200
-                }
-            });
-            
-            var chart3 = c3.generate({
-                bindto: "#chart-2-1",
-                data: {
-                    columns: [
-                        ['data', 0]
-                    ],
-                    type: 'gauge'
-                },
-                gauge: {
-                    label: {
-                        format: function(value, ratio) {
-                            return value.toFixed(2); //returning here the value and not the ratio
-                        },
-                    },
-                    min: 0,
-                    max: 50,
-                    units: 'degrees celsius'
-                },
-                color: {
-                    pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
-                    threshold: {
-                        values: [30, 60, 90, 100]
-                    }
-                },
-                size: {
-                    height: 240
-                }
-            });
-            
-            var chart4 = c3.generate({
-                bindto: "#chart-2-2",
-                data: {
-                    columns: [
-                        ['1', 21],
-                        ['2', 29],
-                        ['3', 26],
-                        ['4', 35],
-                    ],
-                    type : 'donut'
-                },
-                color: {
-                    pattern: ['#1e515b', '#2e7a89', '#3b9caf', '#75c1d0']
-                },
-                size: {
-                    height: 240
-                }
-            });
-            
-            var chart5 = c3.generate({
-                bindto: "#chart-2-3",
-                data: {
-                    columns: [
-                        ['Data', 30, 200, 100, 400, 150, 250]
-                    ],
-                    type: 'bar'
-                },
-                bar: {
-                    width: {
-                        ratio: 0.90 // this makes bar width 50% of length between ticks
-                    }
-                },
-                size: {
-                    height: 240
-                }
-            });
-            
-            var ws = new WebSocket("ws://localhost:8000");
+            {# Connect to websocket #}
+            var wsProtocol = location.protocol == 'https:' ? 'wss:' : 'ws:';
+            var ws = new WebSocket(wsProtocol + "//" + location.host);
 
             ws.onmessage = function(str) {
                 var data = JSON.parse(str.data);
@@ -267,17 +180,16 @@
                 });
             };
 
+            {# Subscribe to websocket #}
             ws.onopen = function() {
                 ws.send(JSON.stringify({
                     stream: 'measurements-subscribe',
                     payload: {
                         action: 'subscribe',
-                        kit: 'c597de985bf63876d247d63462d4c10e1ad137b9dcbb2a4b36b3665b528e17f8'
+                        kit: '{{ kit.username }}'
                     }
                 }));
             }
-
-
         </script>
     {% endif %}
 {% endblock %}
