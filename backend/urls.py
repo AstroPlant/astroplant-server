@@ -43,6 +43,30 @@ class KitViewSet(viewsets.GenericViewSet,
         kit = kit_query.get()
         return rest_framework.response.Response(kit.generate_config())
 
+class KitConfigViewSet(viewsets.ViewSet):
+    """
+    list:
+    List the configurations of all kits the user has access to.
+    A person user has access to all kits it owns, whereas a kit
+    user has access only to itself.
+    """
+
+    def get_queryset(self):
+        """
+        Get a queryset of all kits the user has access to.
+        """
+
+        user = self.request.user
+        
+        if isinstance(user, models.Kit):
+            return models.Kit.objects.filter(pk=user.pk)
+        else:
+            return models.Kit.objects.filter(users=user.pk)
+
+    def list(self, request, format=None):
+        qs = self.get_queryset()
+        return rest_framework.response.Response([kit.generate_config() for kit in qs.all()])
+
 class ExperimentViewSet(viewsets.GenericViewSet,
                         mixins.ListModelMixin,
                         mixins.RetrieveModelMixin):
@@ -162,6 +186,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
 
 router = routers.DefaultRouter()
 router.register(r'kits', KitViewSet, base_name='kit')
+router.register(r'kit-configurations', KitConfigViewSet, base_name='kitconfigurations')
 router.register(r'experiments', ExperimentViewSet, base_name='experiment')
 router.register(r'peripheral-definitions', PeripheralDefinitionViewSet, base_name='peripheraldefinition')
 router.register(r'peripheral-configuration-definitions', PeripheralConfigurationDefinitionViewSet, base_name='peripheralconfigurationdefinition')
