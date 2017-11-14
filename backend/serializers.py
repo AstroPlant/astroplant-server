@@ -45,7 +45,7 @@ class HyperlinkedPeripheralSerializer(serializers.HyperlinkedModelSerializer):
 class HyperlinkedMeasurementSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Measurement
-        fields = ('url', 'id', 'peripheral_type', 'date_time', 'value')
+        fields = ('url', 'id', 'peripheral', 'date_time', 'value')
 
 class MeasurementSerializer(serializers.ModelSerializer):
     class Meta:
