@@ -81,10 +81,15 @@ class Kit(User):
 
         # Generate the configuration dictionary for each peripheral device
         peripherals = []
+        modules = []
         for peripheral in self.peripherals.filter(active = True).all():
 
             # Get the peripheral device definition
             peripheral_definition = peripheral.peripheral_definition
+
+            # Add the pheripheral device module to the module list if it is not present yet
+            if peripheral_definition.module_name not in modules:
+                modules.append(peripheral_definition.module_name)
 
             # Get the peripheral device configuration definitions
             peripheral_configuration_definitions = peripheral_definition.peripheral_configuration_definitions.all()
@@ -110,7 +115,7 @@ class Kit(User):
                 'class_name': peripheral_definition.class_name,
                 'parameters': param_config})
 
-        return {'serial': self.username, 'name': self.name, 'peripherals': peripherals}
+        return {'serial': self.username, 'name': self.name, 'modules': modules, 'peripherals': peripherals}
 
     def generate_password():
         import random
