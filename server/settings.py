@@ -104,7 +104,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoObjectPermissions'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'backend.auth.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
 }

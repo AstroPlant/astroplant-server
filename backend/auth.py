@@ -39,3 +39,13 @@ class PersonOrKitBackend(ModelBackend):
             pass
 
         return user
+
+class JSONWebTokenAuthentication(rest_framework_jwt.authentication.JSONWebTokenAuthentication):
+    def authenticate(self, request):
+        result = super().authenticate(request)
+        if not result:
+            return result
+        
+        (user, token,) = result
+        user = downcast_user_type(user)
+        return (user, token,)
