@@ -28,11 +28,10 @@ class PersonOrKitBackend(ModelBackend):
         return downcast_user_type(super().get_user(*args, **kwargs))
 
 class JSONWebTokenAuthentication(rest_framework_jwt.authentication.JSONWebTokenAuthentication):
-    def authenticate(self, request):
-        result = super().authenticate(request)
-        if not result:
-            return result
-        
-        (user, token,) = result
-        user = downcast_user_type(user)
-        return (user, token,)
+    """
+    Backend using JSONWebTokenAuthentication, but attempts to "downcast"
+    the user into a PersonUser or KitUSer.
+    """
+
+    def authenticate_credentials(self, payload):
+        return downcast_user_type(super().authenticate_credentials(payload))
