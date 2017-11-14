@@ -110,7 +110,7 @@ class Kit(User):
                 'class_name': peripheral_definition.class_name,
                 'parameters': param_config})
 
-        return {'name': self.name, 'peripherals': peripherals}
+        return {'serial': self.username, 'name': self.name, 'peripherals': peripherals}
 
     def generate_password():
         import random
