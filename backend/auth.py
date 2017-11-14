@@ -27,19 +27,6 @@ class PersonOrKitBackend(ModelBackend):
     def get_user(self, *args, **kwargs):
         return downcast_user_type(super().get_user(*args, **kwargs))
 
-    def downcast_user_type(self, user):
-        try:
-            return Kit.objects.get(pk=user.pk)
-        except:
-            pass
-
-        try:
-            return PersonUser.objects.get(pk=user.pk)
-        except:
-            pass
-
-        return user
-
 class JSONWebTokenAuthentication(rest_framework_jwt.authentication.JSONWebTokenAuthentication):
     def authenticate(self, request):
         result = super().authenticate(request)
