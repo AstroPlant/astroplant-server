@@ -95,14 +95,14 @@ class Kit(User):
 
             # For each peripheral device configuration definition, see if the 
             # peripheral device provides a value otherwise use the default value.
-            param_config = []
+            param_config = {}
             for configuration_definition in peripheral_configuration_definitions:
                 if configuration_definition in peripheral_configurations_dict:
                     value = peripheral_configurations_dict[configuration_definition].value
                 else:
                     value = configuration_definition.default_value
 
-                param_config.append({'parameter': configuration_definition.name, 'value': value})
+                param_config[configuration_definition.name] = value
 
             peripherals.append({
                 'peripheral_definition_name': peripheral_definition.name,
