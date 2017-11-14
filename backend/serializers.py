@@ -2,9 +2,14 @@ from backend import models
 from rest_framework import serializers
 
 class HyperlinkedKitSerializer(serializers.HyperlinkedModelSerializer):
+    serial = serializers.SerializerMethodField('get_username')
+    
     class Meta:
         model = models.Kit
-        fields = ('url', 'type', 'name', 'description', 'latitude', 'longitude', 'peripherals', 'experiment_set')
+        fields = ('url', 'serial', 'type', 'name', 'description', 'latitude', 'longitude', 'peripherals', 'experiment_set')
+
+    def get_username(self, obj):
+        return obj.username
 
 class HyperlinkedExperimentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
