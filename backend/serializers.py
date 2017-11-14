@@ -50,4 +50,9 @@ class HyperlinkedMeasurementSerializer(serializers.HyperlinkedModelSerializer):
 class MeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Measurement
-        fields = ('id', 'peripheral', 'date_time', 'value')
+        fields = ('physical_quantity', 'physical_unit', 'value', 'date_time')
+
+class MeasurementOutputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Measurement
+        fields = ('peripheral', 'measurement_type', 'physical_quantity', 'physical_unit', 'value', 'date_time')

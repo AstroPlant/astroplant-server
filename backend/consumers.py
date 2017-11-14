@@ -85,11 +85,29 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
             return
 
         try:
+            # Deserialize measurement
             measurement_serializer = backend.serializers.MeasurementSerializer(data=content['measurement'])
             measurement_serializer.is_valid(raise_exception = True)
+
+            measurement = backend.models.Measurement(**measurement_serializer.validated_data)
+
+            kit = backend.models.Kit.objects.filter(username=self.message.channel_session['kit']).get()
+
+            # Get the peripheral device object by its name (if it's associated with this kit)
+            peripheral = kit.peripherals.filter(name=content['measurement']['peripheral']).get()
+
+            # Add peripheral to the measurement object
+            measurement.peripheral = peripheral
+
+            # Get the registered measurement type by the physical quantity and physical unit if it exists
+            measurement_types_qs = peripheral.peripheral_definition.measurement_types.filter(physical_quantity = measurement.physical_quantity, physical_unit = measurement.physical_unit)
+            if measurement_types_qs:
+                measurement_type = measurement_types_qs.first()
+                measurement.measurement_type = measurement_type
+
+            output_serializer = backend.serializers.MeasurementOutputSerializer(measurement)
             multiplexer.send({"success": "published"})
-            self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], measurement_serializer.data)
-            print("Message sent")
-        except:
+            self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], output_serializer.data)
+        except Exception as exception:
             multiplexer.send({"error": "You must provide a valid measurement.'."})
-            print("Exception...")
+            print(exception)
