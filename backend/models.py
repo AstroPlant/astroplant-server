@@ -169,6 +169,7 @@ class PeripheralDefinition(models.Model):
                               null = True)
     brand = models.CharField(max_length = 100, blank = True)
     type = models.CharField(max_length = 100, blank = True)
+    module_name = models.CharField(max_length = 255)
     class_name = models.CharField(max_length = 255)
     measurement_types = models.ManyToManyField(MeasurementType)
 
