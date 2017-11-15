@@ -112,6 +112,7 @@ class Kit(User):
             peripherals.append({
                 'peripheral_definition_name': peripheral_definition.name,
                 'peripheral_name': peripheral.name,
+                'module_name': peripheral_definition.module_name,
                 'class_name': peripheral_definition.class_name,
                 'parameters': param_config})
 
