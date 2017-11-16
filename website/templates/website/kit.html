@@ -45,7 +45,7 @@
                         </div>
                     {% endif %}
                     {% if active_peripherals_and_measurement_types %}
-                        <div class="col-sm-8">
+                        <div class="col-12">
                             <div class="card mb-4">
                                 <div class="card-header text-muted">
                                     Line charts
@@ -108,6 +108,88 @@
             <script>
                 var charts = {};
             
+                function generate_chart(id, physical_quantity, physical_unit) {
+                    if (physical_quantity == "Temperature" && physical_unit == "Degrees Celsius") {
+                        return c3.generate({
+                            bindto: id,
+                            data: {
+                                columns: [
+                                    ['data', 0]
+                                ],
+                                type: 'gauge'
+                            },
+                            gauge: {
+                                label: {
+                                    format: function(value, ratio) {
+                                        return value.toFixed(2); // return the value and not the ratio
+                                    },
+                                },
+                                min: 0,
+                                max: 50,
+                                units: '°C'
+                            },
+                            color: {
+                                pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                                threshold: {
+                                    values: [0, 10, 20, 25]
+                                }
+                            }
+                        });
+                    } else if (physical_quantity == "Pressure" && physical_unit == "Hectopascal") {
+                        return c3.generate({
+                            bindto: id,
+                            data: {
+                                columns: [
+                                    ['data', 0]
+                                ],
+                                type: 'gauge'
+                            },
+                            gauge: {
+                                label: {
+                                    format: function(value, ratio) {
+                                        return value.toFixed(2); // return the value and not the ratio
+                                    },
+                                },
+                                min: 920,
+                                max: 1080,
+                                units: 'hPa'
+                            },
+                            color: {
+                                pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                                threshold: {
+                                    values: [920, 990, 1010, 1040]
+                                }
+                            }
+                        });
+                    } else if (physical_quantity == "Humidity" && physical_unit == "Percent") {
+                        return c3.generate({
+                            bindto: id,
+                            data: {
+                                columns: [
+                                    ['data', 0]
+                                ],
+                                type: 'gauge'
+                            },
+                            gauge: {
+                                label: {
+                                    format: function(value, ratio) {
+                                        return value.toFixed(2); // return the value and not the ratio
+                                    },
+                                },
+                                min: 0,
+                                max: 100,
+                                units: '%'
+                            },
+                            color: {
+                                pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                                threshold: {
+                                    values: [0, 20, 60, 80]
+                                }
+                            }
+                        });
+                    }
+                }
+            
                 {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
                     var line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
                         bindto: "#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}",
@@ -144,31 +226,7 @@
                     });
                     charts['line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }}'] = line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }};
                     
-                    var gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
-                        bindto: "#chart-{{ peripheral.pk }}-{{ measurement_type.pk }}",
-                        data: {
-                            columns: [
-                                ['data', 0]
-                            ],
-                            type: 'gauge'
-                        },
-                        gauge: {
-                            label: {
-                                format: function(value, ratio) {
-                                    return value.toFixed(2); // return the value and not the ratio
-                                },
-                            },
-                            min: 0,
-                            max: 50,
-                            units: '{{ measurement_type.physical_unit_symbol }}'
-                        },
-                        color: {
-                            pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
-                            threshold: {
-                                values: [30, 60, 90, 100]
-                            }
-                        }
-                    });
+                    var gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = generate_chart("#chart-{{ peripheral.pk }}-{{ measurement_type.pk }}", "{{ measurement_type.physical_quantity }}",  "{{ measurement_type.physical_unit }}");
                     charts['gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }}'] = gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }};
                     
                 {% endfor %}
