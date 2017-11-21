@@ -2,4 +2,4 @@
 Module to hold some secret settings that should not be placed in the repo.
 """
 
-SECRET_KEY = 't+f^4&1!suu2gk4nnra4h5ymcjxct_1p4yzl*u2nth&&a!qfw$'
+SECRET_KEY = '__SECRET__'
