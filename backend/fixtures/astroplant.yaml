@@ -1,0 +1,77 @@
+---
+# Measurement types
+- model: backend.measurementtype
+  pk: 1
+  fields:
+    physical_quantity: Temperature
+    physical_unit: Degrees Celsius
+    physical_unit_symbol: '°C'
+- model: backend.measurementtype
+  pk: 2
+  fields:
+    physical_quantity: Pressure
+    physical_unit: Hectopascal
+    physical_unit_symbol: hPa
+- model: backend.measurementtype
+  pk: 3
+  fields:
+    physical_quantity: Humidity
+    physical_unit: Percent
+    physical_unit_symbol: '%'
+
+# Peripheral definitions
+- model: backend.peripheraldefinition
+  pk: 1
+  fields:
+    name: Grove - Barometer sensor BME280
+    description: ''
+    verified: false
+    public: true
+    brand: Grove
+    type: BME280
+    module_name: astroplant_sensor_library
+    class_name: BME280
+    measurement_types:
+    - 1
+    - 2
+- model: backend.peripheraldefinition
+  pk: 2
+  fields:
+    name: Virtual temperature sensor
+    description: A virtual temperature sensor using the environment simulation.
+    verified: false
+    public: true
+    brand: Virtual
+    type: Virtual
+    module_name: astroplant_simulation.sensors
+    class_name: Temperature
+    measurement_types:
+    - 1
+- model: backend.peripheraldefinition
+  pk: 3
+  fields:
+    name: Virtual pressure sensor
+    description: A virtual pressure sensor using the environment simulation.
+    verified: false
+    public: true
+    brand: Virtual
+    type: Virtual
+    module_name: astroplant_simulation.sensors
+    class_name: Pressure
+    measurement_types:
+    - 2
+- model: backend.peripheraldefinition
+  pk: 4
+  fields:
+    name: Virtual barometer
+    description: A virtual barometer sensor using the environment simulation.
+    verified: false
+    public: true
+    brand: Virtual
+    type: Virtual
+    module_name: astroplant_simulation.sensors
+    class_name: Barometer
+    measurement_types:
+    - 1
+    - 2
+    - 3
