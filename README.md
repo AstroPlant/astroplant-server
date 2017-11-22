@@ -5,6 +5,10 @@ The AstroPlant kits communicate with the back-end to push data. The website allo
 
 The server is built using the [Django](https://www.djangoproject.com/) framework.
 
+# Documentation
+
+Full documentation can be found [here](https://astroplant-server.readthedocs.io/en/latest/index.html).
+
 # Configuration
 
 The server requires a database to function. It has only been tested with MySQL/MariaDB.
@@ -57,7 +61,3 @@ Alternatively, for development, run the server using:
 ```bash
 python manage.py runserver
 ```
-
-# Full documentation
-
-Full documentation can be found [here](https://astroplant-server.readthedocs.io/en/latest/index.html).
