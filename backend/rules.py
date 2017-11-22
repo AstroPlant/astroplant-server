@@ -36,7 +36,7 @@ def is_public_peripheral_definition(user, peripheral_definition):
     """
     Predicate defining whether a peripheral device definition is public or not.
     """
-    if not isinstance(kit, backend.models.PeripheralDefinition):
+    if not isinstance(peripheral_definition, backend.models.PeripheralDefinition):
         return False
 
     return peripheral_definition.public
