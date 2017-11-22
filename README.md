@@ -9,7 +9,7 @@ The server is built using the [Django](https://www.djangoproject.com/) framework
 
 Full documentation can be found [here](https://astroplant-server.readthedocs.io/en/latest/index.html).
 
-# Configuration
+# Configure AstroPlant
 
 The server requires a database to function. It has only been tested with MySQL/MariaDB.
 
@@ -31,7 +31,7 @@ Next, build the assets to static files:
 npm run-script build
 ```
 
-# Database
+# Prepare the database
 
 Prepare the database by running:
 
@@ -46,13 +46,13 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-If you would like to include some default data provided by AstroPlant, such as measurement types and official perihperal device definitions, load the AstroPlant fixture.
+If you would like to include some default data provided by AstroPlant, such as measurement types and official peripheral device definitions, load the AstroPlant fixture.
 
 ```bash
 python manage.py loaddata astroplant
 ```
 
-# Running the server
+# Run the server
 
 It is recommended to host the server through a webserver using `server/WSGI.py`, such as Nginx with uWGSI. See also [the AstroPlant server deployment repository](https://github.com/AstroPlant/astroplant-server-deployment).
 
