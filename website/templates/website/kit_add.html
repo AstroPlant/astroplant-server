@@ -1,7 +1,7 @@
 {% extends 'website/base.html' %}
 
-{% load static %}
-{% load bootstrap3 %}
+{% load bootstrap4 %}
+{% load website_extras %}
 
 {% block title %}Add kit - {{ block.super }}{% endblock %}
 
@@ -19,7 +19,7 @@
             {% bootstrap_form form layout='inline' %}
             {% buttons %}
                 <button type="submit" class="btn btn-primary">
-                    {% bootstrap_icon "plus" %} Add
+                    {% icon "plus" %} Add
                 </button>
             {% endbuttons %}
         </form>
