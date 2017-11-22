@@ -36,3 +36,7 @@ Alternatively, for development, run the server using:
 ```
 > python manage.py runserver
 ```
+
+# Full documentation
+
+Full documentation can be found [here](https://astroplant-server.readthedocs.io/en/latest/index.html).
