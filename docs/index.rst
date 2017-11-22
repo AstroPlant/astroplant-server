@@ -30,6 +30,12 @@ three projects:
 3. The website
     contains controllers and views to interact with growth systems and see their data
     
+Installation instructions
+=========================
+
+For installation instructions, see the
+`project repository <https://github.com/AstroPlant/astroplant-server>`_.
+    
 .. toctree::
    :maxdepth: 1
    :caption: Contents
@@ -37,12 +43,6 @@ three projects:
    Models <models/index>
    Permissions <misc/permissions>
    Modules <modules/modules>
-   
-Installation instructions
-=========================
-
-For installation instructions, see the
-`project repository <https://github.com/AstroPlant/astroplant-server>`_.
    
 Other
 =====
