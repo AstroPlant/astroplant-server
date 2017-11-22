@@ -1,7 +1,5 @@
-{% include website_extras %}
-
 Hi {{ user }},
 
 Please activate your AstroPlant account by clicking on the following link:
 
-{% root_url %}{% url 'registration_activate' activation_key %}
+https://{{ site }}{% url 'registration_activate' activation_key %}
