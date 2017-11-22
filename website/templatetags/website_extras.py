@@ -14,6 +14,14 @@ def navigation_active(request, urls):
     return ""
 
 @register.simple_tag
+def root_url(request):
+    absolute_uri = request.build_absolute_uri()
+
+    # Remove trailing slash
+    absolute_uri = absolute_uri[0:-1]
+    return absolute_uri
+
+@register.simple_tag
 def icon(icon):
     return format_html("<span class=\"fa fa-{}\" aria-hidden=\"true\"></span>",
         icon
