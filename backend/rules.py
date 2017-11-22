@@ -46,7 +46,7 @@ def is_peripheral_definition_owner(user, peripheral_definition):
     """
     Predicate defining whether a user is the owner of peripheral device definition.
     """
-    if not user or not isinstance(kit, backend.models.PeripheralDefinition):
+    if not user or not isinstance(peripheral_definition, backend.models.PeripheralDefinition):
         return False
 
     return peripheral_definition.owner == user
