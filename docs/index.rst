@@ -38,6 +38,12 @@ three projects:
    Permissions <misc/permissions>
    Modules <modules/modules>
    
+Installation instructions
+=========================
+
+For installation instructions, see the
+`project repository <https://github.com/AstroPlant/astroplant-server>`_.
+   
 Other
 =====
    
