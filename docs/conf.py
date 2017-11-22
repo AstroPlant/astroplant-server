@@ -26,14 +26,10 @@ def run_apidoc(_):
     
     cur_dir = os.path.abspath('./modules')
     src_dir = os.path.abspath('../') 
-    main([None, '-e', '-o', cur_dir, src_dir, '--force'])
-
-def my_doc_skip(app, what, name, obj, skip, options):
-    return False
+    main([None, '-e', '-o', cur_dir, src_dir, '--force', '../*/migrations/*', '../setup.py'])
     
 def setup(app):
     app.connect('builder-inited', run_apidoc)
-    app.connect('autodoc-skip-member', my_doc_skip)
 
 
 # -- General configuration ------------------------------------------------
