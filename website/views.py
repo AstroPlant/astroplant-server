@@ -378,6 +378,11 @@ def kit_add(request):
 
             kit.username = identifier
             kit.save()
+
+            # Add kit membership
+            kit_membership = backend.models.KitMembership(user = request.user, kit = kit)
+            kit_membership.save()
+
             return django.http.HttpResponseRedirect(django.urls.base.reverse(viewname='website:kit_configure_access', kwargs={'kit_id': kit.pk}))
     else:
         form = website.forms.AddKitForm()
