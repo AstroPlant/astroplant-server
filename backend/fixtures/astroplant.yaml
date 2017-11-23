@@ -52,7 +52,7 @@
   fields:
     peripheral_definition: 1
     name: i2c_port
-    default_value: '0x77'
+    default_value: '0x76'
     description: The I2C port the sensor is on.
  
 ## Virtual temperature sensor
