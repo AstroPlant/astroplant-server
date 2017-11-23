@@ -20,6 +20,7 @@
     physical_unit_symbol: '%'
 
 # Peripheral definitions
+## BME280
 - model: backend.peripheraldefinition
   pk: 1
   fields:
@@ -34,6 +35,15 @@
     measurement_types:
     - 1
     - 2
+- model: backend.peripheralconfigurationdefinition
+  pk: 1
+  fields:
+    peripheral_definition: 1
+    name: i2c_port
+    default_value: '0x77'
+    description: The I2C port the sensor is on.
+ 
+## Virtual temperature sensor
 - model: backend.peripheraldefinition
   pk: 2
   fields:
@@ -47,6 +57,15 @@
     class_name: Temperature
     measurement_types:
     - 1
+- model: backend.peripheralconfigurationdefinition
+  pk: 2
+  fields:
+    peripheral_definition: 2
+    name: sleep
+    default_value: '3000'
+    description: Time in milliseconds to sleep between measurements.
+
+## Virtual pressure sensor
 - model: backend.peripheraldefinition
   pk: 3
   fields:
@@ -60,6 +79,15 @@
     class_name: Pressure
     measurement_types:
     - 2
+- model: backend.peripheralconfigurationdefinition
+  pk: 3
+  fields:
+    peripheral_definition: 3
+    name: sleep
+    default_value: '3000'
+    description: Time in milliseconds to sleep between measurements.
+
+## Virtual barometer
 - model: backend.peripheraldefinition
   pk: 4
   fields:
@@ -75,3 +103,10 @@
     - 1
     - 2
     - 3
+- model: backend.peripheralconfigurationdefinition
+  pk: 4
+  fields:
+    peripheral_definition: 4
+    name: sleep
+    default_value: '3000'
+    description: Time in milliseconds to sleep between measurements.
