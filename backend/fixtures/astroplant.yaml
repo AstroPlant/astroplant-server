@@ -18,6 +18,18 @@
     physical_quantity: Humidity
     physical_unit: Percent
     physical_unit_symbol: '%'
+- model: backend.measurementtype
+  pk: 4
+  fields:
+    physical_quantity: Concentration
+    physical_unit: Parts per million
+    physical_unit_symbol: PPM
+- model: backend.measurementtype
+  pk: 5
+  fields:
+    physical_quantity: Light intensity
+    physical_unit: Lux
+    physical_unit_symbol: lx
 
 # Peripheral definitions
 ## BME280
