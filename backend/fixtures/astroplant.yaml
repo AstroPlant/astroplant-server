@@ -30,7 +30,7 @@
     public: true
     brand: Grove
     type: BME280
-    module_name: astroplant_sensor_library
+    module_name: astroplant_peripheral_library.bme280
     class_name: BME280
     measurement_types:
     - 1
