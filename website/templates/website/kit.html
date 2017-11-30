@@ -187,6 +187,58 @@
                                 }
                             }
                         });
+                    } else if (physical_quantity == "Concentration" && physical_unit == "Parts per million") {
+                        return c3.generate({
+                            bindto: id,
+                            data: {
+                                columns: [
+                                    ['data', 0]
+                                ],
+                                type: 'gauge'
+                            },
+                            gauge: {
+                                label: {
+                                    format: function(value, ratio) {
+                                        return value.toFixed(2); // return the value and not the ratio
+                                    },
+                                },
+                                min: 0,
+                                max: 1600,
+                                units: 'PPM'
+                            },
+                            color: {
+                                pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                                threshold: {
+                                    values: [0, 400, 600, 800]
+                                }
+                            }
+                        });
+                    } else if (physical_quantity == "Light intensity" && physical_unit == "Lux") {
+                        return c3.generate({
+                            bindto: id,
+                            data: {
+                                columns: [
+                                    ['data', 0]
+                                ],
+                                type: 'gauge'
+                            },
+                            gauge: {
+                                label: {
+                                    format: function(value, ratio) {
+                                        return value.toFixed(2); // return the value and not the ratio
+                                    },
+                                },
+                                min: 0,
+                                max: 125000,
+                                units: 'Lx'
+                            },
+                            color: {
+                                pattern: ['#FF0000', '#F97600', '#F6C600', '#60B044'], // the three color levels for the percentage values.
+                                threshold: {
+                                    values: [0, 300, 1000, 2000]
+                                }
+                            }
+                        });
                     }
                 }
             
