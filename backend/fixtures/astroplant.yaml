@@ -122,3 +122,69 @@
     name: sleep
     default_value: '3000'
     description: Time in milliseconds to sleep between measurements.
+
+## BH1750
+- model: backend.peripheraldefinition
+  pk: 5
+  fields:
+    name: BH1750 Light Sensor
+    description: ''
+    verified: false
+    public: true
+    brand: ''
+    type: ''
+    module_name: astroplant_peripheral_library.bh1750
+    class_name: BH1750
+    measurement_types:
+    - 5
+- model: backend.peripheralconfigurationdefinition
+  pk: 5
+  fields:
+    peripheral_definition: 5
+    name: i2c_port
+    default_value: '0x23'
+    description: The I2C port the sensor is on.
+
+## MH-Z19
+- model: backend.peripheraldefinition
+  pk: 6
+  fields:
+    name: MH-Z19 CO2 Sensor
+    description: ''
+    verified: false
+    public: true
+    brand: ''
+    type: ''
+    module_name: astroplant_peripheral_library.bh1750
+    class_name: BH1750
+    measurement_types:
+    - 4   
+    
+## OneWire Thermal Sensor
+- model: backend.peripheraldefinition
+  pk: 7
+  fields:
+    name: OneWire Thermal Sensor
+    description: A OneWire thermal sensor.
+    verified: false
+    public: true
+    brand: ''
+    type: ''
+    module_name: astroplant_peripheral_library.w1thermsensor
+    class_name: W1ThermSensor
+    measurement_types:
+    - 1
+- model: backend.peripheralconfigurationdefinition
+  pk: 6
+  fields:
+    peripheral_definition: 7
+    name: sensor_type
+    default_value: None
+    description: 'The type of sensor to use.\n\nSet to "None" if you do not want to filter on sensor types.\n\nOr one of:\n- DS18S20\n- DS1822\n- DS18B20\n- DS1825\n- DS28EA00\n- MAX31850K'
+- model: backend.peripheralconfigurationdefinition
+  pk: 7
+  fields:
+    peripheral_definition: 7
+    name: sensor_id
+    default_value: None
+    description: 'The ID of the sensor to use.\n\nSet to "None" if you do not want to filter on sensor IDs.'
