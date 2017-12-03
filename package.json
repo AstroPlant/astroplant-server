@@ -12,7 +12,8 @@
     "c3": "~0.4.18",
     "font-awesome": "^4.7.0",
     "jquery": "~3.2.1",
-    "popper.js": "^1.12.3"
+    "popper.js": "^1.12.3",
+    "reconnecting-websocket": "^3.2.2"
   },
   "devDependencies": {
     "css-loader": "^0.28.7",
