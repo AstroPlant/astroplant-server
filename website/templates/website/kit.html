@@ -253,7 +253,7 @@
                                     ['x'{% for measurement in measurements %}, new Date("{{ measurement.date_time.isoformat }}"){% endfor %}],
                                     ['{{ quantity_type.physical_quantity }}'{% for measurement in measurements %}, {{ measurement.value }}{% endfor %}]
                                 ],
-                                type: 'area-spline'
+                                type: 'area'
                             },
                             type: 'timeseries',
                             axis: {
@@ -300,7 +300,7 @@
                     var currentdate = new Date(); 
                 
                     var line_chart = charts['line_chart_' + measurement.peripheral + '_' + measurement.quantity_type];
-                
+                    
                     line_chart.flow({
                         columns: [
                             ['x', currentdate.toISOString()],
