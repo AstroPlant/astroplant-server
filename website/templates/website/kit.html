@@ -303,7 +303,7 @@
                     
                     line_chart.flow({
                         columns: [
-                            ['x', currentdate.toISOString()],
+                            ['x', new Date(measurement.date_time)],
                             [measurement.physical_quantity, measurement.value]
                         ],
                         length: 0 // Don't pop
