@@ -337,7 +337,7 @@ def kit_configure_danger_zone(request, kit_id):
             kit_ = form.save(commit=False)
             if kit_.name == kit.name:
                 if request.POST.get('action') == "remove_measurements":
-                    kit.measurement_set.all().delete()
+                    kit.measurements.all().delete()
                     messages.add_message(request, messages.SUCCESS, 'All measurements have been removed from the kit.')
                 elif request.POST.get('action') == "remove_kit":
                     kit.delete()
