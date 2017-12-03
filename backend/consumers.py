@@ -47,7 +47,7 @@ class JWTSessionAuthConsumer(channels.generic.websockets.JsonWebsocketConsumer):
         user = jwt_auth(message)
         if isinstance(user, backend.models.Kit):
             self.message.channel_session['kit'] = user.username
-        
+
         super().connect(message, **kwargs)
 
 class MeasurementSubscribeConsumer(JWTSessionAuthConsumer):
@@ -85,6 +85,9 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
             return
 
         try:
+            # Fetch measurement message type
+            measurement_message_type = content['measurement_type']
+
             # Deserialize measurement
             measurement_serializer = backend.serializers.MeasurementSerializer(data=content['measurement'])
             measurement_serializer.is_valid(raise_exception = True)
@@ -105,9 +108,14 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
                 measurement_type = measurement_types_qs.first()
                 measurement.measurement_type = measurement_type
 
+            if measurement_message_type == "REDUCED":
+                # Store reduced measurements
+                measurement.save()
+
             output_serializer = backend.serializers.MeasurementOutputSerializer(measurement)
+            message = {'measurement_type': measurement_message_type, 'measurement': output_serializer.data}
+            self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], message)
             multiplexer.send({"success": "published"})
-            self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], output_serializer.data)
         except Exception as exception:
             multiplexer.send({"error": "You must provide a valid measurement.'."})
             print(exception)
