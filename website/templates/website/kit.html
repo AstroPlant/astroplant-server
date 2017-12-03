@@ -283,6 +283,31 @@
                     
                 {% endfor %}
                 
+                {# Measurement process functions #}
+                function process_real_time_measurement(measurement) {
+                    var gauge_chart = charts['gauge_chart_' + measurement.peripheral + '_' + measurement.quantity_type];
+                    
+                    gauge_chart.load({
+                        columns: [
+                            ['data', measurement.value]
+                        ]
+                    });
+                }
+                
+                function process_reduced_measurement(measurement) {
+                    var currentdate = new Date(); 
+                
+                    var line_chart = charts['line_chart_' + measurement.peripheral + '_' + measurement.quantity_type];
+                
+                    line_chart.flow({
+                        columns: [
+                            ['x', currentdate.toISOString()],
+                            [measurement.physical_quantity, measurement.value]
+                        ],
+                        length: 0 // Don't pop
+                    });
+                }
+                
                 {# Connect to websocket #}
                 var wsProtocol = location.protocol == 'https:' ? 'wss:' : 'ws:';
                 var ws = new WebSocket(wsProtocol + "//" + location.host);
@@ -290,29 +315,18 @@
                 ws.onmessage = function(str) {
                     var data = JSON.parse(str.data);
                     console.log("Received: ", data);
-                    if (!data.value)
-                    {
+                    
+                    if(!data.measurement || !data.measurement_type) {
+                        // Not a measurement
                         return;
                     }
                     
-                    var currentdate = new Date(); 
-                    
-                    var line_chart = charts['line_chart_' + data.peripheral + '_' + data.quantity_type];
-                    var gauge_chart = charts['gauge_chart_' + data.peripheral + '_' + data.quantity_type];
-                    
-                    line_chart.flow({
-                        columns: [
-                            ['x', currentdate.toISOString()],
-                            [data.physical_quantity, data.value]
-                        ],
-                        length: 0 // Don't pop
-                    });
-                    
-                    gauge_chart.load({
-                        columns: [
-                            ['data', data.value]
-                        ]
-                    });
+                    if(data.measurement_type == "REAL_TIME")
+                    {
+                        process_real_time_measurement(data.measurement);
+                    } else if (data.measurement_type == "REDUCED") {
+                        process_reduced_measurement(data.measurement);
+                    }
                 };
 
                 {# Subscribe to websocket #}
