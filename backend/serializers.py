@@ -55,4 +55,4 @@ class MeasurementSerializer(serializers.ModelSerializer):
 class MeasurementOutputSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Measurement
-        fields = ('peripheral', 'measurement_type', 'physical_quantity', 'physical_unit', 'value', 'date_time')
+        fields = ('peripheral', 'quantity_type', 'physical_quantity', 'physical_unit', 'value', 'date_time')

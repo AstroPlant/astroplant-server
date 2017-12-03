@@ -62,15 +62,15 @@ class Kit(User):
         """
         return self.peripherals.filter(active=True)
 
-    def active_peripherals_and_measurement_types(self):
+    def active_peripherals_and_quantity_types(self):
         """
         Get a list of tuples of activate peripheral devices and their
-        measurement types.
+        quantity types.
         """
         peripherals_and_measurements = []
         for peripheral in self.active_peripherals():
-            for measurement_type in peripheral.peripheral_definition.measurement_types.all():
-                peripherals_and_measurements.append((peripheral, measurement_type,))
+            for quantity_type in peripheral.peripheral_definition.quantity_types.all():
+                peripherals_and_measurements.append((peripheral, quantity_type,))
         return peripherals_and_measurements
 
 
@@ -147,9 +147,9 @@ class KitMembership(models.Model):
     def __str__(self):
         return "%s - %s" % (self.kit, self.user)
     
-class MeasurementType(models.Model):
+class QuantityType(models.Model):
     """
-    Model to hold the definitions for the types of measurements.
+    Model to hold the definitions for the types of quantities.
     """
 
     physical_quantity = models.CharField(max_length = 100)
@@ -177,7 +177,7 @@ class PeripheralDefinition(models.Model):
     type = models.CharField(max_length = 100, blank = True)
     module_name = models.CharField(max_length = 255)
     class_name = models.CharField(max_length = 255)
-    measurement_types = models.ManyToManyField(MeasurementType, blank = True)
+    quantity_types = models.ManyToManyField(QuantityType, blank = True)
 
     def __str__(self):
         return self.name
@@ -237,7 +237,7 @@ class Measurement(models.Model):
 
     peripheral = models.ForeignKey(Peripheral, on_delete = models.CASCADE)
     kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
-    measurement_type = models.ForeignKey(MeasurementType, on_delete = models.CASCADE, null = True)
+    quantity_type = models.ForeignKey(QuantityType, on_delete = models.CASCADE, null = True)
 
     # Null allowed, as it is possible no experiment is running
     experiment = models.ForeignKey(Experiment, on_delete = models.CASCADE, null = True)

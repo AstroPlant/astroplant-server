@@ -435,12 +435,12 @@ def peripheral_definition_configure(request, peripheral_definition_id):
         return render(request, 'website/peripheral_definition_configure_not_found.html', {})
 
     PeripheralDefinitionForm = django.forms.modelform_factory(backend.models.PeripheralDefinition,
-                                          fields = ('description', 'public', 'brand', 'type', 'module_name', 'class_name', 'measurement_types',),
+                                          fields = ('description', 'public', 'brand', 'type', 'module_name', 'class_name', 'quantity_types',),
                                           help_texts = {
                                               'public': 'Should the peripheral device definition be available publicly?',
                                               'module_name': 'The name of the Python module the peripheral device is implemented in.',
                                               'class_name': 'The Python class name of the peripheral device implementation.',
-                                              'measurement_types': 'The measurement types to plot on the dashboard (other measurement types are supported, but will not be plotted).'
+                                              'quantity_types': 'The measurement quantity types to plot on the dashboard (other types are supported, but will not be plotted).'
                                             })
     PeripheralConfigurationDefinitionFormSet = django.forms.inlineformset_factory(backend.models.PeripheralDefinition, backend.models.PeripheralConfigurationDefinition, exclude=[])
 

@@ -36,7 +36,7 @@
         
         {% has_perm 'backend.configure_kit' user kit as can_configure %}
     
-        {% with kit.active_peripherals_and_measurement_types as active_peripherals_and_measurement_types %}
+        {% with kit.active_peripherals_and_quantity_types as active_peripherals_and_quantity_types %}
             <div class="container dashboard">
                 <div class="row">
                     {% if can_configure %}
@@ -44,7 +44,7 @@
                             <a href="{% url 'website:kit_configure_profile' kit.pk %}">{% icon 'cog' %} Configure kit</a>
                         </div>
                     {% endif %}
-                    {% if active_peripherals_and_measurement_types %}
+                    {% if active_peripherals_and_quantity_types %}
                         <div class="col-12">
                             <div class="card mb-4">
                                 <div class="card-header text-muted">
@@ -54,10 +54,10 @@
                                     <div class="row">
                                         <div class="col-md-5 col-lg-3">
                                             <ul class="nav nav-pills flex-column" role="tablist">
-                                                {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
+                                                {% for peripheral, quantity_type in active_peripherals_and_quantity_types %}
                                                     <li class="nav-item">
-                                                        <a class="nav-link{% if forloop.first %} active{% endif %}" href="#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" data-toggle="tab" role="tab" aria-controls="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
-                                                            {{ measurement_type.physical_quantity }}
+                                                        <a class="nav-link{% if forloop.first %} active{% endif %}" href="#chart-line-{{ peripheral.pk }}-{{ quantity_type.pk }}" data-toggle="tab" role="tab" aria-controls="chart-line-{{ peripheral.pk }}-{{ quantity_type.pk }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                                                            {{ quantity_type.physical_quantity }}
                                                             <br>
                                                             <small>{{ peripheral }}</small>
                                                         </a>
@@ -66,8 +66,8 @@
                                             </ul>
                                         </div>
                                         <div class="col-md-7 col-lg-9 tab-content">
-                                            {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
-                                                <div class="tab-pane fade {% if forloop.first %} show active{% endif %}" id="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}" role="tabpanel" aria-labelledby="chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}-tab"></div>
+                                            {% for peripheral, quantity_type in active_peripherals_and_quantity_types %}
+                                                <div class="tab-pane fade {% if forloop.first %} show active{% endif %}" id="chart-line-{{ peripheral.pk }}-{{ quantity_type.pk }}" role="tabpanel" aria-labelledby="chart-line-{{ peripheral.pk }}-{{ quantity_type.pk }}-tab"></div>
                                             {% endfor %}
                                         </div>
                                     </div>
@@ -75,14 +75,14 @@
                             </div>
                         </div>
                         
-                        {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
+                        {% for peripheral, quantity_type in active_peripherals_and_quantity_types %}
                             <div class="col-sm-4">
                                 <div class="card mb-4">
                                     <div class="card-header text-muted">
-                                        {{ measurement_type.physical_quantity }}
+                                        {{ quantity_type.physical_quantity }}
                                     </div>
                                     <div class="card-body">
-                                        <div id="chart-{{ peripheral.pk }}-{{ measurement_type.pk }}"></div>
+                                        <div id="chart-{{ peripheral.pk }}-{{ quantity_type.pk }}"></div>
                                     </div>
                                     <div class="card-footer text-muted">
                                         {{ peripheral }}
@@ -242,9 +242,9 @@
                     }
                 }
             
-                {% for peripheral, measurement_type in active_peripherals_and_measurement_types %}
-                    var line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = c3.generate({
-                        bindto: "#chart-line-{{ peripheral.pk }}-{{ measurement_type.pk }}",
+                {% for peripheral, quantity_type in active_peripherals_and_quantity_types %}
+                    var line_chart_{{ peripheral.pk }}_{{ quantity_type.pk }} = c3.generate({
+                        bindto: "#chart-line-{{ peripheral.pk }}-{{ quantity_type.pk }}",
                         data: {
                             x: 'x',
                             xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
@@ -265,7 +265,7 @@
                                 padding: 0
                             },
                             y: {
-                                label: "{{ measurement_type.physical_unit_symbol }}",
+                                label: "{{ quantity_type.physical_unit_symbol }}",
                                 padding: {
                                     top: 5,
                                     bottom: 0
@@ -276,10 +276,10 @@
                             height: 210
                         }
                     });
-                    charts['line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }}'] = line_chart_{{ peripheral.pk }}_{{ measurement_type.pk }};
+                    charts['line_chart_{{ peripheral.pk }}_{{ quantity_type.pk }}'] = line_chart_{{ peripheral.pk }}_{{ quantity_type.pk }};
                     
-                    var gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }} = generate_chart("#chart-{{ peripheral.pk }}-{{ measurement_type.pk }}", "{{ measurement_type.physical_quantity }}",  "{{ measurement_type.physical_unit }}");
-                    charts['gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }}'] = gauge_chart_{{ peripheral.pk }}_{{ measurement_type.pk }};
+                    var gauge_chart_{{ peripheral.pk }}_{{ quantity_type.pk }} = generate_chart("#chart-{{ peripheral.pk }}-{{ quantity_type.pk }}", "{{ quantity_type.physical_quantity }}",  "{{ quantity_type.physical_unit }}");
+                    charts['gauge_chart_{{ peripheral.pk }}_{{ quantity_type.pk }}'] = gauge_chart_{{ peripheral.pk }}_{{ quantity_type.pk }};
                     
                 {% endfor %}
                 
@@ -297,8 +297,8 @@
                     
                     var currentdate = new Date(); 
                     
-                    var line_chart = charts['line_chart_' + data.peripheral + '_' + data.measurement_type];
-                    var gauge_chart = charts['gauge_chart_' + data.peripheral + '_' + data.measurement_type];
+                    var line_chart = charts['line_chart_' + data.peripheral + '_' + data.quantity_type];
+                    var gauge_chart = charts['gauge_chart_' + data.peripheral + '_' + data.quantity_type];
                     
                     line_chart.flow({
                         columns: [

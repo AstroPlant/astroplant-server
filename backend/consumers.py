@@ -86,7 +86,7 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
 
         try:
             # Fetch measurement message type
-            measurement_message_type = content['measurement_type']
+            measurement_type = content['measurement_type']
 
             # Deserialize measurement
             measurement_serializer = backend.serializers.MeasurementSerializer(data=content['measurement'])
@@ -103,17 +103,17 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
             measurement.peripheral = peripheral
 
             # Get the registered measurement type by the physical quantity and physical unit if it exists
-            measurement_types_qs = peripheral.peripheral_definition.measurement_types.filter(physical_quantity = measurement.physical_quantity, physical_unit = measurement.physical_unit)
-            if measurement_types_qs:
-                measurement_type = measurement_types_qs.first()
-                measurement.measurement_type = measurement_type
+            quantity_types_qs = peripheral.peripheral_definition.quantity_types.filter(physical_quantity = measurement.physical_quantity, physical_unit = measurement.physical_unit)
+            if quantity_types_qs:
+                quantity_type = quantity_types_qs.first()
+                measurement.quantity_type = quantity_type
 
-            if measurement_message_type == "REDUCED":
+            if measurement_type == "REDUCED":
                 # Store reduced measurements
                 measurement.save()
 
             output_serializer = backend.serializers.MeasurementOutputSerializer(measurement)
-            message = {'measurement_type': measurement_message_type, 'measurement': output_serializer.data}
+            message = {'measurement_type': measurement_type, 'measurement': output_serializer.data}
             self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], message)
             multiplexer.send({"success": "published"})
         except Exception as exception:
