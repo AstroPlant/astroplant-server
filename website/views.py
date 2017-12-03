@@ -39,8 +39,6 @@ def kit(request, kit_id):
     except exceptions.ObjectDoesNotExist:
         kit = None
 
-    print(kit.recent_measurements(max_measurements=1000))
-
     context = {'kit': kit,
                'can_view_kit_dashboard': request.user.has_perm('backend.view_kit_dashboard', kit),
                'recent_measurements': kit.recent_measurements(max_measurements=50)}
