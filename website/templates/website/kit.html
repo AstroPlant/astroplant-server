@@ -241,41 +241,43 @@
                         });
                     }
                 }
-            
+                
                 {% for peripheral, quantity_type in active_peripherals_and_quantity_types %}
-                    var line_chart_{{ peripheral.pk }}_{{ quantity_type.pk }} = c3.generate({
-                        bindto: "#chart-line-{{ peripheral.pk }}-{{ quantity_type.pk }}",
-                        data: {
-                            x: 'x',
-                            xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                            columns: [
-                                ['x'],
-                                ['{{ meaurement_type.physical_quantity }}']
-                            ],
-                            type: 'area-spline'
-                        },
-                        type: 'timeseries',
-                        axis: {
-                            x: {
-                                'type': 'timeseries',
-                                tick: {
-                                    format: '%Y-%m-%d %H:%M:%S',
-                                    count: 4
-                                },
-                                padding: 0
+                    {% with recent_measurements|key_value:peripheral|key_value:quantity_type|to_list as measurements %}
+                        var line_chart_{{ peripheral.pk }}_{{ quantity_type.pk }} = c3.generate({
+                            bindto: "#chart-line-{{ peripheral.pk }}-{{ quantity_type.pk }}",
+                            data: {
+                                x: 'x',
+                                xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+                                columns: [
+                                    ['x'{% for measurement in measurements %}, new Date("{{ measurement.date_time.isoformat }}"){% endfor %}],
+                                    ['{{ quantity_type.physical_quantity }}'{% for measurement in measurements %}, {{ measurement.value }}{% endfor %}]
+                                ],
+                                type: 'area-spline'
                             },
-                            y: {
-                                label: "{{ quantity_type.physical_unit_symbol }}",
-                                padding: {
-                                    top: 5,
-                                    bottom: 0
+                            type: 'timeseries',
+                            axis: {
+                                x: {
+                                    'type': 'timeseries',
+                                    tick: {
+                                        format: '%Y-%m-%d %H:%M:%S',
+                                        count: 4
+                                    },
+                                    padding: 0
+                                },
+                                y: {
+                                    label: "{{ quantity_type.physical_unit_symbol }}",
+                                    padding: {
+                                        top: 5,
+                                        bottom: 0
+                                    }
                                 }
+                            },
+                            size: {
+                                height: 210
                             }
-                        },
-                        size: {
-                            height: 210
-                        }
-                    });
+                        });
+                    {% endwith %}
                     charts['line_chart_{{ peripheral.pk }}_{{ quantity_type.pk }}'] = line_chart_{{ peripheral.pk }}_{{ quantity_type.pk }};
                     
                     var gauge_chart_{{ peripheral.pk }}_{{ quantity_type.pk }} = generate_chart("#chart-{{ peripheral.pk }}-{{ quantity_type.pk }}", "{{ quantity_type.physical_quantity }}",  "{{ quantity_type.physical_unit }}");
