@@ -75,6 +75,15 @@ class Kit(User):
         return peripherals_and_quantity_types
 
     def recent_measurements(self, since = None, max_measurements = None):
+        """
+        Get a dictionary of peripheral devices to dictionaries of quantity types to recent measurements.
+
+        :param since: The date after which to get measurements.
+        :param max_measurements: The maximum number of measurements (per peripheral device and quantity
+        type combination) to get.
+
+        :return: A dictionary of peripheral devices to dictionaries of quantity types to recent measurements.
+        """
         if since is None:
             since = datetime.datetime.utcnow() - datetime.timedelta(days=3)
 
