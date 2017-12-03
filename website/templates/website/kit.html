@@ -301,12 +301,19 @@
                 
                     var line_chart = charts['line_chart_' + measurement.peripheral + '_' + measurement.quantity_type];
                     
+                    // Keep at most 50 data points in the plot
+                    var pop = 0;
+                    var existing_data_points = line_chart.data()[0].values.length;
+                    if (existing_data_points >= 50) {
+                        pop = existing_data_points - 50 + 1;
+                    }
+                    
                     line_chart.flow({
                         columns: [
                             ['x', new Date(measurement.date_time)],
                             [measurement.physical_quantity, measurement.value]
                         ],
-                        length: 0 // Don't pop
+                        length: pop
                     });
                 }
                 
