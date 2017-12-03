@@ -96,6 +96,9 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
 
             kit = backend.models.Kit.objects.filter(username=self.message.channel_session['kit']).get()
 
+            # Add the kit to the measurement
+            measurement.kit = kit
+
             # Get the peripheral device object by its name (if it's associated with this kit)
             peripheral = kit.peripherals.filter(name=content['measurement']['peripheral']).get()
 
