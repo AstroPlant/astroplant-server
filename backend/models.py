@@ -68,11 +68,11 @@ class Kit(User):
         Get a list of tuples of activate peripheral devices and their
         quantity types.
         """
-        peripherals_and_measurements = []
+        peripherals_and_quantity_types = []
         for peripheral in self.active_peripherals():
             for quantity_type in peripheral.peripheral_definition.quantity_types.all():
-                peripherals_and_measurements.append((peripheral, quantity_type,))
-        return peripherals_and_measurements
+                peripherals_and_quantity_types.append((peripheral, quantity_type,))
+        return peripherals_and_quantity_types
 
     def recent_measurements(self, since = None, max_measurements = None):
         if since is None:
