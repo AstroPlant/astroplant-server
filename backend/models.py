@@ -3,6 +3,7 @@ Module defining backend AstroPlant models.
 """
 
 import datetime
+import collections
 from django.db import models
 import django.contrib.auth.models
 from django.contrib.auth.models import AbstractUser
@@ -73,6 +74,20 @@ class Kit(User):
                 peripherals_and_measurements.append((peripheral, quantity_type,))
         return peripherals_and_measurements
 
+    def recent_measurements(self, since = None, max_measurements = None):
+        if since is None:
+            since = datetime.datetime.utcnow() - datetime.timedelta(days=3)
+
+        measurements = collections.defaultdict(dict)
+
+        active_peripherals_and_quantity_types = self.active_peripherals_and_quantity_types()
+        for (peripheral, quantity_type) in active_peripherals_and_quantity_types:
+            if max_measurements:
+                measurements[peripheral][quantity_type] = reversed(self.measurements.filter(peripheral=peripheral,quantity_type=quantity_type,date_time__gte=since).order_by('-date_time')[:max_measurements])
+            else:
+                measurements[peripheral][quantity_type] = self.measurements.filter(peripheral=peripheral,quantity_type=quantity_type,date_time__gte=since).order_by('date_time')
+                        
+        return dict(measurements)
 
     def generate_config(self):
         """
@@ -236,7 +251,9 @@ class Measurement(models.Model):
     """
 
     peripheral = models.ForeignKey(Peripheral, on_delete = models.CASCADE)
-    kit = models.ForeignKey(Kit, on_delete = models.CASCADE)
+    kit = models.ForeignKey(Kit,
+                            on_delete = models.CASCADE,
+                            related_name='measurements')
     quantity_type = models.ForeignKey(QuantityType, on_delete = models.CASCADE, null = True)
 
     # Null allowed, as it is possible no experiment is running
