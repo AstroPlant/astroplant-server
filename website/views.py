@@ -45,6 +45,76 @@ def kit(request, kit_id):
 
     return render(request, 'website/kit.html', context)
 
+def kit_download(request, kit_id):
+    try:
+        kit = backend.models.Kit.objects.get(pk=kit_id)
+    except exceptions.ObjectDoesNotExist:
+        kit = None
+
+    context = {'kit': kit,
+               'can_view_kit_dashboard': request.user.has_perm('backend.view_kit_dashboard', kit),
+               'recent_measurements': kit.recent_measurements(max_measurements=50)}
+    
+    if context['can_view_kit_dashboard']:
+        import zipfile
+        import csv
+        import json
+        from io import StringIO
+        
+        response = django.http.HttpResponse(content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename="kit_' + str(kit.pk) + '.zip"'
+        
+        def write_to_csv(zip, filename, queryset):
+            buffer = StringIO()
+            n = 0
+            for model_values in queryset:
+                if n == 0:
+                    writer = csv.DictWriter(buffer, model_values.keys())
+                    writer.writeheader()
+                    writer.writerow(model_values)
+                else:
+                    writer.writerow(model_values)
+                
+                n += 1
+            
+            zip.writestr(filename, buffer.getvalue())
+        
+        with zipfile.ZipFile(response, 'w', zipfile.ZIP_DEFLATED) as zip:
+            
+            buffer = StringIO()
+            writer = csv.writer(buffer)
+            writer.writerow(['name', 'value'])
+            for (key, val) in kit.__dict__.items():
+                if key not in ['type', 'longitude', 'latitude', 'name', 'description', 'id']:
+                    continue
+                    
+                writer.writerow([key, val])
+            zip.writestr("kit.csv", buffer.getvalue())
+            
+            write_to_csv(zip, "measurements.csv", kit.measurements.all().values())
+            write_to_csv(zip, "peripherals.csv", kit.peripherals.all().values())
+            write_to_csv(zip, "peripheral_definitions.csv", backend.models.PeripheralDefinition.objects.filter(peripheral__in=kit.peripherals.all()).all().values())
+            
+            peripheral_definitions = []
+            for peripheral in kit.peripherals.all():
+            
+                # Write peripheral definition
+                peripheral_definition = peripheral.peripheral_definition
+                if peripheral_definition.pk not in peripheral_definitions:
+                    peripheral_definitions.append(peripheral_definition.pk)
+                    
+                    # Write peripheral definition configuration
+                    write_to_csv(zip, "peripheral_definition_%s_configuration.csv" % peripheral_definition.pk, peripheral_definition.peripheral_configuration_definitions.all().values())
+                
+                # Write peripheral configuration
+                write_to_csv(zip, "peripheral_%s_configuration.csv" % peripheral.pk, peripheral.peripheral_configurations.all().values())
+            
+        return response
+    else:
+        return django.http.HttpResponseForbidden("No access")
+    
+    
+    
 @decorators.login_required
 def kit_configure_profile(request, kit_id):
     try:

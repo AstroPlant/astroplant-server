@@ -39,11 +39,12 @@
         {% with kit.active_peripherals_and_quantity_types as active_peripherals_and_quantity_types %}
             <div class="container dashboard">
                 <div class="row">
-                    {% if can_configure %}
-                        <div class="col-12 text-right mb-2">
-                            <a href="{% url 'website:kit_configure_profile' kit.pk %}">{% icon 'cog' %} Configure kit</a>
-                        </div>
-                    {% endif %}
+                    <div class="col-12 text-right mb-2">
+                        <a href="{% url 'website:kit_download' kit.pk %}">{% icon 'download' %} Download data</a>
+                        {% if can_configure %}
+                            <span class="ml-3"><a href="{% url 'website:kit_configure_profile' kit.pk %}">{% icon 'cog' %} Configure kit</a></span>
+                        {% endif %}
+                    </div>
                     {% if active_peripherals_and_quantity_types %}
                         <div class="col-12">
                             <div class="card mb-4">
