@@ -58,7 +58,6 @@ def kit_download(request, kit_id):
     if context['can_view_kit_dashboard']:
         import zipfile
         import csv
-        import json
         from io import StringIO
         
         response = django.http.HttpResponse(content_type='application/zip')
