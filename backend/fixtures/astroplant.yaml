@@ -1,30 +1,30 @@
 ---
 # Measurement types
-- model: backend.measurementtype
+- model: backend.quantitytype
   pk: 1
   fields:
     physical_quantity: Temperature
     physical_unit: Degrees Celsius
     physical_unit_symbol: '°C'
-- model: backend.measurementtype
+- model: backend.quantitytype
   pk: 2
   fields:
     physical_quantity: Pressure
     physical_unit: Hectopascal
     physical_unit_symbol: hPa
-- model: backend.measurementtype
+- model: backend.quantitytype
   pk: 3
   fields:
     physical_quantity: Humidity
     physical_unit: Percent
     physical_unit_symbol: '%'
-- model: backend.measurementtype
+- model: backend.quantitytype
   pk: 4
   fields:
     physical_quantity: Concentration
     physical_unit: Parts per million
     physical_unit_symbol: PPM
-- model: backend.measurementtype
+- model: backend.quantitytype
   pk: 5
   fields:
     physical_quantity: Light intensity
@@ -44,7 +44,7 @@
     type: BME280
     module_name: astroplant_peripheral_library.bme280
     class_name: BME280
-    measurement_types:
+    quantity_types:
     - 1
     - 2
 - model: backend.peripheralconfigurationdefinition
@@ -67,7 +67,7 @@
     type: Virtual
     module_name: astroplant_simulation.sensors
     class_name: Temperature
-    measurement_types:
+    quantity_types:
     - 1
 - model: backend.peripheralconfigurationdefinition
   pk: 2
@@ -89,7 +89,7 @@
     type: Virtual
     module_name: astroplant_simulation.sensors
     class_name: Pressure
-    measurement_types:
+    quantity_types:
     - 2
 - model: backend.peripheralconfigurationdefinition
   pk: 3
@@ -111,7 +111,7 @@
     type: Virtual
     module_name: astroplant_simulation.sensors
     class_name: Barometer
-    measurement_types:
+    quantity_types:
     - 1
     - 2
     - 3
@@ -135,7 +135,7 @@
     type: ''
     module_name: astroplant_peripheral_library.bh1750
     class_name: BH1750
-    measurement_types:
+    quantity_types:
     - 5
 - model: backend.peripheralconfigurationdefinition
   pk: 5
@@ -157,7 +157,7 @@
     type: ''
     module_name: astroplant_peripheral_library.bh1750
     class_name: BH1750
-    measurement_types:
+    quantity_types:
     - 4   
     
 ## OneWire Thermal Sensor
@@ -172,7 +172,7 @@
     type: ''
     module_name: astroplant_peripheral_library.w1thermsensor
     class_name: W1ThermSensor
-    measurement_types:
+    quantity_types:
     - 1
 - model: backend.peripheralconfigurationdefinition
   pk: 6
