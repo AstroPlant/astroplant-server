@@ -42,7 +42,7 @@
     public: true
     brand: Grove
     type: BME280
-    module_name: astroplant_peripheral_library.bme280
+    module_name: astroplant_peripheral_device_library.bme280
     class_name: BME280
     quantity_types:
     - 1
@@ -133,7 +133,7 @@
     public: true
     brand: ''
     type: ''
-    module_name: astroplant_peripheral_library.bh1750
+    module_name: astroplant_peripheral_device_library.bh1750
     class_name: BH1750
     quantity_types:
     - 5
@@ -155,7 +155,7 @@
     public: true
     brand: ''
     type: ''
-    module_name: astroplant_peripheral_library.bh1750
+    module_name: astroplant_peripheral_device_library.bh1750
     class_name: BH1750
     quantity_types:
     - 4   
@@ -170,7 +170,7 @@
     public: true
     brand: ''
     type: ''
-    module_name: astroplant_peripheral_library.w1thermsensor
+    module_name: astroplant_peripheral_device_library.w1thermsensor
     class_name: W1ThermSensor
     quantity_types:
     - 1
