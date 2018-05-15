@@ -100,9 +100,29 @@
     default_value: '3000'
     description: Time in milliseconds to sleep between measurements.
 
-## BME280
+## Local data logger
 - model: backend.peripheraldefinition
   pk: 4
+  fields:
+    name: Local data logger
+    description: Logs measurement data locally.
+    verified: false
+    public: true
+    brand: 'Virtual'
+    type: 'Virtual'
+    module_name: peripheral
+    class_name: LocalDataLogger
+- model: backend.peripheralconfigurationdefinition
+  pk: 4
+  fields:
+    peripheral_definition: 4
+    name: storage_path
+    default_value: './data'
+    description: 'The storage path relative to the program working directory.'
+
+## BME280
+- model: backend.peripheraldefinition
+  pk: 5
   fields:
     name: Grove - Barometer sensor BME280
     description: ''
@@ -116,16 +136,16 @@
     - 1
     - 2
 - model: backend.peripheralconfigurationdefinition
-  pk: 4
+  pk: 5
   fields:
-    peripheral_definition: 4
+    peripheral_definition: 5
     name: i2c_address
     default_value: '0x76'
     description: The I2C port the sensor is on.
 
 ## BH1750
 - model: backend.peripheraldefinition
-  pk: 5
+  pk: 6
   fields:
     name: BH1750 Light Sensor
     description: ''
@@ -138,16 +158,16 @@
     quantity_types:
     - 5
 - model: backend.peripheralconfigurationdefinition
-  pk: 5
+  pk: 6
   fields:
-    peripheral_definition: 5
+    peripheral_definition: 6
     name: i2c_address
     default_value: '0x23'
     description: The I2C port the sensor is on.
 
 ## MH-Z19
 - model: backend.peripheraldefinition
-  pk: 6
+  pk: 7
   fields:
     name: MH-Z19 NDIR CO2 Sensor
     description: ''
@@ -162,7 +182,7 @@
     
 ## OneWire Thermal Sensor
 - model: backend.peripheraldefinition
-  pk: 7
+  pk: 8
   fields:
     name: OneWire Thermal Sensor
     description: A OneWire thermal sensor.
@@ -175,23 +195,23 @@
     quantity_types:
     - 1
 - model: backend.peripheralconfigurationdefinition
-  pk: 6
+  pk: 7
   fields:
-    peripheral_definition: 7
+    peripheral_definition: 8
     name: sensor_type
     default_value: None
     description: 'The type of sensor to use.\n\nSet to "None" if you do not want to filter on sensor types.\n\nOr one of:\n- DS18S20\n- DS1822\n- DS18B20\n- DS1825\n- DS28EA00\n- MAX31850K'
 - model: backend.peripheralconfigurationdefinition
-  pk: 7
+  pk: 8
   fields:
-    peripheral_definition: 7
+    peripheral_definition: 8
     name: sensor_id
     default_value: None
     description: 'The ID of the sensor to use.\n\nSet to "None" if you do not want to filter on sensor IDs.'
 
 ## DHT22 / AM2302
 - model: backend.peripheraldefinition
-  pk: 8
+  pk: 9
   fields:
     name: DHT22 Temperature and Relative Humidity Sensor
     description: The DHT22/AM2302 temperature and relative humidity sensor.
@@ -205,9 +225,9 @@
     - 1
     - 3
 - model: backend.peripheralconfigurationdefinition
-  pk: 8
+  pk: 9
   fields:
-    peripheral_definition: 8
+    peripheral_definition: 9
     name: pin
     default_value: '22'
     description: 'The GPIO pin number the sensor is on.'
