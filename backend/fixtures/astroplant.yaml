@@ -188,3 +188,26 @@
     name: sensor_id
     default_value: None
     description: 'The ID of the sensor to use.\n\nSet to "None" if you do not want to filter on sensor IDs.'
+
+## DHT22 / AM2302
+- model: backend.peripheraldefinition
+  pk: 8
+  fields:
+    name: DHT22 Temperature and Relative Humidity Sensor
+    description: The DHT22/AM2302 temperature and relative humidity sensor.
+    verified: false
+    public: true
+    brand: ''
+    type: ''
+    module_name: astroplant_peripheral_device_library.dht22
+    class_name: DHT22
+    quantity_types:
+    - 1
+    - 3
+- model: backend.peripheralconfigurationdefinition
+  pk: 8
+  fields:
+    peripheral_definition: 8
+    name: pin
+    default_value: '22'
+    description: 'The GPIO pin number the sensor is on.'
