@@ -149,7 +149,7 @@
 - model: backend.peripheraldefinition
   pk: 6
   fields:
-    name: MH-Z19 CO2 Sensor
+    name: MH-Z19 NDIR CO2 Sensor
     description: ''
     verified: false
     public: true
