@@ -51,7 +51,7 @@
   pk: 1
   fields:
     peripheral_definition: 1
-    name: i2c_port
+    name: i2c_address
     default_value: '0x76'
     description: The I2C port the sensor is on.
  
@@ -141,7 +141,7 @@
   pk: 5
   fields:
     peripheral_definition: 5
-    name: i2c_port
+    name: i2c_address
     default_value: '0x23'
     description: The I2C port the sensor is on.
 
