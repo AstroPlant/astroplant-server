@@ -155,8 +155,8 @@
     public: true
     brand: ''
     type: ''
-    module_name: astroplant_peripheral_device_library.bh1750
-    class_name: BH1750
+    module_name: astroplant_peripheral_device_library.mh_z19
+    class_name: MHZ19
     quantity_types:
     - 4   
     
