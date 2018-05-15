@@ -200,14 +200,14 @@
     peripheral_definition: 8
     name: sensor_type
     default_value: None
-    description: 'The type of sensor to use.\n\nSet to "None" if you do not want to filter on sensor types.\n\nOr one of:\n- DS18S20\n- DS1822\n- DS18B20\n- DS1825\n- DS28EA00\n- MAX31850K'
+    description: "The type of sensor to use.\n\nSet to \"None\" if you do not want to filter on sensor types.\n\nOr one of:\n- DS18S20\n- DS1822\n- DS18B20\n- DS1825\n- DS28EA00\n- MAX31850K"
 - model: backend.peripheralconfigurationdefinition
   pk: 8
   fields:
     peripheral_definition: 8
     name: sensor_id
     default_value: None
-    description: 'The ID of the sensor to use.\n\nSet to "None" if you do not want to filter on sensor IDs.'
+    description: "The ID of the sensor to use.\n\nSet to \"None\" if you do not want to filter on sensor IDs."
 
 ## DHT22 / AM2302
 - model: backend.peripheraldefinition
