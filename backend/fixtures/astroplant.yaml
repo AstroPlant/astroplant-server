@@ -31,33 +31,10 @@
     physical_unit: Lux
     physical_unit_symbol: lx
 
-# Peripheral definitions
-## BME280
-- model: backend.peripheraldefinition
-  pk: 1
-  fields:
-    name: Grove - Barometer sensor BME280
-    description: ''
-    verified: false
-    public: true
-    brand: Grove
-    type: BME280
-    module_name: astroplant_peripheral_device_library.bme280
-    class_name: BME280
-    quantity_types:
-    - 1
-    - 2
-- model: backend.peripheralconfigurationdefinition
-  pk: 1
-  fields:
-    peripheral_definition: 1
-    name: i2c_address
-    default_value: '0x76'
-    description: The I2C port the sensor is on.
- 
+# Peripheral definitions 
 ## Virtual temperature sensor
 - model: backend.peripheraldefinition
-  pk: 2
+  pk: 1
   fields:
     name: Virtual temperature sensor
     description: A virtual temperature sensor using the environment simulation.
@@ -70,16 +47,16 @@
     quantity_types:
     - 1
 - model: backend.peripheralconfigurationdefinition
-  pk: 2
+  pk: 1
   fields:
-    peripheral_definition: 2
+    peripheral_definition: 1
     name: sleep
     default_value: '3000'
     description: Time in milliseconds to sleep between measurements.
 
 ## Virtual pressure sensor
 - model: backend.peripheraldefinition
-  pk: 3
+  pk: 2
   fields:
     name: Virtual pressure sensor
     description: A virtual pressure sensor using the environment simulation.
@@ -92,16 +69,16 @@
     quantity_types:
     - 2
 - model: backend.peripheralconfigurationdefinition
-  pk: 3
+  pk: 2
   fields:
-    peripheral_definition: 3
+    peripheral_definition: 2
     name: sleep
     default_value: '3000'
     description: Time in milliseconds to sleep between measurements.
 
 ## Virtual barometer
 - model: backend.peripheraldefinition
-  pk: 4
+  pk: 3
   fields:
     name: Virtual barometer
     description: A virtual barometer sensor using the environment simulation.
@@ -116,12 +93,35 @@
     - 2
     - 3
 - model: backend.peripheralconfigurationdefinition
-  pk: 4
+  pk: 3
   fields:
-    peripheral_definition: 4
+    peripheral_definition: 3
     name: sleep
     default_value: '3000'
     description: Time in milliseconds to sleep between measurements.
+
+## BME280
+- model: backend.peripheraldefinition
+  pk: 4
+  fields:
+    name: Grove - Barometer sensor BME280
+    description: ''
+    verified: false
+    public: true
+    brand: Grove
+    type: BME280
+    module_name: astroplant_peripheral_device_library.bme280
+    class_name: BME280
+    quantity_types:
+    - 1
+    - 2
+- model: backend.peripheralconfigurationdefinition
+  pk: 4
+  fields:
+    peripheral_definition: 4
+    name: i2c_address
+    default_value: '0x76'
+    description: The I2C port the sensor is on.
 
 ## BH1750
 - model: backend.peripheraldefinition
