@@ -229,5 +229,5 @@
   fields:
     peripheral_definition: 9
     name: pin
-    default_value: '22'
+    default_value: '17'
     description: 'The GPIO pin number the sensor is on.'
