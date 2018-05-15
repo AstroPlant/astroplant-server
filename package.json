@@ -7,23 +7,23 @@
     "build": "webpack"
   },
   "dependencies": {
-    "bootstrap": "^4.0.0-beta.2",
-    "bootstrap-confirmation2": "~2.4.0",
-    "c3": "~0.4.18",
+    "bootstrap": "^4.1.1",
+    "bootstrap-confirmation2": "^2.4.1",
+    "c3": "^0.4.22",
     "font-awesome": "^4.7.0",
     "jquery": "~3.2.1",
-    "popper.js": "^1.12.3",
+    "popper.js": "^1.14.3",
     "reconnecting-websocket": "^3.2.2"
   },
   "devDependencies": {
-    "css-loader": "^0.28.7",
-    "expose-loader": "^0.7.3",
+    "css-loader": "^0.28.11",
+    "expose-loader": "^0.7.5",
     "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.5",
-    "node-sass": "^4.6.0",
-    "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.0",
+    "file-loader": "^1.1.11",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^6.0.7",
+    "style-loader": "^0.19.1",
     "url-loader": "^0.6.2",
-    "webpack": "^3.8.1"
+    "webpack": "^3.12.0"
   }
 }
