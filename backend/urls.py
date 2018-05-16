@@ -20,6 +20,5 @@ urlpatterns = [
     url(r'^api/auth-token-refresh/', rest_framework_jwt.views.refresh_jwt_token),
     url(r'^api-schema/$', rest_framework.schemas.get_schema_view(title='AstroPlant API')),
     url(r'^api-docs/', documentation.include_docs_urls(title='AstroPlant API')),
-    url(r'^channels-api/', include('channels_api.urls')),
     url(r'^api/', include(router.urls))
 ]
