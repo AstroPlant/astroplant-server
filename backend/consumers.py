@@ -41,6 +41,12 @@ class MeasurementSubscribeConsumer(WebsocketConsumer):
         )
 
     def measurement(self, event):
+        """
+        Called when a measurement channel event is received
+        from the kit whose measuremnents the channel is subscribed to.
+
+        :param event: The measurement channel event.
+        """
         self.send(json.dumps(event['message']))
 
 class KitConsumer(WebsocketConsumer):
@@ -49,7 +55,6 @@ class KitConsumer(WebsocketConsumer):
     The channel can be used to, for example, publish measurements.
     """
     def connect(self):
-        print(self.scope)
         if not 'user' in self.scope:
             # Reject channel
             return
