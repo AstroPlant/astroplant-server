@@ -1,89 +1,93 @@
 import channels
-import channels.handler
-import channels.generic.websockets
-
-import rest_framework_jwt.serializers
-import jwt.exceptions
+from asgiref.sync import async_to_sync
+from channels.generic.websocket import WebsocketConsumer
+import json
 
 import backend.models
 import backend.serializers
 import backend.auth
 
-def jwt_auth(message):
-    """
-    Attempt to authenticate the user through a JWT provided in
-    the 'token' query parameter.
-
-    :param message: The channel message object
-    :return: The authenticated user, or None
-    """
-
-    # Construct a fake http-like object
-    # (See: https://stackoverflow.com/questions/46230340/how-to-authenticate-a-user-in-websocket-connection-in-django-channels-when-using)
-    message.content.setdefault('method', 'FAKE')
-    request = channels.handler.AsgiRequest(message)
-
-    # Validate the token in the request in a slightly hacky way
-    try:
-        validated = rest_framework_jwt.serializers.VerifyJSONWebTokenSerializer().validate(request.GET)
-
-        # If no exception is thrown, the token is valid. Store it in the session if it is a kit.
-        return backend.auth.downcast_user_type(validated['user'])
-    except (KeyError, jwt.exceptions.InvalidTokenError):
-        return None
-
-class JWTSessionAuthConsumer(channels.generic.websockets.JsonWebsocketConsumer):
-    """
-    A JSON WebSocket consumer that attempts to authenticate
-    a kit using JWT through a HTTP query parameter. If successful,
-    places the kit name in the channel session parameter 'kit'.
-    """
-
-    #: Use channel sessions, and transfer the HTTP user (from
-    #: a Django session) to the channel session
-    http_user_and_session = True
-
-    def connect(self, message, **kwargs):
-        user = jwt_auth(message)
-        if isinstance(user, backend.models.Kit):
-            self.message.channel_session['kit'] = user.username
-
-        super().connect(message, **kwargs)
-
-class MeasurementSubscribeConsumer(JWTSessionAuthConsumer):
+class MeasurementSubscribeConsumer(WebsocketConsumer):
     """
     A measurement subscribe consumer. Any user (or kit) can
     subscribe to measurements of kits they own.
     """
-    def receive(self, content, multiplexer, **kwargs):
-        # Subscribe user to kit measurement updates
-        if "kit" not in content:
-            multiplexer.send({"error": "Kit to subscribe to not given."})
+    def connect(self):
+        if not 'user' in self.scope:
+            # Reject channel
             return
 
-        try:
-            kit = backend.models.Kit.objects.get(username=content['kit'])
-            if not self.message.user.has_perm('backend.subscribe_to_kit_measurements_websocket', kit):
-                multiplexer.send({"error": "Kit not found or you do not have access to it."})
-                return
+        self.user = self.scope['user']
 
-            channels.Group("kit-measurements-%s" % kit.username).add(multiplexer.reply_channel)
-            multiplexer.send({"action": "subscribe", "kit": kit.username})
-        except:
-            multiplexer.send({"error": "Kit not found or you do not have access to it."})
-
-class MeasurementPublishConsumer(JWTSessionAuthConsumer):
-    """
-    A measurement publish consumer. Any kit can publish measurements.
-    The measurements are sent to all clients who are subscribed to
-    measurements of that kit.
-    """
-    def receive(self, content, multiplexer, **kwargs):
-        # Publish a measurement
-        if "kit" not in self.message.channel_session:
-            multiplexer.send({"error": "You must be a kit to publish measurements.'."})
+        if not 'kit_name' in self.scope['url_route']['kwargs']:
+            # Reject channel
             return
 
+        self.kit = backend.models.Kit.objects.get(username=self.scope['url_route']['kwargs']['kit_name'])
+        
+        if self.user.has_perm('backend.subscribe_to_kit_measurements_websocket', self.kit):
+            async_to_sync(self.channel_layer.group_add)(
+                "kit-measurements-%s" % self.kit.username,
+                self.channel_name
+            )
+
+            self.accept()
+
+    def disconnect(self, close_code):
+        # Leave group
+        async_to_sync(self.channel_layer.group_discard)(
+            "kit-measurements-%s" % self.kit.username,
+            self.channel_name
+        )
+
+    def measurement(self, event):
+        self.send(json.dumps(event['message']))
+
+class KitConsumer(WebsocketConsumer):
+    """
+    A kit consumer. Any authenticated kit can open this channel.
+    The channel can be used to, for example, publish measurements.
+    """
+    def connect(self):
+        print(self.scope)
+        if not 'user' in self.scope:
+            # Reject channel
+            return
+
+        # User must be a Kit.
+        if isinstance(self.scope['user'], backend.models.Kit):
+            self.kit = self.scope['user']
+            self.accept()
+
+    def receive(self, text_data):
+        """
+        :param text_data: The received data. Expected to be a json encoded string,
+        with keys 'stream' indicating the functionality to be used, 'nonce' indicating
+        some unique data that should be returned as-is in a reply from the server, and
+        optionally 'payload', data that is sent to the desired functionality.
+        """
+        content = json.loads(text_data)
+
+        stream = content['stream']
+        nonce = content['nonce']
+        payload = content['payload'] if 'payload' in content else {}
+
+        send_reply = lambda msg: self.send(json.dumps({
+            'stream': stream,
+            'reply-nonce': nonce,
+            'payload': msg
+        }))
+
+        if stream == "publish-measurement":
+            self.publish_measurement(payload, send_reply)
+
+    def publish_measurement(self, content, send_reply):
+        """
+        Publish a measurement. Saves measurements of type REDUCED, and
+        sends the measurement to all channels listening on the
+        `kit-measurements-%s` group.
+        """
+        
         try:
             # Fetch measurement message type
             measurement_type = content['measurement_type']
@@ -94,13 +98,11 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
 
             measurement = backend.models.Measurement(**measurement_serializer.validated_data)
 
-            kit = backend.models.Kit.objects.filter(username=self.message.channel_session['kit']).get()
-
             # Add the kit to the measurement
-            measurement.kit = kit
+            measurement.kit = self.kit
 
             # Get the peripheral device object by its name (if it's associated with this kit)
-            peripheral = kit.peripherals.filter(name=content['measurement']['peripheral']).get()
+            peripheral = self.kit.peripherals.filter(name=content['measurement']['peripheral']).get()
 
             # Add peripheral to the measurement object
             measurement.peripheral = peripheral
@@ -117,8 +119,15 @@ class MeasurementPublishConsumer(JWTSessionAuthConsumer):
 
             output_serializer = backend.serializers.MeasurementOutputSerializer(measurement)
             message = {'measurement_type': measurement_type, 'measurement': output_serializer.data}
-            self.group_send("kit-measurements-%s" % self.message.channel_session['kit'], message)
-            multiplexer.send({"success": "published"})
+            async_to_sync(self.channel_layer.group_send)(
+                "kit-measurements-%s" % self.kit.username,
+                {
+                    'type': 'measurement',
+                    'message': message
+                }
+            )
+            send_reply({"success": "published"})
         except Exception as exception:
-            multiplexer.send({"error": "You must provide a valid measurement.'."})
+            send_reply({"error": "You must provide a valid measurement.'."})
+            print("Websocket: exception on publishing measurement")
             print(exception)

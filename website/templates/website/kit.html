@@ -320,7 +320,7 @@
                 
                 {# Connect to websocket #}
                 var wsProtocol = location.protocol == 'https:' ? 'wss:' : 'ws:';
-                var ws = new ReconnectingWebSocket(wsProtocol + "//" + location.host);
+                var ws = new ReconnectingWebSocket(wsProtocol + "//" + location.host + "/measurements/subscribe/{{ kit.username }}/");
 
                 ws.onmessage = function(str) {
                     var data = JSON.parse(str.data);
@@ -340,6 +340,7 @@
                 };
 
                 {# Subscribe to websocket #}
+                /*
                 ws.onopen = function() {
                     ws.send(JSON.stringify({
                         stream: 'measurements-subscribe',
@@ -349,6 +350,7 @@
                         }
                     }));
                 }
+                */
             </script>
         {% endwith %}
     {% endif %}

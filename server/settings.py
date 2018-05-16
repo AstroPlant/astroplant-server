@@ -50,8 +50,7 @@ INSTALLED_APPS = [
     'django_gravatar',
     'rules.apps.AutodiscoverRulesConfig',
     'rest_framework',
-    'channels',
-    'channels_api',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -65,6 +64,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'server.urls'
+ASGI_APPLICATION = 'backend.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 TEMPLATES = [
     {
@@ -115,16 +121,6 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=600),
     'JWT_ALLOW_REFRESH': True,
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-}
-
-# (Websocket) channel routing
-# https://channels.readthedocs.io/en/latest/getting-started.html#first-consumers
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "asgiref.inmemory.ChannelLayer",
-        "ROUTING": "backend.routing.channel_routing",
-    },
 }
 
 # Password validation
