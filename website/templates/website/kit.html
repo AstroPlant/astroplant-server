@@ -338,19 +338,7 @@
                         process_reduced_measurement(data.measurement);
                     }
                 };
-
-                {# Subscribe to websocket #}
-                /*
-                ws.onopen = function() {
-                    ws.send(JSON.stringify({
-                        stream: 'measurements-subscribe',
-                        payload: {
-                            action: 'subscribe',
-                            kit: '{{ kit.username }}'
-                        }
-                    }));
-                }
-                */
+                
             </script>
         {% endwith %}
     {% endif %}
