@@ -13,3 +13,4 @@ pygments==2.2.0
 channels==2.1.1
 uwsgi==2.0.15
 pyyaml==3.12
+asgi_ipc==1.4.2
