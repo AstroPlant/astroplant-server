@@ -29,7 +29,7 @@ class KitViewSet(viewsets.GenericViewSet,
         if isinstance(user, models.Kit):
             return models.Kit.objects.filter(pk=user.pk)
         else:
-            return models.Kit.objects.filter(users=user.pk)
+            return models.Kit.kits.owned_by(user=user.pk)
 
     serializer_class = serializers.HyperlinkedKitSerializer
 
@@ -37,9 +37,8 @@ class KitViewSet(viewsets.GenericViewSet,
     def config(self, request, pk=None):
         qs = self.get_queryset()
         kit_query = qs.filter(pk=pk)
-        if not kit_query:
+        if not kit_query.exists():
             return response.Response({"detail": "Not found."}, status=404)
-
         kit = kit_query.get()
         return response.Response(kit.generate_config())
 
@@ -62,7 +61,7 @@ class KitConfigViewSet(viewsets.ViewSet):
         if isinstance(user, models.Kit):
             return models.Kit.objects.filter(pk=user.pk)
         else:
-            return models.Kit.objects.filter(users=user.pk)
+            return models.Kit.kits.owned_by(user=user.pk)
 
     def list(self, request, format=None):
         qs = self.get_queryset()
@@ -89,7 +88,7 @@ class ExperimentViewSet(viewsets.GenericViewSet,
         if isinstance(user, models.Kit):
             return models.Experiment.objects.filter(kit=user.pk)
         else:
-            kits = models.Kit.objects.filter(users=user.pk)
+            kits = models.Kit.kits.owned_by(user.pk)
             return models.Experiment.objects.filter(kit__in=kits)
 
     serializer_class = serializers.HyperlinkedExperimentSerializer
@@ -155,7 +154,7 @@ class PeripheralViewSet(viewsets.GenericViewSet,
         if isinstance(user, models.Kit):
             return models.Peripheral.objects.filter(kit=user.pk)
         else:
-            kits = models.Kit.objects.filter(users=user.pk)
+            kits = models.Kit.kits.owned_by(user.pk)
             return models.Peripheral.objects.filter(kit__in=kits)
 
     serializer_class = serializers.HyperlinkedPeripheralSerializer
@@ -185,7 +184,7 @@ class MeasurementViewSet(viewsets.GenericViewSet,
         if isinstance(user, models.Kit):
             return models.Measurement.objects.filter(kit=user.pk)
         else:
-            kits = models.Kit.objects.filter(users=user.pk)
+            kits = models.Kit.kits.owned_by(user.pk)
             return models.Measurement.objects.filter(kit__in=kits)
 
     serializer_class = serializers.HyperlinkedMeasurementSerializer
