@@ -52,7 +52,7 @@ class KitQuerySet(models.QuerySet):
     def safe_get(self, kit_id):
         try:
             kit = self.get(pk=kit_id)
-        except Kit.DoesNotExist:
+        except exceptions.ObjectDoesNotExist:
             kit = None
         return kit
 
