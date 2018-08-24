@@ -39,9 +39,13 @@ def kit(request, kit_id):
     except exceptions.ObjectDoesNotExist:
         kit = None
 
-    context = {'kit': kit,
-               'can_view_kit_dashboard': request.user.has_perm('backend.view_kit_dashboard', kit),
-               'recent_measurements': kit.recent_measurements(max_measurements=50)}
+    context = {
+        'kit': kit,
+        'can_view_kit_dashboard': request.user.has_perm('backend.view_kit_dashboard', kit)
+    }
+    # Catch for kit not existing at all
+    if kit:
+       context['recent_measurements'] = kit.recent_measurements(max_measurements=50)
 
     return render(request, 'website/kit.html', context)
 
