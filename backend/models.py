@@ -8,10 +8,13 @@ from django.db import models
 import django.contrib.auth.models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
+from django.core import exceptions
 import random
+
 
 class User(AbstractUser):
     pass
+
 
 def _generate_gravatar_alternative():
     """
@@ -27,9 +30,31 @@ def _generate_gravatar_alternative():
 
     return ''.join(random.choice('abcdefghijklmnopqrstuvwxyz0123456789') for i in range(RANDOM_STRING_LENGTH))
 
+
 class PersonUser(User):
     use_gravatar = models.BooleanField(default = True)
     gravatar_alternative = models.TextField(max_length = 255, default = _generate_gravatar_alternative)
+
+
+class KitQuerySet(models.QuerySet):
+    """
+    AstroPlant Kit QuerySet class
+
+    See:
+    https://docs.djangoproject.com/en/1.11/topics/db/managers/#creating-a-manager-with-queryset-methods
+    """
+    def owned_by(self, user):
+        return self.filter(users=user)
+
+    def shown_on_map(self):
+        return self.filter(privacy_show_on_map=True)
+
+    def safe_get(self, kit_id):
+        try:
+            kit = self.get(pk=kit_id)
+        except exceptions.ObjectDoesNotExist:
+            kit = None
+        return kit
 
 
 class Kit(User):
@@ -52,6 +77,8 @@ class Kit(User):
         through='KitMembership',
         through_fields=('kit', 'user'),
     )
+
+    kits = KitQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'Kit'
@@ -142,6 +169,7 @@ class Kit(User):
 
         return {'serial': self.username, 'name': self.name, 'modules': modules, 'peripherals': peripherals}
 
+    @staticmethod
     def generate_password():
         import random
 

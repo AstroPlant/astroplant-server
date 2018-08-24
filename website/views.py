@@ -15,29 +15,30 @@ from dal import autocomplete
 import backend.models
 import website.forms
 
+
 def index(request):
     context = {}
     return render(request, 'website/index.html', context)
-    
+
+
 def map(request):
     # Note that we don't use GeoDjango; it requires a heavy gdal setup. All
     # we need is a simple map, and a full gdal setup would just make deployment
     # more difficult
-    context = {'kits': backend.models.Kit.objects.filter(privacy_show_on_map=True)}
+    context = {'kits': backend.models.Kit.kits.shown_on_map()}
 
     return render(request,'website/map.html', context)
-       
+
+
 @decorators.login_required
 def dashboard(request):
-    context = {'kits': backend.models.Kit.objects.filter(users=request.user)}
+    context = {'kits': backend.models.Kit.kits.owned_by(user=request.user)}
 
     return render(request,'website/dashboard.html', context)
 
+
 def kit(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     context = {
         'kit': kit,
@@ -49,11 +50,9 @@ def kit(request, kit_id):
 
     return render(request, 'website/kit.html', context)
 
+
 def kit_download(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     context = {'kit': kit,
                'can_view_kit_dashboard': request.user.has_perm('backend.view_kit_dashboard', kit),
@@ -120,10 +119,7 @@ def kit_download(request, kit_id):
     
 @decorators.login_required
 def kit_configure_profile(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
@@ -151,10 +147,7 @@ def kit_configure_profile(request, kit_id):
 
 @decorators.login_required
 def kit_configure_members(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
@@ -195,10 +188,7 @@ def kit_configure_members(request, kit_id):
 
 @decorators.login_required
 def kit_configure_location(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
@@ -222,10 +212,7 @@ def kit_configure_location(request, kit_id):
 
 @decorators.login_required
 def kit_configure_peripherals(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
@@ -267,10 +254,7 @@ def kit_configure_peripherals(request, kit_id):
 
 @decorators.login_required
 def kit_configure_peripherals_add(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
@@ -297,10 +281,7 @@ def kit_configure_peripherals_add(request, kit_id):
 
 @decorators.login_required
 def kit_configure_peripherals_add_step2(request, kit_id, peripheral_definition_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
@@ -369,10 +350,7 @@ def kit_configure_peripherals_add_step2(request, kit_id, peripheral_definition_i
 
 @decorators.login_required
 def kit_configure_access(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
@@ -391,10 +369,7 @@ def kit_configure_access(request, kit_id):
 
 @decorators.login_required
 def kit_configure_danger_zone(request, kit_id):
-    try:
-        kit = backend.models.Kit.objects.get(pk=kit_id)
-    except exceptions.ObjectDoesNotExist:
-        kit = None
+    kit = backend.models.Kit.kits.safe_get(kit_id)
 
     if not kit or not request.user.has_perm('backend.configure_kit', kit):
         return render(request, 'website/kit_configure_not_found.html')
