@@ -4,6 +4,7 @@ server/secretsettings.py
 website/static/website/css
 website/static/website/js
 website/static/website/files
+_build/
 
 # Python / Django
 *.egg-info
