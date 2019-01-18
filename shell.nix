@@ -11,6 +11,7 @@ in
       bashInteractive
       ncurses
       python-with-packages
+      nodejs-8_x
     ];
     shellHook = ''
       export PIP_PREFIX="$(pwd)/_build/pip_packages"
