@@ -3,6 +3,7 @@ from django.contrib import auth
 from django.db import close_old_connections
 
 import rest_framework_jwt.serializers
+import rest_framework.exceptions
 import jwt.exceptions
 
 import backend.auth
@@ -56,7 +57,7 @@ class JWTAuthMiddleware:
 
             # If no exception is thrown, the token is valid. Store it in the session if it is a kit.
             user = backend.auth.downcast_user_type(validated['user'])
-        except (KeyError, jwt.exceptions.InvalidTokenError):
+        except (KeyError, jwt.exceptions.InvalidTokenError, rest_framework.exceptions.ValidationError):
             pass
 
         close_old_connections()
