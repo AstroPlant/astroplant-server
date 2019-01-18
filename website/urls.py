@@ -6,6 +6,7 @@ import backend
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^tos/$', views.tos, name='tos'),
     url(r'^map/$', views.map, name='map'),
     url(r'^dashboard/', include([
         url(r'^$', views.dashboard, name='dashboard'),

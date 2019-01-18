@@ -20,6 +20,9 @@ def index(request):
     context = {}
     return render(request, 'website/index.html', context)
 
+def tos(request):
+    context = {}
+    return render(request,'website/tos.html', context)
 
 def map(request):
     # Note that we don't use GeoDjango; it requires a heavy gdal setup. All

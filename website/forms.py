@@ -3,6 +3,15 @@ from registration.forms import RegistrationForm
 import backend.models
 
 class PersonUserRegistrationForm(RegistrationForm):
+    tos = django.forms.BooleanField(
+        # widget=django.forms.CheckboxInput,
+        label='I have read and agree to the <a href="/tos/">Terms of Service</a>.',
+        error_messages={
+            'required': 'You must agree to the Terms of Service to register',
+        },
+        required=True
+    )
+
     class Meta:
         model = backend.models.PersonUser
         fields = ('username', 'email',)
