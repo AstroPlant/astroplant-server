@@ -222,6 +222,7 @@ class PeripheralDefinition(models.Model):
     verified = models.BooleanField(default = False)
     public = models.BooleanField(default = False)
     owner = models.ForeignKey(PersonUser,
+                              on_delete = models.PROTECT, # Todo: instead of restricting, set to some default system user.
                               related_name = 'peripheral_definitions',
                               blank = True,
                               null = True)

@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render
 from django.contrib import messages
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.core import exceptions
 from django.contrib.auth import login, decorators
 from django.contrib.auth import views as auth_views
