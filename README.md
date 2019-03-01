@@ -35,7 +35,7 @@ $ nix-shell
 ```
 
 this installs Python 3.6 and Node 8 and makes them available in your shell
-environment for the duration of the shell session. It also creates a `\_build`
+environment for the duration of the shell session. It also creates a `_build`
 subdirectory and uses it as a virtual Python environment for packages.
 
 ## Database
