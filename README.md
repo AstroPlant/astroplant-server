@@ -34,18 +34,19 @@ Optionally, you can use Nix to emulate a virtual environment (see `shell.nix`):
 $ nix-shell
 ```
 
-this installs Python 3.6 and creates a virtual environment in a \_build
-subdirectory.
+this installs Python 3.6 and Node 8 and makes them available in your shell
+environment for the duration of the shell session. It also creates a `\_build`
+subdirectory and uses it as a virtual Python environment for packages.
 
 ## Database
 
-The server requires a database to function. 
+The server requires a database to function.
 It has only been tested with MySQL/MariaDB.
 
 ### Creating a database:
 
 To create a development database and a local user able to login without a
-password perform:
+password perform e.g.:
 
 ```shell
 $ sudo mysql
