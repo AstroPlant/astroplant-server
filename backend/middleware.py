@@ -1,6 +1,7 @@
 import urllib.parse
 from django.contrib import auth
 from django.db import close_old_connections
+from channels.middleware import BaseMiddleware
 
 import rest_framework_jwt.serializers
 import rest_framework.exceptions
@@ -31,21 +32,24 @@ class TokenMiddleware(object):
         if user:
             request.user = user
 
-class JWTAuthMiddleware:
+class JWTAuthMiddleware(BaseMiddleware):
     """
     Middleware to authenticate a user with a JSON Web Token.
     """
 
-    def __init__(self, inner):
-        # Store the ASGI application we were passed
-        self.inner = inner
+    def populate_scope(self, scope):
+        # Populate top level of scope.
+        if "user" not in scope:
+            raise ValueError(
+                "JWTAuthMiddleware cannot find user in scope. AuthMiddleware must be above it."
+            )
 
-    def __call__(self, scope):
-        if "user" in scope and not scope["user"].is_anonymous:
-            return self.inner(scope)
+    async def resolve_scope(self, scope):
+        if not scope["user"]._wrapped.is_anonymous:
+            return
 
         if not "query_string" in scope:
-            return self.inner(scope)
+            return
 
         qs = urllib.parse.parse_qs(scope['query_string'].decode('utf-8'))
         
@@ -62,8 +66,6 @@ class JWTAuthMiddleware:
 
         close_old_connections()
 
-        # Return the inner application directly and let it run everything else
+        # Set the user.
         if user:
-            return self.inner(dict(scope, user=user))
-        else:
-            return self.inner(scope)
+            scope["user"]._wrapped = user
